@@ -1,0 +1,8 @@
+# Visual Studio junk.
+**/.vs/**/*
+/**/[Bb]in/**
+/**/[Oo]bj/**
+launchSettings.json
+
+# VIM junk.
+*.swp
