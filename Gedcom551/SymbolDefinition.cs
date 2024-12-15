@@ -72,7 +72,7 @@ namespace Gedcom551
                     component.LevelString = tokens[index];
                     continue;
                 }
-                if (component.Id == null && tokens[index].StartsWith('@'))
+                if (component.Id == null && component.TagOrSymbolReference == null && tokens[index].StartsWith('@'))
                 {
                     component.Id = tokens[index];
                     continue;
@@ -84,7 +84,8 @@ namespace Gedcom551
                 }
                 if (component.PayloadType == null && !tokens[index].StartsWith('{'))
                 {
-                    component.PayloadType = tokens[index];
+                    string payload = tokens[index].Trim('<', '>');
+                    component.PayloadType = payload;
                     continue;
                 }
                 if (component.Cardinality == null && tokens[index].StartsWith('{'))

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -192,7 +193,8 @@ namespace Gedcom551
         /// <param name="sourceProgram">null (wildcard) for standard tags, else extension</param>
         /// <param name="tag">Tag</param>
         /// <param name="uri">Structure URI</param>
-        public static GedcomStructureSchema? AddSchema(string sourceProgram, string tag, string uri)
+        /// <param name="payloadType">Payload type</param>
+        public static GedcomStructureSchema? AddSchema(string sourceProgram, string tag, string uri, string payloadType)
         {
             if (tag.Contains('|') || tag.Contains('['))
             {
@@ -218,6 +220,7 @@ namespace Gedcom551
 
             var schema = new GedcomStructureSchema(sourceProgram, tag);
             schema.Uri = uri;
+            schema.Payload = payloadType;
             s_StructureSchemas[structureSchemaKey] = schema;
             return schema;
         }
@@ -299,13 +302,36 @@ namespace Gedcom551
                         {
                             writer.WriteLine("label: '" + schema.Label + "'\n");
                         }
-                        if (schema.Payload == null)
+                        if (string.IsNullOrEmpty(schema.Payload))
                         {
                             writer.WriteLine("payload: null\n");
                         }
+                        else if (schema.Payload == "[Y|<NULL>]")
+                        {
+                            writer.WriteLine("payload: Y|<NULL>\n");
+                        }
+                        else if (schema.Payload.StartsWith("@<XREF:"))
+                        {
+                            string recordType = schema.Payload.Substring(7).Trim('@', '>');
+                            writer.WriteLine("payload: \"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"\n");
+                        }
+                        else if (schema.Payload.StartsWith("[@<XREF:") && schema.Payload.EndsWith(">@|<NULL>]"))
+                        {
+                            string recordType = schema.Payload.Substring(8, schema.Payload.Length - 18);
+                            writer.WriteLine("payload: \"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"|<NULL>\n");
+                        }
+                        else if (schema.Payload.StartsWith("[<") && schema.Payload.EndsWith(">|<NULL>]"))
+                        {
+                            string payloadType = schema.Payload.Substring(2, schema.Payload.Length - 11);
+                            writer.WriteLine("payload: https://gedcom.io/terms/v5.5.1/type-" + payloadType + "\n");
+                        }
+                        else if (schema.Payload.Contains('@') || schema.Payload.Contains('|'))
+                        {
+                            throw new Exception("Bad payload");
+                        }
                         else
                         {
-                            writer.WriteLine("payload: " + schema.Payload + "\n");
+                            writer.WriteLine("payload: https://gedcom.io/terms/v5.5.1/type-" + schema.Payload + "\n");
                         }
                         if (schema.Substructures.Count == 0)
                         {

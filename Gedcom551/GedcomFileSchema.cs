@@ -120,7 +120,7 @@ namespace Gedcom551
                     {
                         throw new Exception("oops");
                     }
-                    GenerateStructureSchemas(component.SymbolDefinition, component.LevelDelta, component.Cardinality);
+                    GenerateStructureSchemas(component.SymbolDefinition, combinedLevel, component.Cardinality);
                     continue;
                 }
 
@@ -137,7 +137,7 @@ namespace Gedcom551
                         continue;
                     }
                     string uri = MakeUri(combinedLevel, tag);
-                    GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri);
+                    GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri, component.PayloadType);
                     _schemaPath[combinedLevel] = schema;
 
                     if ((combinedLevel > 0) && (tag != "CONT"))
@@ -155,7 +155,6 @@ namespace Gedcom551
         {
             // Generate YAML files for standard structures.
             GedcomStructureSchema.SaveAll(destinationDirectory);
-            // XXX
         }
     }
 }
