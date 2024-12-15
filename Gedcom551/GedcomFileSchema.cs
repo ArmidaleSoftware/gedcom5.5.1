@@ -124,23 +124,29 @@ namespace Gedcom551
                     continue;
                 }
 
-                string tag = component.TagOrSymbolReference;
-                if (tag == "[CONT|CONC]")
+                string input = component.TagOrSymbolReference;
+                // Remove '[' from the beginning and ']' from the end if present.
+                string trimmedInput = input.Trim('[', ']');
+                // Split the string using '|' as the separator
+                string[] result = trimmedInput.Split('|');
+                foreach (string tag in result)
                 {
-                    // Ignore this structure.
-                    continue;
-                }
+                    if (tag == "CONC" || tag == "CONT")
+                    {
+                        // Ignore this structure.
+                        continue;
+                    }
+                    string uri = MakeUri(combinedLevel, tag);
+                    GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri);
+                    _schemaPath[combinedLevel] = schema;
 
-                string uri = MakeUri(combinedLevel, tag);
-                GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri);
-                _schemaPath[combinedLevel] = schema;
-
-                if ((combinedLevel > 0) && (tag != "CONT"))
-                {
-                    GedcomStructureSchema superstructureSchema = _schemaPath[combinedLevel - 1];
-                    var info = GedcomStructureCountInfo.FromCardinality(component.Cardinality);
-                    superstructureSchema.Substructures[uri] = info;
-                    schema.Superstructures[superstructureSchema.Uri] = info;
+                    if ((combinedLevel > 0) && (tag != "CONT"))
+                    {
+                        GedcomStructureSchema superstructureSchema = _schemaPath[combinedLevel - 1];
+                        var info = GedcomStructureCountInfo.FromCardinality(component.Cardinality);
+                        superstructureSchema.Substructures[uri] = info;
+                        schema.Superstructures[superstructureSchema.Uri] = info;
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace Gedcom551
         public int FixedMax; // 0: no arbitrary max, non-zero: arbitrary max.
         public override string ToString()
         {
-            return "{" + (Required ? "1" : "0") + ":" + (Singleton ? "1" : "M") + "}";
+            return "{" + (Required ? "1" : "0") + ":" + (Singleton ? "1" : (FixedMax > 0 ? FixedMax : "M")) + "}";
         }
         public static GedcomStructureCountInfo FromCardinality(string cardinality)
         {
@@ -194,6 +194,10 @@ namespace Gedcom551
         /// <param name="uri">Structure URI</param>
         public static GedcomStructureSchema? AddSchema(string sourceProgram, string tag, string uri)
         {
+            if (tag.Contains('|') || tag.Contains('['))
+            {
+                throw new Exception("Invalid tag");
+            }
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SourceProgram = sourceProgram;
             // Leave SuperstructureUri as null for a wildcard.
