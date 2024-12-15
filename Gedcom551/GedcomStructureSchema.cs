@@ -174,6 +174,10 @@ namespace Gedcom551
         /// <param name="schema">Schema</param>
         public static void AddSchema(string sourceProgram, string superstructureUri, string tag, GedcomStructureSchema schema)
         {
+            if (tag.Contains('|') || tag.Contains('['))
+            {
+                throw new Exception("Invalid tag");
+            }
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SourceProgram = sourceProgram;
             structureSchemaKey.SuperstructureUri = superstructureUri;
@@ -249,6 +253,95 @@ namespace Gedcom551
             EnumerationSet.LoadAll(gedcomRegistriesPath);
             CalendarSchema.LoadAll(gedcomRegistriesPath);
         }
+        public static void SaveAll(string gedcomRegistriesPath)
+        {
+            var path = Path.Combine(gedcomRegistriesPath, "structure", "standard");
+            try
+            {
+                // Create the directory if it doesn't exist.
+                Directory.CreateDirectory(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+                return;
+            }
+
+            foreach (var info in s_StructureSchemas)
+            {
+                GedcomStructureSchema schema = info.Value;
+                var serializer = new YamlSerializer();
+                string filePath = Path.Combine(path, schema.StandardTag + ".yaml");
+                try
+                {
+                    // Create a StreamWriter object to open the file for writing.
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    {
+                        // Write lines to the file.
+                        writer.WriteLine("%YAML 1.2\r\n---");
+                        writer.WriteLine("lang: en-US\n");
+                        writer.WriteLine("type: structure\n");
+                        writer.WriteLine("uri: " + schema.Uri + "\n");
+                        writer.WriteLine("standard tag: '" + schema.StandardTag + "'\n");
+
+                        writer.WriteLine("specification:");
+                        foreach (var line in schema.Specification)
+                        {
+                            writer.WriteLine(line);
+                        }
+                        writer.WriteLine();
+
+                        if (schema.Label != null)
+                        {
+                            writer.WriteLine("label: '" + schema.Label + "'\n");
+                        }
+                        if (schema.Payload == null)
+                        {
+                            writer.WriteLine("payload: null\n");
+                        }
+                        else
+                        {
+                            writer.WriteLine("payload: " + schema.Payload + "\n");
+                        }
+                        if (schema.Substructures.Count == 0)
+                        {
+                            writer.WriteLine("substructures: {}\n");
+                        }
+                        else
+                        {
+                            writer.WriteLine("substructures:");
+                            foreach (var sub in schema.Substructures)
+                            {
+                                string key = sub.Key;
+                                GedcomStructureCountInfo subInfo = sub.Value;
+                                writer.WriteLine($"  \"{key}\": \"{subInfo}\"");
+                            }
+                            writer.WriteLine();
+                        }
+                        if (schema.Superstructures.Count == 0)
+                        {
+                            writer.WriteLine("superstructures: {}\n");
+                        }
+                        else
+                        {
+                            writer.WriteLine("superstructures:");
+                            foreach (var super in schema.Superstructures)
+                            {
+                                string key = super.Key;
+                                GedcomStructureCountInfo superInfo = super.Value;
+                                writer.WriteLine($"  \"{key}\": \"{superInfo}\"");
+                            }
+                            writer.WriteLine();
+                        }
+                        writer.WriteLine("contact: https://gedcom.io/community/\n");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"An error occurred: {e.Message}");
+                }
+            }
+        }
 
         public static GedcomStructureSchema GetSchema(string uri) => s_StructureSchemasByUri.ContainsKey(uri) ? s_StructureSchemasByUri[uri] : null;
 
@@ -261,6 +354,10 @@ namespace Gedcom551
         /// <returns></returns>
         public static GedcomStructureSchema GetSchema(string sourceProgram, string superstructureUri, string tag)
         {
+            if (tag.Contains('|') || tag.Contains('['))
+            {
+                throw new Exception();
+            }
             // First look for a schema with a wildcard source program.
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SuperstructureUri = superstructureUri;

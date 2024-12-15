@@ -139,15 +139,16 @@ namespace Gedcom551
                 {
                     GedcomStructureSchema superstructureSchema = _schemaPath[combinedLevel - 1];
                     var info = GedcomStructureCountInfo.FromCardinality(component.Cardinality);
-                    superstructureSchema.Substructures[tag] = info;
-                    schema.Superstructures[tag] = info;
+                    superstructureSchema.Substructures[uri] = info;
+                    schema.Superstructures[superstructureSchema.Uri] = info;
                 }
             }
         }
 
-        // TODO: Generate output.
         public void GenerateOutput(string destinationDirectory)
         {
+            // Generate YAML files for standard structures.
+            GedcomStructureSchema.SaveAll(destinationDirectory);
             // XXX
         }
     }
