@@ -294,6 +294,10 @@ namespace Gedcom551
             return schema;
         }
 
+        /// <summary>
+        /// Load structure schemas from YAML files under a given file path.
+        /// </summary>
+        /// <param name="gedcomRegistriesPath"></param>
         public static void LoadAll(string gedcomRegistriesPath = null)
         {
             if (s_StructureSchemas.Count > 0)
@@ -329,6 +333,11 @@ namespace Gedcom551
             EnumerationSet.LoadAll(gedcomRegistriesPath);
             CalendarSchema.LoadAll(gedcomRegistriesPath);
         }
+
+        /// <summary>
+        /// Save all structure schemas in YAML files under a given file path.
+        /// </summary>
+        /// <param name="gedcomRegistriesPath"></param>
         public static void SaveAll(string gedcomRegistriesPath)
         {
             var path = Path.Combine(gedcomRegistriesPath, "structure", "standard");
@@ -455,7 +464,7 @@ namespace Gedcom551
         /// <param name="sourceProgram">source program string, or null for wildcard</param>
         /// <param name="superstructureUri">superstructure URI, or null for wildcard</param>
         /// <param name="tag"></param>
-        /// <returns></returns>
+        /// <returns>Schema</returns>
         public static GedcomStructureSchema GetSchema(string sourceProgram, string superstructureUri, string tag)
         {
             if (tag.Contains('|') || tag.Contains('['))
@@ -528,6 +537,12 @@ namespace Gedcom551
             return true;
         }
 
+        /// <summary>
+        /// Test whether two schemas match in Payload and Substructures.
+        /// </summary>
+        /// <param name="a">First schema to test</param>
+        /// <param name="b">Second schema to test</param>
+        /// <returns>true if match, false if not</returns>
         private static bool MatchSchema(GedcomStructureSchema a, GedcomStructureSchema b)
         {
             if (a.Payload != b.Payload)
@@ -551,7 +566,7 @@ namespace Gedcom551
         /// <summary>
         /// Create a list of all unique tags in s_StructureSchemas.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of tags</returns>
         private static List<string> GetAllUniqueTags()
         {
             List<string> tags = new List<string>();
@@ -565,7 +580,10 @@ namespace Gedcom551
             return tags;
         }
 
-        // Collapse into unique schemas.
+        /// <summary>
+        /// Collapse schemas into unique schemas by combining matching schemas with one
+        /// superstructure each into a single schema with multiple superstructures.
+        /// </summary>
         public static void CollapseSchemas()
         {
             List<string> tags = GetAllUniqueTags();
@@ -635,6 +653,8 @@ namespace Gedcom551
                 }
                 if (newKeys.Count == 1)
                 {
+                    // We only found one schema key with multiple schemas,
+                    // so wildcard the payload.
                     GedcomStructureSchemaKey n = newKeys[0];
                     n.Payload = null;
                 }
@@ -643,10 +663,15 @@ namespace Gedcom551
                 {
                     GedcomStructureSchema current = pair.Value;
 
-                    GedcomStructureSchemaKey? found = FindMatchingKey(pair.Key, newKeys);
-                    if (found.HasValue)
+                    GedcomStructureSchemaKey? found = FindMatchingKey(pair.Key, newKeys, current.Payload);
+                    if (current.Superstructures.Count > 0 && found.HasValue)
                     {
-                        // This schema matches a common for the tag so merge it.
+                        if (found.Value.Payload != null && found.Value.Payload != current.Payload)
+                        {
+                            throw new Exception();
+                        }
+
+                        // This schema matches a common schema for the tag so merge it.
                         foreach (var super in current.Superstructures)
                         {
                             newStructureSchemas[found.Value].Superstructures[super.Key] = super.Value;
@@ -671,8 +696,9 @@ namespace Gedcom551
         /// </summary>
         /// <param name="key">Key to look for a match for</param>
         /// <param name="newKeys">List of keys to look for a match in</param>
+        /// <param name="currentPayload">Payload associated with key</param>
         /// <returns>Matched key, or null if none</returns>
-        private static GedcomStructureSchemaKey? FindMatchingKey(GedcomStructureSchemaKey key, List<GedcomStructureSchemaKey> newKeys)
+        private static GedcomStructureSchemaKey? FindMatchingKey(GedcomStructureSchemaKey key, List<GedcomStructureSchemaKey> newKeys, string currentPayload)
         {
             foreach (GedcomStructureSchemaKey newKey in newKeys)
             {
@@ -687,8 +713,8 @@ namespace Gedcom551
                     // Different source program.
                     continue;
                 }
-                if (key.Payload != null && newKey.Payload != null &&
-                    key.Payload != newKey.Payload)
+                if (newKey.Payload != null &&
+                    currentPayload != newKey.Payload)
                 {
                     // Different payload.
                     continue;
