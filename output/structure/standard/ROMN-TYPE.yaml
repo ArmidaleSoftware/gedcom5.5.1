@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-ROMANIZED_TYPE
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/ROMN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-ROMN": "{1:1}"
 
 contact: https://gedcom.io/community/
 

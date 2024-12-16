@@ -15,7 +15,6 @@ payload: https://gedcom.io/terms/v5.5.1/type-PHONE_NUMBER
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/ADOP": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/ANUL": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/BAPM": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/BARM": "{0:3}"
@@ -24,7 +23,6 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/BLES": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/BURI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/CAST": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/CENS": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/CHR": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/CHRA": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/CONF": "{0:3}"
@@ -37,12 +35,17 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/EDUC": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/EMIG": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/ENGA": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/EVEN": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/FACT": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/FAM-CENS": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/FAM-EVEN": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/FAM-RESI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/FCOM": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/GRAD": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/IDNO": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/IMMI": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/INDI-ADOP": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/INDI-NCHI": "{0:3}"
+  "https://gedcom.io/terms/v5.5.1/INDI-TITL": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/MARB": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/MARC": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/MARL": "{0:3}"
@@ -50,7 +53,6 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/MARS": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/NATI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/NATU": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/NCHI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/NMR": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/OCCU": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/ORDN": "{0:3}"
@@ -59,10 +61,8 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/record-REPO": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/record-SUBM": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/RELI": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/RESI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/RETI": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/SSN": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/TITL": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/WILL": "{0:3}"
 
 contact: https://gedcom.io/community/

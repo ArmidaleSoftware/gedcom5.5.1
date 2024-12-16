@@ -158,7 +158,58 @@ namespace Gedcom551
         }
         public string Lang { get; private set; }
         public string Type { get; private set; }
-        public string Uri { get; private set; }
+        private string _uri;
+        public string Uri {
+            get
+            {
+                return _uri;
+            }
+            private set
+            {
+                // Rename URI in superstructures.
+                foreach (string super in this.Superstructures.Keys)
+                {
+                    foreach (var other in s_StructureSchemas)
+                    {
+                        GedcomStructureSchemaKey key = other.Key;
+                        GedcomStructureSchema schema = other.Value;
+                        if (schema.Uri == super)
+                        {
+                            if (!schema.Substructures.ContainsKey(_uri))
+                            {
+                                // TODO: throw new Exception();
+                                continue;
+                            }
+                            GedcomStructureCountInfo info = schema.Substructures[_uri];
+                            schema.Substructures.Remove(_uri);
+                            schema.Substructures[value] = info;
+                        }
+                    }
+                }
+
+                // Rename URI in substructures.
+                foreach (string sub in this.Substructures.Keys)
+                {
+                    foreach (var other in s_StructureSchemas)
+                    {
+                        GedcomStructureSchemaKey key = other.Key;
+                        GedcomStructureSchema schema = other.Value;
+                        if (schema.Uri == sub)
+                        {
+                            if (!schema.Superstructures.ContainsKey(_uri))
+                            {
+                                // TODO: throw new Exception();
+                                continue;
+                            }
+                            GedcomStructureCountInfo info = schema.Superstructures[_uri];
+                            schema.Superstructures.Remove(_uri);
+                            schema.Superstructures[value] = info;
+                        }
+                    }
+                }
+                _uri = value;
+            }
+        }
         public string StandardTag { get; private set; }
         public List<string> Specification { get; private set; }
         public string Label { get; private set; }

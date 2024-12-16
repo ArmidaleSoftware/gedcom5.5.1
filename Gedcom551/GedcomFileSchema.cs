@@ -149,7 +149,7 @@ namespace Gedcom551
                         if ((combinedLevel > 0) && (tag != "CONT"))
                         {
                             var info = GedcomStructureCountInfo.FromCardinality(component.Cardinality);
-                            superstructureSchema.Substructures[uri] = info;
+                            superstructureSchema.Substructures[schema.Uri] = info;
                             schema.Superstructures[superstructureSchema.Uri] = info;
                         }
                     }

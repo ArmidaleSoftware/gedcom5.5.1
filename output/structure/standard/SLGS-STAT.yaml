@@ -13,7 +13,7 @@ specification:
 payload: https://gedcom.io/terms/v5.5.1/type-LDS_SPOUSE_SEALING_DATE_STATUS
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/DATE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/STAT-DATE": "{1:1}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/SLGS": "{0:1}"

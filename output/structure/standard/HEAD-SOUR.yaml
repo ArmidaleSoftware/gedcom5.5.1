@@ -14,8 +14,8 @@ payload: https://gedcom.io/terms/v5.5.1/type-APPROVED_SYSTEM_ID
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/CORP": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/DATA": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/NAME": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-DATA": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-NAME": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/VERS": "{0:1}"
 
 superstructures:

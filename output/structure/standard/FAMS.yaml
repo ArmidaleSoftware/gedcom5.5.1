@@ -13,7 +13,8 @@ specification:
 payload: "@<https://gedcom.io/terms/v5.5.1/record-FAM>@"
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/record-INDI": "{1:1}"

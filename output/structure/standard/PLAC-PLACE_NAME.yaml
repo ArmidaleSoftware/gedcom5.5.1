@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/PLAC
+uri: https://gedcom.io/terms/v5.5.1/PLAC-PLACE_NAME
 
 standard tag: 'PLAC'
 
@@ -13,11 +13,11 @@ specification:
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_NAME
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/FONE": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/FORM": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/MAP": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/ROMN": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-FONE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-ROMN": "{0:M}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/ADOP": "{1:1}"
@@ -42,6 +42,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/EMIG": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/ENGA": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/FACT": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-EVEN": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/FCOM": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/GRAD": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/IDNO": "{1:1}"

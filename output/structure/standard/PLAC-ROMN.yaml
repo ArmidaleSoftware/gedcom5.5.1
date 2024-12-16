@@ -13,10 +13,10 @@ specification:
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_ROMANIZED_VARIATION
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/TYPE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ROMN-TYPE": "{1:1}"
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/PLAC": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-PLACE_NAME": "{0:M}"
 
 contact: https://gedcom.io/community/
 

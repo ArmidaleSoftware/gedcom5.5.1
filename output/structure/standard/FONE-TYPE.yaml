@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-PHONETIC_TYPE
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/FONE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-FONE": "{1:1}"
 
 contact: https://gedcom.io/community/
 
