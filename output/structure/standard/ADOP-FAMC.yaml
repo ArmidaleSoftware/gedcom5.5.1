@@ -13,10 +13,10 @@ specification:
 payload: "@<https://gedcom.io/terms/v5.5.1/record-FAM>@"
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/ADOP": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FAMC-ADOP": "{0:1}"
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/ADOP": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/INDI-ADOP": "{0:1}"
 
 contact: https://gedcom.io/community/
 

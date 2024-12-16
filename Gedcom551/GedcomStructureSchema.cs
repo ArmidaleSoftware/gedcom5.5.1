@@ -719,7 +719,9 @@ namespace Gedcom551
                     GedcomStructureSchema current = pair.Value;
 
                     GedcomStructureSchemaKey? found = FindMatchingKey(pair.Key, newKeys, current.Payload);
-                    if (current.Superstructures.Count > 0 && found.HasValue)
+                    if (current.Superstructures.Count > 0 && found.HasValue &&
+                        IsSubset(newStructureSchemas[found.Value].Substructures, current.Substructures) &&
+                        IsSubset(current.Substructures, newStructureSchemas[found.Value].Substructures))
                     {
                         if (found.Value.Payload != null && found.Value.Payload != current.Payload)
                         {
