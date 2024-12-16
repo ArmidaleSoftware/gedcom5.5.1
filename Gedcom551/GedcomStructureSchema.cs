@@ -640,14 +640,16 @@ namespace Gedcom551
                         continue;
                     }
 
-                    // Wildcard this schema.
+                    // Add this schema to the new keys.  First use the payload
+                    // since there might be multiple payloads with multiple schemas
+                    // that differ by payload.
                     GedcomStructureSchema? bestSchema = pair.Key;
                     var key = new GedcomStructureSchemaKey();
                     key.Tag = tag;
                     key.SuperstructureUri = null;
                     key.SourceProgram = null;
                     key.Payload = bestSchema.Payload;
-                    bestSchema.Uri = MakeUri(null, tag);
+                    bestSchema.Uri = MakeUri(null, tag, key.Payload);
                     newStructureSchemas[key] = bestSchema;
                     newKeys.Add(key);
                 }
@@ -655,8 +657,10 @@ namespace Gedcom551
                 {
                     // We only found one schema key with multiple schemas,
                     // so wildcard the payload.
-                    GedcomStructureSchemaKey n = newKeys[0];
-                    n.Payload = null;
+                    GedcomStructureSchemaKey key = newKeys[0];
+                    GedcomStructureSchema schema = newStructureSchemas[key];
+                    key.Payload = null;
+                    schema.Uri = MakeUri(null, tag, key.Payload);
                 }
 
                 foreach (var pair in allSchemasForTag)
