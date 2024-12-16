@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/STAE
+
+standard tag: 'STAE'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_STATE
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/ADDR": "{0:1}"
+
+contact: https://gedcom.io/community/
+

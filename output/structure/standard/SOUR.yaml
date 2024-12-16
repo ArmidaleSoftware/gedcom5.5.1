@@ -1,0 +1,83 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/SOUR
+
+standard tag: 'SOUR'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_DESCRIPTION
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/QUAY": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/TEXT": "{0:M}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/ADOP": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ANUL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ASSO": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BAPL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BAPM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BARM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BASM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BIRT": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BLES": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/BURI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CAST": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CENS": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CHR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CHRA": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CONF": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CONL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CREM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/DEAT": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/DIV": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/DIVF": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/DSCR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/EDUC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/EMIG": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ENDL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ENGA": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/EVEN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FACT": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FCOM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FONE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/GRAD": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/IDNO": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/IMMI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/INDI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/MARB": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/MARC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/MARL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/MARR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/MARS": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NAME": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NATI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NATU": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NCHI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NMR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OCCU": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ORDN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PROB": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PROP": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/RELI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/RESI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/RETI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ROMN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SLGC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SLGS": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SSN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/TITL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/WILL": "{1:1}"
+
+contact: https://gedcom.io/community/
+

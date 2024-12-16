@@ -1,0 +1,30 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/NAME-FONE
+
+standard tag: 'FONE'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-NAME_PHONETIC_VARIATION
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/GIVN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NICK": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NPFX": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NSFX": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SPFX": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SURN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/TYPE": "{1:1}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/NAME": "{0:M}"
+
+contact: https://gedcom.io/community/
+

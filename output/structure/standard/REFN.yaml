@@ -1,0 +1,27 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/REFN
+
+standard tag: 'REFN'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-USER_REFERENCE_NUMBER
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/TYPE": "{0:1}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/FAM": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/INDI": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/OBJE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/REPO": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/SOUR": "{0:M}"
+
+contact: https://gedcom.io/community/
+

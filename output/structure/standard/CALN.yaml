@@ -1,0 +1,22 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/CALN
+
+standard tag: 'CALN'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_CALL_NUMBER
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/MEDI": "{0:1}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/REPO": "{0:M}"
+
+contact: https://gedcom.io/community/
+

@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/FAM-HUSB
+
+standard tag: 'HUSB'
+
+specification:
+
+payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/FAM": "{0:1}"
+
+contact: https://gedcom.io/community/
+

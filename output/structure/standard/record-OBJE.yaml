@@ -1,0 +1,26 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/record-OBJE
+
+standard tag: 'OBJE'
+
+specification:
+
+payload: null
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/CHAN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FILE": "{1:M}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/REFN": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR": "{1:1}"
+
+superstructures: {}
+
+contact: https://gedcom.io/community/
+

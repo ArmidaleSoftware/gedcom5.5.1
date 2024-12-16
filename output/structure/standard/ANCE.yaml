@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/ANCE
+
+standard tag: 'ANCE'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-GENERATIONS_OF_ANCESTORS
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/SUBN": "{0:1}"
+
+contact: https://gedcom.io/community/
+

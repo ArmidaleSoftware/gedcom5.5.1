@@ -1,0 +1,32 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/HEAD
+
+standard tag: 'HEAD'
+
+specification:
+
+payload: null
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/CHAR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/COPR": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/DATE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/DEST": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FILE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/GEDC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/LANG": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/PLAC": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SUBM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SUBN": "{0:1}"
+
+superstructures: {}
+
+contact: https://gedcom.io/community/
+

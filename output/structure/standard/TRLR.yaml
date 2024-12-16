@@ -1,0 +1,20 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/TRLR
+
+standard tag: 'TRLR'
+
+specification:
+
+payload: null
+
+substructures: {}
+
+superstructures: {}
+
+contact: https://gedcom.io/community/
+

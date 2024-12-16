@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/SEX
+
+standard tag: 'SEX'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-SEX_VALUE
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/INDI": "{0:1}"
+
+contact: https://gedcom.io/community/
+

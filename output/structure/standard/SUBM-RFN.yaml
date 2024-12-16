@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/SUBM-RFN
+
+standard tag: 'RFN'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_REGISTERED_RFN
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/SUBM": "{0:1}"
+
+contact: https://gedcom.io/community/
+

@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/FORM
+
+standard tag: 'FORM'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-GEDCOM_FORM
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/GEDC": "{1:1}"
+
+contact: https://gedcom.io/community/
+
