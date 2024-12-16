@@ -130,11 +130,11 @@ namespace Gedcom551
                         // Ignore this structure.
                         continue;
                     }
-                    string uri = GedcomStructureSchema.MakeUri(null, tag);
+                    string superstructureUri = (combinedLevel > 0) ? null : "-";
+                    string uri = GedcomStructureSchema.MakeUri(superstructureUri, tag);
 
                     if (combinedLevel == 0)
                     {
-                        string superstructureUri = "-";
                         GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri, component.PayloadType, superstructureUri);
                         _schemaPath[combinedLevel].Add(schema);
                         continue;
@@ -142,7 +142,7 @@ namespace Gedcom551
 
                     foreach (GedcomStructureSchema superstructureSchema in _schemaPath[combinedLevel - 1])
                     {
-                        string superstructureUri = superstructureSchema.Uri;
+                        superstructureUri = superstructureSchema.Uri;
                         GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri, component.PayloadType, superstructureUri);
                         _schemaPath[combinedLevel].Add(schema);
 

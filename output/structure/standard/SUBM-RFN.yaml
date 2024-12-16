@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_REGISTERED_RFN
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/SUBM": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/record-SUBM": "{0:1}"
 
 contact: https://gedcom.io/community/
 

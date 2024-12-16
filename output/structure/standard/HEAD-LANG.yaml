@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/LANG
+uri: https://gedcom.io/terms/v5.5.1/HEAD-LANG
 
 standard tag: 'LANG'
 

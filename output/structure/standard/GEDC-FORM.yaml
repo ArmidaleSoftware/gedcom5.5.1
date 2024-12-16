@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/FORM
+uri: https://gedcom.io/terms/v5.5.1/GEDC-FORM
 
 standard tag: 'FORM'
 

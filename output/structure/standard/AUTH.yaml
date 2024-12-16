@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_ORIGINATOR
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/SOUR": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/record-SOUR": "{0:1}"
 
 contact: https://gedcom.io/community/
 

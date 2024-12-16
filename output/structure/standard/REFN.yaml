@@ -16,12 +16,12 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/TYPE": "{0:1}"
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/FAM": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/INDI": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/NOTE": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/OBJE": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/REPO": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/SOUR": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-FAM": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-INDI": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-NOTE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-OBJE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-REPO": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-SOUR": "{0:M}"
 
 contact: https://gedcom.io/community/
 

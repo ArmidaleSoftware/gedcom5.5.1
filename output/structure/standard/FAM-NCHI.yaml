@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/NCHI
+uri: https://gedcom.io/terms/v5.5.1/FAM-NCHI
 
 standard tag: 'NCHI'
 
@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-COUNT_OF_CHILDREN
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/FAM": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/record-FAM": "{0:1}"
 
 contact: https://gedcom.io/community/
 

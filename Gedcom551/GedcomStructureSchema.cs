@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using System.Xml.XPath;
 using System.Yaml.Serialization;
 
 namespace Gedcom551
@@ -58,9 +59,14 @@ namespace Gedcom551
         public string SourceProgram; // null (wildcard) for standard tags.
         public string SuperstructureUri; // null (wildcard) for undocumented extensions, "-" for records.
         public string Tag;
+
+        // Payload type.  For GEDCOM 7.0 this is always null since the rest of the tuple is unambiguous.
+        // GEDCOM 5.5.1 and earlier, however, had cases with multiple possibilities.
+        public string Payload;
+
         public override string ToString()
         {
-            return SourceProgram + "|" + SuperstructureUri + "|" + Tag;
+            return SourceProgram + "|" + SuperstructureUri + "|" + Tag + "|" + Payload;
         }
     }
     public class GedcomStructureSchema
@@ -222,10 +228,69 @@ namespace Gedcom551
                 return null;
             }
 
+            // See if we already have this schema.
+            if (s_StructureSchemas.ContainsKey(structureSchemaKey))
+            {
+                GedcomStructureSchema oldSchema = s_StructureSchemas[structureSchemaKey];
+                if (oldSchema.StandardTag == tag &&
+                    oldSchema.Payload == payloadType &&
+                    oldSchema.Uri == uri)
+                {
+                    // The old schema is identical, so use it.
+                    return oldSchema;
+                }
+            }
+
+            // Create a new schema to add.
             var schema = new GedcomStructureSchema(sourceProgram, tag);
             schema.Uri = uri;
             schema.Payload = payloadType;
-            s_StructureSchemas[structureSchemaKey] = schema;
+
+            if (s_StructureSchemas.ContainsKey(structureSchemaKey))
+            {
+                // We already have one with the same general key.
+                // Disambigate by using payload type in both the old and new keys.
+
+                // First find and remove the ambiguous one.
+                var oldKey = structureSchemaKey;
+                var newKey = structureSchemaKey;
+                GedcomStructureSchema oldSchema = s_StructureSchemas[structureSchemaKey];
+                if (oldSchema.Payload == payloadType)
+                {
+                    throw new Exception("Duplicate schema");
+                }
+                s_StructureSchemas.Remove(structureSchemaKey);
+                
+                // Add a more specific one for the new schema.
+                if (newKey.Payload != null)
+                {
+                    throw new Exception("Duplicate schema");
+                }
+                newKey.Payload = schema.Payload;
+                if (s_StructureSchemas.ContainsKey(newKey))
+                {
+                    return s_StructureSchemas[newKey];
+                }
+                schema.Uri = MakeUri(null, tag, schema.Payload);
+                s_StructureSchemas[newKey] = schema;
+
+                // Add a more specific one for the old schema.
+                if (oldKey.Payload != null)
+                {
+                    throw new Exception("Duplicate schema");
+                }
+                oldKey.Payload = oldSchema.Payload;
+                if (s_StructureSchemas.ContainsKey(oldKey))
+                {
+                    return s_StructureSchemas[oldKey];
+                }
+                oldSchema.Uri = MakeUri(null, tag, oldSchema.Payload);
+                s_StructureSchemas[oldKey] = oldSchema;
+            }
+            else
+            {
+                s_StructureSchemas[structureSchemaKey] = schema;
+            }
             return schema;
         }
 
@@ -483,10 +548,12 @@ namespace Gedcom551
             return true;
         }
 
-        // Collapse into unique schemas.
-        public static void CollapseSchemas()
+        /// <summary>
+        /// Create a list of all unique tags in s_StructureSchemas.
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GetAllUniqueTags()
         {
-            // Create a list of all unique tags.
             List<string> tags = new List<string>();
             foreach (var key in s_StructureSchemas.Keys)
             {
@@ -495,6 +562,13 @@ namespace Gedcom551
                     tags.Add(key.Tag);
                 }
             }
+            return tags;
+        }
+
+        // Collapse into unique schemas.
+        public static void CollapseSchemas()
+        {
+            List<string> tags = GetAllUniqueTags();
 
             var newStructureSchemas = new Dictionary<GedcomStructureSchemaKey, GedcomStructureSchema>();
             foreach (string tag in tags)
@@ -534,8 +608,7 @@ namespace Gedcom551
                     }
                 }
 
-                // Find the unique schema with the highest non-record count to wildcard.
-                KeyValuePair<GedcomStructureSchema, List<GedcomStructureSchema>>? bestSchemaForTag = null;
+                var newKeys = new List<GedcomStructureSchemaKey>();
                 foreach (var pair in uniqueSchemasForTag)
                 {
                     if (pair.Key.Superstructures.Count == 0)
@@ -544,40 +617,48 @@ namespace Gedcom551
                         continue;
                     }
                     int pairCount = pair.Value.Count;
-                    int bestCount = (bestSchemaForTag.HasValue) ? bestSchemaForTag.Value.Value.Count : 0;
-                    if (!bestSchemaForTag.HasValue || pairCount > bestCount)
+                    if (pairCount < 2)
                     {
-                        bestSchemaForTag = pair;
+                        continue;
                     }
-                }
 
-                // Wildcard the best schema selected above.
-                GedcomStructureSchema? bestSchema = bestSchemaForTag?.Key;
-                if (bestSchemaForTag.HasValue)
-                {
+                    // Wildcard this schema.
+                    GedcomStructureSchema? bestSchema = pair.Key;
                     var key = new GedcomStructureSchemaKey();
                     key.Tag = tag;
                     key.SuperstructureUri = null;
                     key.SourceProgram = null;
+                    key.Payload = bestSchema.Payload;
                     bestSchema.Uri = MakeUri(null, tag);
                     newStructureSchemas[key] = bestSchema;
+                    newKeys.Add(key);
+                }
+                if (newKeys.Count == 1)
+                {
+                    GedcomStructureSchemaKey n = newKeys[0];
+                    n.Payload = null;
                 }
 
                 foreach (var pair in allSchemasForTag)
                 {
                     GedcomStructureSchema current = pair.Value;
-                    if (bestSchemaForTag.HasValue && bestSchemaForTag.Value.Value.Contains(current))
+
+                    GedcomStructureSchemaKey? found = FindMatchingKey(pair.Key, newKeys);
+                    if (found.HasValue)
                     {
-                        // This schema matches the best one for the tag so merge it.
+                        // This schema matches a common for the tag so merge it.
                         foreach (var super in current.Superstructures)
                         {
-                            bestSchema.Superstructures[super.Key] = super.Value;
+                            newStructureSchemas[found.Value].Superstructures[super.Key] = super.Value;
                         }
                         continue;
                     }
 
-                    // Copy it since it doesn't match the best schema for the tag.
-                    current.Uri = MakeUri(pair.Key.SuperstructureUri, tag);
+                    // Copy it since it doesn't match any best schema for the tag.
+                    if (allSchemasForTag.Count > 1)
+                    {
+                        current.Uri = MakeUri(pair.Key.SuperstructureUri, tag);
+                    }
                     newStructureSchemas[pair.Key] = current;
                 }
             }
@@ -585,23 +666,82 @@ namespace Gedcom551
             s_StructureSchemas = newStructureSchemas;
         }
 
-        public static string MakeUri(string superstructureUri, string tag)
+        /// <summary>
+        /// Try to match a key in newkeys, taking wildcards into account.
+        /// </summary>
+        /// <param name="key">Key to look for a match for</param>
+        /// <param name="newKeys">List of keys to look for a match in</param>
+        /// <returns>Matched key, or null if none</returns>
+        private static GedcomStructureSchemaKey? FindMatchingKey(GedcomStructureSchemaKey key, List<GedcomStructureSchemaKey> newKeys)
         {
-            if (tag != "TRLR" && tag != "HEAD")
+            foreach (GedcomStructureSchemaKey newKey in newKeys)
             {
-                if (superstructureUri == "-")
+                if (key.Tag != newKey.Tag)
                 {
-                    return "https://gedcom.io/terms/v5.5.1/record-" + tag;
+                    // Different tag.
+                    continue;
                 }
-                if (superstructureUri != null)
+                if (key.SourceProgram != null && newKey.SourceProgram != null &&
+                    key.SourceProgram != newKey.SourceProgram)
                 {
-                    // Get rightmost component.
-                    string[] tokens = superstructureUri.Split('/');
-                    string super = tokens[tokens.Length - 1];
-                    return "https://gedcom.io/terms/v5.5.1/" + super + "-" + tag;
+                    // Different source program.
+                    continue;
                 }
+                if (key.Payload != null && newKey.Payload != null &&
+                    key.Payload != newKey.Payload)
+                {
+                    // Different payload.
+                    continue;
+                }
+                if (key.SuperstructureUri != null &&
+                    newKey.SuperstructureUri != null &&
+                    key.SuperstructureUri != newKey.SuperstructureUri)
+                {
+                    // Different superstructure URI.
+                    continue;
+                }
+                return newKey;
             }
-            return "https://gedcom.io/terms/v5.5.1/" + tag;
+            return null;
+        }
+
+        /// <summary>
+        /// Construct a uri given a set of schema fields.
+        /// </summary>
+        /// <param name="superstructureUri">Superstructure URI</param>
+        /// <param name="tag">Tag</param>
+        /// <param name="payload">Payload type (short form, not URI)</param>
+        /// <returns>URI</returns>
+        public static string MakeUri(string superstructureUri, string tag, string? payload = null)
+        {
+            if (tag == "TRLR" || tag == "HEAD")
+            {
+                return "https://gedcom.io/terms/v5.5.1/" + tag;
+            }
+            if (superstructureUri == "-")
+            {
+                return "https://gedcom.io/terms/v5.5.1/record-" + tag;
+            }
+            string suffix = tag;
+            if (!string.IsNullOrEmpty(payload))
+            {
+                string trimmedPayload = payload.Trim('@', '[', '<', '>', ']');
+                trimmedPayload = trimmedPayload.Replace(">|<", "_OR_");
+                trimmedPayload = trimmedPayload.Replace(':', '_');
+                suffix += "-" + trimmedPayload;
+            }
+            if (superstructureUri == null)
+            {
+                return "https://gedcom.io/terms/v5.5.1/" + suffix;
+            }
+
+            // Get rightmost component.
+            string[] tokens = superstructureUri.Split('/');
+            string super = tokens[tokens.Length - 1];
+            if (super.StartsWith("record-")) {
+                super = super.Substring(7);
+            }
+            return "https://gedcom.io/terms/v5.5.1/" + super + "-" + suffix;
         }
     }
 }

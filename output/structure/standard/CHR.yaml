@@ -32,7 +32,7 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/WWW": "{0:3}"
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/INDI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/record-INDI": "{1:1}"
 
 contact: https://gedcom.io/community/
 

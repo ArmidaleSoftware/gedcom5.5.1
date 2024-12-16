@@ -15,7 +15,7 @@ payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/INDI": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/record-INDI": "{0:M}"
 
 contact: https://gedcom.io/community/
 

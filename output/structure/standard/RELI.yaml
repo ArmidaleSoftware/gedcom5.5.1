@@ -55,6 +55,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/ORDN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/PROB": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/PROP": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/record-INDI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/RELI": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/RESI": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/RETI": "{0:1}"

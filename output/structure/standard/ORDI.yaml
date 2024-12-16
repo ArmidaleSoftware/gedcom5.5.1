@@ -15,7 +15,7 @@ payload: https://gedcom.io/terms/v5.5.1/type-ORDINANCE_PROCESS_FLAG
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/SUBN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/record-SUBN": "{0:1}"
 
 contact: https://gedcom.io/community/
 
