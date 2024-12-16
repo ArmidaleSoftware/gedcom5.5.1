@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Xml;
 using System.Yaml.Serialization;
 
 namespace Gedcom551
@@ -194,7 +197,8 @@ namespace Gedcom551
         /// <param name="tag">Tag</param>
         /// <param name="uri">Structure URI</param>
         /// <param name="payloadType">Payload type</param>
-        public static GedcomStructureSchema? AddSchema(string sourceProgram, string tag, string uri, string payloadType)
+        /// <param name="superstructureUri">Superstructure URI.  null (wildcard) for undocumented extensions, "-" for records</param>
+        public static GedcomStructureSchema? AddSchema(string sourceProgram, string tag, string uri, string payloadType, string superstructureUri)
         {
             if (tag.Contains('|') || tag.Contains('['))
             {
@@ -202,7 +206,7 @@ namespace Gedcom551
             }
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SourceProgram = sourceProgram;
-            // Leave SuperstructureUri as null for a wildcard.
+            structureSchemaKey.SuperstructureUri = superstructureUri;
             structureSchemaKey.Tag = tag;
 
             // The spec says:
@@ -278,7 +282,12 @@ namespace Gedcom551
             {
                 GedcomStructureSchema schema = info.Value;
                 var serializer = new YamlSerializer();
-                string filePath = Path.Combine(path, schema.StandardTag + ".yaml");
+
+                // Get rightmost component of URI.
+                string[] tokens = schema.Uri.Split('/');
+                string name = tokens[tokens.Length - 1];
+
+                string filePath = Path.Combine(path, name + ".yaml");
                 try
                 {
                     // Create a StreamWriter object to open the file for writing.
@@ -340,10 +349,10 @@ namespace Gedcom551
                         else
                         {
                             writer.WriteLine("substructures:");
-                            foreach (var sub in schema.Substructures)
+                            List<string> sortedKeys = schema.Substructures.Keys.OrderBy(key => key).ToList();
+                            foreach (var key in sortedKeys)
                             {
-                                string key = sub.Key;
-                                GedcomStructureCountInfo subInfo = sub.Value;
+                                GedcomStructureCountInfo subInfo = schema.Substructures[key];
                                 writer.WriteLine($"  \"{key}\": \"{subInfo}\"");
                             }
                             writer.WriteLine();
@@ -355,10 +364,10 @@ namespace Gedcom551
                         else
                         {
                             writer.WriteLine("superstructures:");
-                            foreach (var super in schema.Superstructures)
+                            List<string> sortedKeys = schema.Superstructures.Keys.OrderBy(key => key).ToList();
+                            foreach (var key in sortedKeys)
                             {
-                                string key = super.Key;
-                                GedcomStructureCountInfo superInfo = super.Value;
+                                GedcomStructureCountInfo superInfo = schema.Superstructures[key];
                                 writer.WriteLine($"  \"{key}\": \"{superInfo}\"");
                             }
                             writer.WriteLine();
@@ -388,6 +397,7 @@ namespace Gedcom551
             {
                 throw new Exception();
             }
+
             // First look for a schema with a wildcard source program.
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SuperstructureUri = superstructureUri;
@@ -435,6 +445,163 @@ namespace Gedcom551
             schema = new GedcomStructureSchema(sourceProgram, tag);
             s_StructureSchemas[structureSchemaKey] = schema;
             return s_StructureSchemas[structureSchemaKey];
+        }
+
+        private static bool IsSubset(Dictionary<string, GedcomStructureCountInfo> small, Dictionary<string, GedcomStructureCountInfo> large)
+        {
+            foreach (string key in small.Keys)
+            {
+                if (!large.ContainsKey(key))
+                {
+                    return false;
+                }
+                if (small[key].ToString() != large[key].ToString())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool MatchSchema(GedcomStructureSchema a, GedcomStructureSchema b)
+        {
+            if (a.Payload != b.Payload)
+            {
+                return false;
+            }
+
+            if (!IsSubset(a.Substructures, b.Substructures))
+            {
+                return false;
+            }
+
+            if (!IsSubset(b.Substructures, a.Substructures))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Collapse into unique schemas.
+        public static void CollapseSchemas()
+        {
+            // Create a list of all unique tags.
+            List<string> tags = new List<string>();
+            foreach (var key in s_StructureSchemas.Keys)
+            {
+                if (!tags.Contains(key.Tag))
+                {
+                    tags.Add(key.Tag);
+                }
+            }
+
+            var newStructureSchemas = new Dictionary<GedcomStructureSchemaKey, GedcomStructureSchema>();
+            foreach (string tag in tags)
+            {
+                // Look for all unique schemas for the tag.
+                var uniqueSchemasForTag = new Dictionary<GedcomStructureSchema, List<GedcomStructureSchema>>();
+                var allSchemasForTag = new Dictionary<GedcomStructureSchemaKey, GedcomStructureSchema>();
+                foreach (var pair in s_StructureSchemas)
+                {
+                    if (pair.Key.Tag != tag)
+                    {
+                        continue;
+                    }
+                    GedcomStructureSchema schema = pair.Value;
+                    allSchemasForTag[pair.Key] = pair.Value;
+
+                    // See if an entry exists in uniqueSchemas with the same
+                    // payload and substructures.
+                    bool found = false;
+                    foreach (var unique in uniqueSchemasForTag)
+                    {
+                        if (MatchSchema(unique.Key, schema))
+                        {
+                            // Add matching schema to the unique schema's list of matching schemas.
+                            uniqueSchemasForTag[unique.Key].Add(schema);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        if (!uniqueSchemasForTag.ContainsKey(schema))
+                        {
+                            uniqueSchemasForTag[schema] = new List<GedcomStructureSchema>();
+                        }
+                        uniqueSchemasForTag[schema].Add(schema);
+                    }
+                }
+
+                // Find the unique schema with the highest non-record count to wildcard.
+                KeyValuePair<GedcomStructureSchema, List<GedcomStructureSchema>>? bestSchemaForTag = null;
+                foreach (var pair in uniqueSchemasForTag)
+                {
+                    if (pair.Key.Superstructures.Count == 0)
+                    {
+                        // Don't wildcard records.
+                        continue;
+                    }
+                    int pairCount = pair.Value.Count;
+                    int bestCount = (bestSchemaForTag.HasValue) ? bestSchemaForTag.Value.Value.Count : 0;
+                    if (!bestSchemaForTag.HasValue || pairCount > bestCount)
+                    {
+                        bestSchemaForTag = pair;
+                    }
+                }
+
+                // Wildcard the best schema selected above.
+                GedcomStructureSchema? bestSchema = bestSchemaForTag?.Key;
+                if (bestSchemaForTag.HasValue)
+                {
+                    var key = new GedcomStructureSchemaKey();
+                    key.Tag = tag;
+                    key.SuperstructureUri = null;
+                    key.SourceProgram = null;
+                    bestSchema.Uri = MakeUri(null, tag);
+                    newStructureSchemas[key] = bestSchema;
+                }
+
+                foreach (var pair in allSchemasForTag)
+                {
+                    GedcomStructureSchema current = pair.Value;
+                    if (bestSchemaForTag.HasValue && bestSchemaForTag.Value.Value.Contains(current))
+                    {
+                        // This schema matches the best one for the tag so merge it.
+                        foreach (var super in current.Superstructures)
+                        {
+                            bestSchema.Superstructures[super.Key] = super.Value;
+                        }
+                        continue;
+                    }
+
+                    // Copy it since it doesn't match the best schema for the tag.
+                    current.Uri = MakeUri(pair.Key.SuperstructureUri, tag);
+                    newStructureSchemas[pair.Key] = current;
+                }
+            }
+
+            s_StructureSchemas = newStructureSchemas;
+        }
+
+        public static string MakeUri(string superstructureUri, string tag)
+        {
+            if (tag != "TRLR" && tag != "HEAD")
+            {
+                if (superstructureUri == "-")
+                {
+                    return "https://gedcom.io/terms/v5.5.1/record-" + tag;
+                }
+                if (superstructureUri != null)
+                {
+                    // Get rightmost component.
+                    string[] tokens = superstructureUri.Split('/');
+                    string super = tokens[tokens.Length - 1];
+                    return "https://gedcom.io/terms/v5.5.1/" + super + "-" + tag;
+                }
+            }
+            return "https://gedcom.io/terms/v5.5.1/" + tag;
         }
     }
 }
