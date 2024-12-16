@@ -17,6 +17,7 @@ substructures: {}
 superstructures:
   "https://gedcom.io/terms/v5.5.1/FILE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{0:1}"
 
 contact: https://gedcom.io/community/
 

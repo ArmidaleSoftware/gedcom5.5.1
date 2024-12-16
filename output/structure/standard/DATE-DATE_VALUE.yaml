@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/DATE
+uri: https://gedcom.io/terms/v5.5.1/DATE-DATE_VALUE
 
 standard tag: 'DATE'
 
@@ -37,6 +37,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/EMIG": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/ENGA": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/FACT": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-EVEN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/FCOM": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/GRAD": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/IDNO": "{0:1}"
