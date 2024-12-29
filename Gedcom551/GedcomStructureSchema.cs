@@ -702,6 +702,11 @@ namespace Gedcom551
                     key.Payload = bestSchema.Payload;
                     bestSchema.Uri = MakeUri(null, tag, key.Payload);
                     newStructureSchemas[key] = bestSchema;
+
+                    if (newKeys.Contains(key))
+                    {
+                        throw new Exception(); // duplicate, should never happen
+                    }
                     newKeys.Add(key);
                 }
                 if (newKeys.Count == 1)
