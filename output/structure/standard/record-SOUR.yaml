@@ -19,11 +19,11 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PUBL": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/REFN": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SOUR-DATA": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SOUR-REPO": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SOUR-TITL": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/TEXT": "{0:1}"
@@ -31,4 +31,3 @@ substructures:
 superstructures: {}
 
 contact: https://gedcom.io/community/
-

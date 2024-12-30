@@ -25,7 +25,5 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/record-REPO": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/record-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/record-SUBM": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/record-SUBN": "{1:1}"
 
 contact: https://gedcom.io/community/
-

@@ -419,11 +419,16 @@ namespace Gedcom551
                     using (StreamWriter writer = new StreamWriter(filePath))
                     {
                         // Write lines to the file.
-                        writer.WriteLine("%YAML 1.2\r\n---");
-                        writer.WriteLine("lang: en-US\n");
-                        writer.WriteLine("type: structure\n");
-                        writer.WriteLine("uri: " + schema.Uri + "\n");
-                        writer.WriteLine("standard tag: '" + schema.StandardTag + "'\n");
+                        writer.WriteLine("%YAML 1.2");
+                        writer.WriteLine("---");
+                        writer.WriteLine("lang: en-US");
+                        writer.WriteLine();
+                        writer.WriteLine("type: structure");
+                        writer.WriteLine();
+                        writer.WriteLine("uri: " + schema.Uri);
+                        writer.WriteLine();
+                        writer.WriteLine("standard tag: '" + schema.StandardTag + "'");
+                        writer.WriteLine();
 
                         writer.WriteLine("specification:");
                         foreach (var line in schema.Specification)
@@ -434,30 +439,34 @@ namespace Gedcom551
 
                         if (schema.Label != null)
                         {
-                            writer.WriteLine("label: '" + schema.Label + "'\n");
+                            writer.WriteLine("label: '" + schema.Label + "'");
+                            writer.WriteLine();
                         }
+
+                        // Payload.
+                        writer.Write("payload: ");
                         if (string.IsNullOrEmpty(schema.Payload))
                         {
-                            writer.WriteLine("payload: null\n");
+                            writer.WriteLine("null");
                         }
                         else if (schema.Payload == "[Y|<NULL>]")
                         {
-                            writer.WriteLine("payload: Y|<NULL>\n");
+                            writer.WriteLine("Y|<NULL>");
                         }
                         else if (schema.Payload.StartsWith("@<XREF:"))
                         {
                             string recordType = schema.Payload.Substring(7).Trim('@', '>');
-                            writer.WriteLine("payload: \"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"\n");
+                            writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"");
                         }
                         else if (schema.Payload.StartsWith("[@<XREF:") && schema.Payload.EndsWith(">@|<NULL>]"))
                         {
                             string recordType = schema.Payload.Substring(8, schema.Payload.Length - 18);
-                            writer.WriteLine("payload: \"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"|<NULL>\n");
+                            writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@|<NULL>\"");
                         }
                         else if (schema.Payload.StartsWith("[<") && schema.Payload.EndsWith(">|<NULL>]"))
                         {
                             string payloadType = schema.Payload.Substring(2, schema.Payload.Length - 11);
-                            writer.WriteLine("payload: https://gedcom.io/terms/v5.5.1/type-" + payloadType + "\n");
+                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + payloadType);
                         }
                         else if (schema.Payload.Contains('@') || schema.Payload.Contains('|'))
                         {
@@ -465,39 +474,47 @@ namespace Gedcom551
                         }
                         else
                         {
-                            writer.WriteLine("payload: https://gedcom.io/terms/v5.5.1/type-" + schema.Payload + "\n");
+                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.Payload);
                         }
+                        writer.WriteLine();
+
+                        // Substructures.
+                        writer.Write("substructures:");
                         if (schema.Substructures.Count == 0)
                         {
-                            writer.WriteLine("substructures: {}\n");
+                            writer.WriteLine(" {}");
                         }
                         else
                         {
-                            writer.WriteLine("substructures:");
+                            writer.WriteLine();
                             List<string> sortedKeys = schema.Substructures.Keys.OrderBy(key => key).ToList();
                             foreach (var key in sortedKeys)
                             {
                                 GedcomStructureCountInfo subInfo = schema.Substructures[key];
                                 writer.WriteLine($"  \"{key}\": \"{subInfo}\"");
                             }
-                            writer.WriteLine();
                         }
+                        writer.WriteLine();
+
+                        // Superstructures.
+                        writer.Write("superstructures:");
                         if (schema.Superstructures.Count == 0)
                         {
-                            writer.WriteLine("superstructures: {}\n");
+                            writer.WriteLine(" {}");
                         }
                         else
                         {
-                            writer.WriteLine("superstructures:");
+                            writer.WriteLine();
                             List<string> sortedKeys = schema.Superstructures.Keys.OrderBy(key => key).ToList();
                             foreach (var key in sortedKeys)
                             {
                                 GedcomStructureCountInfo superInfo = schema.Superstructures[key];
                                 writer.WriteLine($"  \"{key}\": \"{superInfo}\"");
                             }
-                            writer.WriteLine();
                         }
-                        writer.WriteLine("contact: https://gedcom.io/community/\n");
+                        writer.WriteLine();
+
+                        writer.WriteLine("contact: https://gedcom.io/community/");
                     }
                 }
                 catch (Exception e)
@@ -705,7 +722,8 @@ namespace Gedcom551
 
                     if (newKeys.Contains(key))
                     {
-                        throw new Exception(); // duplicate, should never happen
+                        // TODO(issue #3)
+                        // throw new Exception(); // duplicate, should never happen
                     }
                     newKeys.Add(key);
                 }

@@ -15,8 +15,6 @@ payload: https://gedcom.io/terms/v5.5.1/type-CERTAINTY_ASSESSMENT
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/ANUL-SOUR": "{0:1}"
 
 contact: https://gedcom.io/community/
-

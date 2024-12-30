@@ -21,9 +21,12 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/ENGA": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/FAM-CENS": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/FAM-EVEN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-HUSB": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/FAM-NCHI": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/FAM-RESI": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/HUSB": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-SOUR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FAM-WIFE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/MARB": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/MARC": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/MARL": "{1:1}"
@@ -32,17 +35,12 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/REFN": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/RESN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SLGS": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SUBM": "{0:M}"
-  "https://gedcom.io/terms/v5.5.1/WIFE": "{0:1}"
 
 superstructures: {}
 
 contact: https://gedcom.io/community/
-

@@ -20,15 +20,14 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PHON": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SUBM-LANG": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/SUBM-NAME": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SUBM-OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SUBM-RFN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/WWW": "{0:3}"
 
 superstructures: {}
 
 contact: https://gedcom.io/community/
-

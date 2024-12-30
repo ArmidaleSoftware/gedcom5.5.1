@@ -1,0 +1,28 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/FACT-SOUR
+
+standard tag: 'SOUR'
+
+specification:
+
+payload: "@<https://gedcom.io/terms/v5.5.1/record-SOUR>@"
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/DATA": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/EVEN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PAGE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/QUAY": "{0:1}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/FACT": "{1:1}"
+
+contact: https://gedcom.io/community/

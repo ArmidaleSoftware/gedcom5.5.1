@@ -15,7 +15,6 @@ payload: https://gedcom.io/terms/v5.5.1/type-PLACE_HIERARCHY
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/PLAC-PLACE_NAME": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/EVEN-PLAC": "{0:1}"
 
 contact: https://gedcom.io/community/
-
