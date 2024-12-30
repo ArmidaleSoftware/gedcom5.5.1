@@ -1,0 +1,26 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/MARR-PLAC
+
+standard tag: 'PLAC'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-PLACE_NAME
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/FONE": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/FORM": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/MAP": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ROMN": "{0:M}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/MARR": "{1:1}"
+
+contact: https://gedcom.io/community/

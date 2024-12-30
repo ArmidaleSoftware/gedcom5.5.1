@@ -10,12 +10,13 @@ standard tag: 'FILE'
 
 specification:
 
-payload: https://gedcom.io/terms/v5.5.1/type-FILE_NAME
+payload: https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FILE_REFERENCE
 
-substructures: {}
+substructures:
+  "https://gedcom.io/terms/v5.5.1/FORM": "{1:1}"
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/HEAD": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:M}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:M}"
 
 contact: https://gedcom.io/community/
-

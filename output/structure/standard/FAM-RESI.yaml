@@ -20,13 +20,15 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/EMAIL": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/FAX": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/HUSB": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PHON": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/PLAC": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/RELI": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/RESI-OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/RESI-PLAC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/RESI-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/RESN": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/TYPE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/WIFE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/WWW": "{0:3}"
@@ -35,4 +37,3 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/record-FAM": "{1:1}"
 
 contact: https://gedcom.io/community/
-

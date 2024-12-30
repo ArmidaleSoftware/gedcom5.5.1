@@ -15,7 +15,6 @@ payload: https://gedcom.io/terms/v5.5.1/type-ADOPTED_BY_WHICH_PARENT
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/FAMC": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/ADOP-FAMC": "{0:1}"
 
 contact: https://gedcom.io/community/
-
