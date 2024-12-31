@@ -4,7 +4,7 @@ lang: en-US
 
 type: structure
 
-uri: https://gedcom.io/terms/v5.5.1/OBJE
+uri: https://gedcom.io/terms/v5.5.1/OBJE-NULL
 
 standard tag: 'OBJE'
 
@@ -26,6 +26,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/BLES": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/BURI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CAST": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/CENS-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CHR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CHRA": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CONF": "{1:1}"

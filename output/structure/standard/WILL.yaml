@@ -22,7 +22,8 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/FAX": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-NULL": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PHON": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/PLAC": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/RELI": "{0:1}"
@@ -30,7 +31,6 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/TYPE": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/WILL-OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/WWW": "{0:3}"
 
 superstructures:

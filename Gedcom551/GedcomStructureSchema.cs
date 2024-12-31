@@ -54,19 +54,29 @@ namespace Gedcom551
             return info;
         }
     }
+
     public struct GedcomStructureSchemaKey
     {
-        public string SourceProgram; // null (wildcard) for standard tags.
-        public string SuperstructureUri; // null (wildcard) for undocumented extensions, "-" for records.
+        public static readonly string Wildcard = "*";
+
+        public string SourceProgram; // "*" (wildcard) for standard tags.
+        public string SuperstructureUri; // "*"" (wildcard) for undocumented extensions, "-" for records.
         public string Tag;
 
-        // Payload type.  For GEDCOM 7.0 this is always null since the rest of the tuple is unambiguous.
+        // Payload type.  For GEDCOM 7.0 this is always "*" since the rest of the tuple is unambiguous.
         // GEDCOM 5.5.1 and earlier, however, had cases with multiple possibilities.
-        public string Payload;
+        public string Payload = Wildcard;
 
         public override string ToString()
         {
             return SourceProgram + "|" + SuperstructureUri + "|" + Tag + "|" + Payload;
+        }
+
+        public GedcomStructureSchemaKey(string tag, string sourceProgram, string superstructureUri)
+        {
+            Tag = tag;
+            SourceProgram = sourceProgram;
+            SuperstructureUri = superstructureUri;
         }
     }
     public class GedcomStructureSchema
@@ -239,10 +249,7 @@ namespace Gedcom551
             {
                 throw new Exception("Invalid tag");
             }
-            GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
-            structureSchemaKey.SourceProgram = sourceProgram;
-            structureSchemaKey.SuperstructureUri = superstructureUri;
-            structureSchemaKey.Tag = tag;
+            var structureSchemaKey = new GedcomStructureSchemaKey(tag, sourceProgram, superstructureUri);
             Debug.Assert(!s_StructureSchemas.ContainsKey(structureSchemaKey));
             s_StructureSchemas[structureSchemaKey] = schema;
         }
@@ -261,10 +268,7 @@ namespace Gedcom551
             {
                 throw new Exception("Invalid tag");
             }
-            GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
-            structureSchemaKey.SourceProgram = sourceProgram;
-            structureSchemaKey.SuperstructureUri = superstructureUri;
-            structureSchemaKey.Tag = tag;
+            var structureSchemaKey = new GedcomStructureSchemaKey(tag, sourceProgram, superstructureUri);
 
             // The spec says:
             //    "The schema structure may contain the same tag more than once with different URIs.
@@ -297,6 +301,7 @@ namespace Gedcom551
             schema.Uri = uri;
             schema.Payload = payloadType;
 
+            // Disambiguate schemas if there are now multiple.
             if (s_StructureSchemas.ContainsKey(structureSchemaKey))
             {
                 // We already have one with the same general key.
@@ -313,7 +318,7 @@ namespace Gedcom551
                 s_StructureSchemas.Remove(structureSchemaKey);
                 
                 // Add a more specific one for the new schema.
-                if (newKey.Payload != null)
+                if (newKey.Payload != GedcomStructureSchemaKey.Wildcard)
                 {
                     throw new Exception("Duplicate schema");
                 }
@@ -322,11 +327,11 @@ namespace Gedcom551
                 {
                     return s_StructureSchemas[newKey];
                 }
-                schema.Uri = MakeUri(null, tag, schema.Payload);
+                schema.Uri = MakeUri(GedcomStructureSchemaKey.Wildcard, tag, schema.Payload);
                 s_StructureSchemas[newKey] = schema;
 
                 // Add a more specific one for the old schema.
-                if (oldKey.Payload != null)
+                if (oldKey.Payload != GedcomStructureSchemaKey.Wildcard)
                 {
                     throw new Exception("Duplicate schema");
                 }
@@ -335,7 +340,7 @@ namespace Gedcom551
                 {
                     return s_StructureSchemas[oldKey];
                 }
-                oldSchema.Uri = MakeUri(null, tag, oldSchema.Payload);
+                oldSchema.Uri = MakeUri(GedcomStructureSchemaKey.Wildcard, tag, oldSchema.Payload);
                 s_StructureSchemas[oldKey] = oldSchema;
             }
             else
@@ -541,9 +546,7 @@ namespace Gedcom551
             }
 
             // First look for a schema with a wildcard source program.
-            GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
-            structureSchemaKey.SuperstructureUri = superstructureUri;
-            structureSchemaKey.Tag = tag;
+            var structureSchemaKey = new GedcomStructureSchemaKey(tag, GedcomStructureSchemaKey.Wildcard, superstructureUri);
             if (s_StructureSchemas.ContainsKey(structureSchemaKey))
             {
                 return s_StructureSchemas[structureSchemaKey];
@@ -565,7 +568,7 @@ namespace Gedcom551
             // Now look for a schema specific to the source program
             // and wildcard superstructure URI, which would be an
             // undocumented extension tag.
-            structureSchemaKey.SuperstructureUri = null;
+            structureSchemaKey.SuperstructureUri = GedcomStructureSchemaKey.Wildcard;
             if (s_StructureSchemas.ContainsKey(structureSchemaKey))
             {
                 return s_StructureSchemas[structureSchemaKey];
@@ -712,12 +715,9 @@ namespace Gedcom551
                     // since there might be multiple payloads with multiple schemas
                     // that differ by payload.
                     GedcomStructureSchema? bestSchema = pair.Key;
-                    var key = new GedcomStructureSchemaKey();
-                    key.Tag = tag;
-                    key.SuperstructureUri = null;
-                    key.SourceProgram = null;
+                    var key = new GedcomStructureSchemaKey(tag, GedcomStructureSchemaKey.Wildcard, GedcomStructureSchemaKey.Wildcard);
                     key.Payload = bestSchema.Payload;
-                    bestSchema.Uri = MakeUri(null, tag, key.Payload);
+                    bestSchema.Uri = MakeUri(GedcomStructureSchemaKey.Wildcard, tag, key.Payload);
                     newStructureSchemas[key] = bestSchema;
 
                     if (newKeys.Contains(key))
@@ -733,8 +733,8 @@ namespace Gedcom551
                     // so wildcard the payload.
                     GedcomStructureSchemaKey key = newKeys[0];
                     GedcomStructureSchema schema = newStructureSchemas[key];
-                    key.Payload = null;
-                    schema.Uri = MakeUri(null, tag, key.Payload);
+                    key.Payload = GedcomStructureSchemaKey.Wildcard;
+                    schema.Uri = MakeUri(GedcomStructureSchemaKey.Wildcard, tag, key.Payload);
                 }
 
                 foreach (var pair in allSchemasForTag)
@@ -762,7 +762,7 @@ namespace Gedcom551
                     // Copy it since it doesn't match any best schema for the tag.
                     if (allSchemasForTag.Count > 1)
                     {
-                        current.Uri = MakeUri(pair.Key.SuperstructureUri, tag);
+                        current.Uri = MakeUri(pair.Key.SuperstructureUri, tag, GedcomStructureSchemaKey.Wildcard);
                     }
                     newStructureSchemas[pair.Key] = current;
                 }
@@ -787,20 +787,21 @@ namespace Gedcom551
                     // Different tag.
                     continue;
                 }
-                if (key.SourceProgram != null && newKey.SourceProgram != null &&
+                if (key.SourceProgram != GedcomStructureSchemaKey.Wildcard &&
+                    newKey.SourceProgram != GedcomStructureSchemaKey.Wildcard &&
                     key.SourceProgram != newKey.SourceProgram)
                 {
                     // Different source program.
                     continue;
                 }
-                if (newKey.Payload != null &&
+                if (newKey.Payload != GedcomStructureSchemaKey.Wildcard &&
                     currentPayload != newKey.Payload)
                 {
                     // Different payload.
                     continue;
                 }
-                if (key.SuperstructureUri != null &&
-                    newKey.SuperstructureUri != null &&
+                if (key.SuperstructureUri != GedcomStructureSchemaKey.Wildcard &&
+                    newKey.SuperstructureUri != GedcomStructureSchemaKey.Wildcard &&
                     key.SuperstructureUri != newKey.SuperstructureUri)
                 {
                     // Different superstructure URI.
@@ -814,12 +815,14 @@ namespace Gedcom551
         /// <summary>
         /// Construct a uri given a set of schema fields.
         /// </summary>
-        /// <param name="superstructureUri">Superstructure URI</param>
+        /// <param name="superstructureUri">Superstructure URI, or "*" for wildcard</param>
         /// <param name="tag">Tag</param>
-        /// <param name="payload">Payload type (short form, not URI)</param>
+        /// <param name="payload">Payload type (short form, not URI), or "*" for wildcard</param>
         /// <returns>URI</returns>
-        public static string MakeUri(string superstructureUri, string tag, string? payload = null)
+        public static string MakeUri(string superstructureUri, string tag, string? payload)
         {
+            Debug.Assert(superstructureUri != null);
+
             if (tag == "TRLR" || tag == "HEAD")
             {
                 return "https://gedcom.io/terms/v5.5.1/" + tag;
@@ -829,14 +832,15 @@ namespace Gedcom551
                 return "https://gedcom.io/terms/v5.5.1/record-" + tag;
             }
             string suffix = tag;
-            if (!string.IsNullOrEmpty(payload))
+            if (payload != GedcomStructureSchemaKey.Wildcard)
             {
-                string trimmedPayload = payload.Trim('@', '[', '<', '>', ']');
+                string trimmedPayload = (payload == null) ? "NULL" : payload;
+                trimmedPayload = trimmedPayload.Trim('@', '[', '<', '>', ']');
                 trimmedPayload = trimmedPayload.Replace(">|<", "_OR_");
                 trimmedPayload = trimmedPayload.Replace(':', '_');
                 suffix += "-" + trimmedPayload;
             }
-            if (superstructureUri == null)
+            if (superstructureUri == GedcomStructureSchemaKey.Wildcard)
             {
                 return "https://gedcom.io/terms/v5.5.1/" + suffix;
             }

@@ -15,7 +15,7 @@ payload: "@<https://gedcom.io/terms/v5.5.1/record-SOUR>@"
 substructures:
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/OBJE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/OBJE-XREF_OBJE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PAGE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/QUAY": "{0:1}"

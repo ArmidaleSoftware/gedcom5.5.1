@@ -102,6 +102,30 @@ namespace Gedcom551
 
         List<GedcomStructureSchema>[] _schemaPath = new List<GedcomStructureSchema>[10];
 
+#if false
+        void DumpSchemaPath(int max)
+        {
+            for (int i = 0; i <= max; i++)
+            {
+                Console.Write(" " + i.ToString() + ": {");
+                for (int j = 0; j < _schemaPath[i].Count; j++)
+                {
+                    GedcomStructureSchema schema = _schemaPath[i][j];
+                    Console.Write(schema.ToString());
+                    if (schema.Payload != null)
+                    {
+                        Console.Write("[" + schema.Payload + "]");
+                    }
+                    if (j + 1 < _schemaPath[i].Count)
+                    {
+                        Console.Write(", ");
+                    }
+                }
+                Console.WriteLine("}");
+            }
+        }
+#endif
+
         void GenerateStructureSchemas(SymbolDefinition symbol, int baseLevel = 0, string? cardinality = null)
         {
             foreach (SymbolComponent component in symbol.Components)
@@ -130,8 +154,10 @@ namespace Gedcom551
                         // Ignore this structure.
                         continue;
                     }
-                    string superstructureUri = (combinedLevel > 0) ? null : "-";
-                    string uri = GedcomStructureSchema.MakeUri(superstructureUri, tag);
+                    string superstructureUri = (combinedLevel > 0) ? GedcomStructureSchemaKey.Wildcard : "-";
+
+                    // First try a URI with a wildcard payload, in case there's only one possibility.
+                    string uri = GedcomStructureSchema.MakeUri(superstructureUri, tag, GedcomStructureSchemaKey.Wildcard);
 
                     if (combinedLevel == 0)
                     {
