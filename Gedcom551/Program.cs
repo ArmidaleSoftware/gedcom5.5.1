@@ -30,7 +30,7 @@ namespace Gedcom551
 
             try
             {
-                GedcomFileSchema file = new GedcomFileSchema(sourceFile);
+                var file = new GedcomFileSchema(sourceFile);
                 file.GenerateOutput(destinationDirectory);
             }
             catch (Exception ex)

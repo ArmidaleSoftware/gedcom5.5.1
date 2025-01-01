@@ -98,6 +98,9 @@ namespace Gedcom551
 
             GenerateStructureSchemas(symbols["LINEAGE_LINKED_GEDCOM"]);
             GedcomStructureSchema.CollapseSchemas();
+            GedcomStructureSchema.VerifyBackpointers();
+            GedcomStructureSchema.VerifyUniqueUris();
+            GedcomStructureSchema.VerifyFinalUris();
         }
 
         List<GedcomStructureSchema>[] _schemaPath = new List<GedcomStructureSchema>[10];
