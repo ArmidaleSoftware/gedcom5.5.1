@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Formats.Asn1;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) Armidale Software
+// SPDX-License-Identifier: MIT
+using System.Diagnostics;
 
 namespace Gedcom551
 {
@@ -97,42 +92,52 @@ namespace Gedcom551
             }
 
             GenerateStructureSchemas(symbols["LINEAGE_LINKED_GEDCOM"]);
-            GedcomStructureSchema.CollapseSchemas();
-            GedcomStructureSchema.VerifyBackpointers();
-            GedcomStructureSchema.VerifyUniqueUris();
-            GedcomStructureSchema.VerifyFinalUris();
+            GedcomStructureSchema.PinAndVerifyUniqueUris();
         }
 
-        List<GedcomStructureSchema>[] _schemaPath = new List<GedcomStructureSchema>[10];
-
-#if false
-        void DumpSchemaPath(int max)
-        {
-            for (int i = 0; i <= max; i++)
-            {
-                Console.Write(" " + i.ToString() + ": {");
-                for (int j = 0; j < _schemaPath[i].Count; j++)
-                {
-                    GedcomStructureSchema schema = _schemaPath[i][j];
-                    Console.Write(schema.ToString());
-                    if (schema.Payload != null)
-                    {
-                        Console.Write("[" + schema.Payload + "]");
-                    }
-                    if (j + 1 < _schemaPath[i].Count)
-                    {
-                        Console.Write(", ");
-                    }
-                }
-                Console.WriteLine("}");
-            }
-        }
-#endif
-
+        /// <summary>
+        /// Given a symbol, recursively update the schemas database using everything under this symbol.
+        /// </summary>
+        /// <param name="symbol">Symbol to start from</param>
+        /// <param name="baseLevel">Structure level in GEDCOM file</param>
+        /// <param name="cardinality">Cardinality string</param>
+        /// <exception cref="Exception"></exception>
         void GenerateStructureSchemas(SymbolDefinition symbol, int baseLevel = 0, string? cardinality = null)
         {
             foreach (SymbolComponent component in symbol.Components)
             {
+                Console.Write("Generating");
+                for (int i = 0; i < baseLevel; i++)
+                {
+                    if (i > 0)
+                    {
+                        Console.Write(".");
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                    int count = GedcomStructureSchema.SchemaPath[i].Count;
+                    if (count > 1)
+                    {
+                        Console.Write("{");
+                    }
+                    for (int j = 0; j < count; j++)
+                    {
+                        GedcomStructureSchema s = GedcomStructureSchema.SchemaPath[i][j];
+                        if (j > 0)
+                        {
+                            Console.Write("|");
+                        }
+                        Console.Write(s.StandardTag);
+                    }
+                    if (count > 1)
+                    {
+                        Console.Write("}");
+                    }
+                }
+                Console.WriteLine(" " + symbol.ToString() + ": " + component.ToString());
+
                 int combinedLevel = baseLevel + component.LevelDelta;
                 if (component.SymbolDefinition != null)
                 {
@@ -149,7 +154,11 @@ namespace Gedcom551
                 string trimmedInput = input.Trim('[', ']');
                 // Split the string using '|' as the separator
                 string[] result = trimmedInput.Split('|');
-                _schemaPath[combinedLevel] = new List<GedcomStructureSchema>();
+                GedcomStructureSchema.SchemaPath[combinedLevel] = new List<GedcomStructureSchema>();
+                for (int i = combinedLevel + 1; i < GedcomStructureSchema.SchemaPath.Length; i++)
+                {
+                    GedcomStructureSchema.SchemaPath[i] = null;
+                }
                 foreach (string tag in result)
                 {
                     if (tag == "CONC" || tag == "CONT")
@@ -157,31 +166,10 @@ namespace Gedcom551
                         // Ignore this structure.
                         continue;
                     }
-                    string superstructureUri = (combinedLevel > 0) ? GedcomStructureSchemaKey.Wildcard : "-";
 
-                    // First try a URI with a wildcard payload, in case there's only one possibility.
-                    string uri = GedcomStructureSchema.MakeUri(superstructureUri, tag, GedcomStructureSchemaKey.Wildcard);
-
-                    if (combinedLevel == 0)
-                    {
-                        GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri, component.PayloadType, superstructureUri);
-                        _schemaPath[combinedLevel].Add(schema);
-                        continue;
-                    }
-
-                    foreach (GedcomStructureSchema superstructureSchema in _schemaPath[combinedLevel - 1])
-                    {
-                        superstructureUri = superstructureSchema.Uri;
-                        GedcomStructureSchema schema = GedcomStructureSchema.AddSchema(string.Empty, tag, uri, component.PayloadType, superstructureUri);
-                        _schemaPath[combinedLevel].Add(schema);
-
-                        if ((combinedLevel > 0) && (tag != "CONT"))
-                        {
-                            var info = GedcomStructureCountInfo.FromCardinality(component.Cardinality);
-                            superstructureSchema.Substructures[schema.Uri] = info;
-                            schema.Superstructures[superstructureSchema.Uri] = info;
-                        }
-                    }
+                    GedcomStructureSchema schema = GedcomStructureSchema.AddOrUpdateSchema(combinedLevel, tag, component.PayloadType, component.Cardinality);
+                    Debug.Assert(!GedcomStructureSchema.SchemaPath[combinedLevel].Contains(schema));
+                    GedcomStructureSchema.SchemaPath[combinedLevel].Add(schema);
                 }
             }
         }

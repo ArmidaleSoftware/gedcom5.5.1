@@ -70,6 +70,9 @@ namespace Tests
             return schema;
         }
 
+        /// <summary>
+        /// Test some schemas that are unambiguous and just get a TAG.yaml file.
+        /// </summary>
         [TestMethod]
         public void VerifySomeUniqueTags()
         {
@@ -78,18 +81,30 @@ namespace Tests
             VerifyUniqueTag("ORDN");
         }
 
+        /// <summary>
+        /// Verify schemas with more than one super.
+        /// </summary>
+        [TestMethod]
+        public void VerifySomeMultiSuperUniqueTags()
+        {
+            VerifyUniqueTag("FORM");
+        }
+
         private GedcomStructureSchema VerifyQualifiedTag(string super, string tag)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + super + "-" + tag);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count == 1);
 
-            string superUri = schema.Superstructures.First().Key;
+            string superUri = schema.Superstructures.First().Uri;
             Debug.Assert(superUri == GedcomStructureSchema.UriPrefix + super ||
                          superUri == GedcomStructureSchema.UriPrefix + "record-" + super);
             return schema;
         }
 
+        /// <summary>
+        /// Verify some schemas that are unique given a prefix.
+        /// </summary>
         [TestMethod]
         public void VerifySomeQualifiedTags()
         {
