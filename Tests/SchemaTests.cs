@@ -6,11 +6,13 @@ using Gedcom551;
 namespace Tests
 {
     [TestClass]
+
     public class SchemaTests
     {
-        private GedcomFileSchema fileSchema;
+        private static GedcomFileSchema? fileSchema;
 
-        public SchemaTests()
+        [ClassInitialize]
+        public static void ClassSetup(TestContext context)
         {
             // TODO: don't hard-code path.
             string sourceFile = "C:\\Users\\dthal\\git\\ArmidaleSoftware\\Gedcom551\\input\\ged.5.5.1.txt";
@@ -26,7 +28,7 @@ namespace Tests
         //	4) If there is only one super: "<super>-<tag>"  where <super> is the super URI minus "record-" if present (would this collide in any actual case?)
         //	5) "<tag>-<payload>"
 
-        private GedcomStructureSchema VerifyPseudoRecord(string tag)
+        private GedcomStructureSchema VerifyPseudoStructure(string tag)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag);
             Debug.Assert(schema.StandardTag == tag);
@@ -34,11 +36,15 @@ namespace Tests
             return schema;
         }
 
+        /// <summary>
+        /// Test pseudo-structures.
+        /// </summary>
         [TestMethod]
-        public void VerifyPseudoRecords()
+        public void TestPseudoStructures()
         {
-            VerifyPseudoRecord("HEAD");
-            VerifyPseudoRecord("TRLR");
+            VerifyPseudoStructure("HEAD");
+            VerifyPseudoStructure("TRLR");
+            // TODO: VerifyPseudoStructure("CONT");
         }
 
         private GedcomStructureSchema VerifyRecord(string tag)
@@ -50,7 +56,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void VerifyRecords()
+        public void TestRecords()
         {
             VerifyRecord("FAM");
             VerifyRecord("INDI");
@@ -71,23 +77,14 @@ namespace Tests
         }
 
         /// <summary>
-        /// Test some schemas that are unambiguous and just get a TAG.yaml file.
+        /// Test cases where the tag is unique across all non-record structures.
         /// </summary>
         [TestMethod]
-        public void VerifySomeUniqueTags()
+        public void TestSomeUniqueTags()
         {
             VerifyUniqueTag("CORP");
             VerifyUniqueTag("NPFX");
             VerifyUniqueTag("ORDN");
-        }
-
-        /// <summary>
-        /// Verify schemas with more than one super.
-        /// </summary>
-        [TestMethod]
-        public void VerifySomeMultiSuperUniqueTags()
-        {
-            VerifyUniqueTag("FORM");
         }
 
         private GedcomStructureSchema VerifyQualifiedTag(string super, string tag)
@@ -96,19 +93,57 @@ namespace Tests
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count == 1);
 
-            string superUri = schema.Superstructures.First().Uri;
-            Debug.Assert(superUri == GedcomStructureSchema.UriPrefix + super ||
-                         superUri == GedcomStructureSchema.UriPrefix + "record-" + super);
+            string superstructureUri = schema.Superstructures.First().AbsoluteUri;
+            Debug.Assert(superstructureUri == GedcomStructureSchema.UriPrefix + super ||
+                         superstructureUri == GedcomStructureSchema.UriPrefix + "record-" + super);
             return schema;
         }
 
         /// <summary>
         /// Verify some schemas that are unique given a prefix.
         /// </summary>
+
         [TestMethod]
-        public void VerifySomeQualifiedTags()
+        public void TestGedcForm()
+        {
+            VerifyQualifiedTag("GEDC", "FORM");
+        }
+
+        [TestMethod]
+        public void TestObjeFileForm()
+        {
+            VerifyQualifiedTag("OBJE-FILE", "FORM");
+        }
+
+        [TestMethod]
+        public void TestHeadSour()
         {
             VerifyQualifiedTag("HEAD", "SOUR");
+        }
+
+        [TestMethod]
+        public void TestNameFone()
+        {
+            // TODO: change this to ("NAME", "FONE")
+            VerifyQualifiedTag("INDI-NAME", "FONE");
+        }
+
+        [TestMethod]
+        public void TestPlacFone()
+        {
+            VerifyQualifiedTag("PLAC-PLACE_NAME", "FONE");
+        }
+
+        [TestMethod]
+        public void TestHeadFile()
+        {
+            VerifyQualifiedTag("HEAD", "FILE");
+        }
+
+        [TestMethod]
+        public void TestObjeFile()
+        {
+            VerifyQualifiedTag("OBJE", "FILE");
         }
 
         private GedcomStructureSchema VerifyPayloadTag(string tag, string payload)
@@ -120,11 +155,32 @@ namespace Tests
             return schema;
         }
 
+        /// <summary>
+        /// Verify some structures that just need to be qualified by their payload type.
+        /// </summary>
+
         [TestMethod]
-        public void VerifySomePayloadTags()
+        public void TestObjeNull()
         {
             VerifyPayloadTag("OBJE", "NULL");
+        }
+
+        [TestMethod]
+        public void TestObjeXref()
+        {
             VerifyPayloadTag("OBJE", "XREF_OBJE");
+        }
+
+        [TestMethod]
+        public void TestFormMultimediaFormat()
+        {
+            VerifyPayloadTag("FORM", "MULTIMEDIA_FORMAT");
+        }
+
+        [TestMethod]
+        public void TestFormPlaceHierarchy()
+        {
+            VerifyPayloadTag("FORM", "PLACE_HIERARCHY");
         }
     }
 }

@@ -120,6 +120,11 @@ namespace Gedcom551
             }
         }
 
+        /// <summary>
+        /// Unique schema id, for debugging purposes.
+        /// </summary>
+        private Guid _guid = Guid.NewGuid();
+
         GedcomStructureSchema(string sourceProgram, string tag)
         {
             this.StandardTag = tag;
@@ -137,7 +142,7 @@ namespace Gedcom551
         /// Check whether this schema is a standard schema (even if relocated).
         /// </summary>
         public bool IsStandard => (this.StandardTag[0] != '_');
-        public bool IsDocumented => (this.Uri != null);
+        public bool IsDocumented => (this.RelativeUri != null);
 
         public override string ToString()
         {
@@ -172,7 +177,8 @@ namespace Gedcom551
         public string Lang { get; private set; }
         public string Type { get; private set; }
 
-        public string Uri => ConstructFinalUri();
+        public string RelativeUri => ConstructFinalRelativeUri();
+        public string AbsoluteUri => UriPrefix + RelativeUri;
         public string StandardTag { get; private set; }
         public List<string> Specification { get; private set; }
         public string Label { get; private set; }
@@ -239,14 +245,7 @@ namespace Gedcom551
 
         public static void VerifyUniqueUri(GedcomStructureSchema schema)
         {
-            var matches = s_StructureSchemas.Where(s => s.Uri == schema.Uri).ToList();
-            if (matches.Count != 1)
-            {
-                foreach (var match in matches)
-                {
-                    string uri = match.Uri;
-                }
-            }
+            List<GedcomStructureSchema> matches = s_StructureSchemas.Where(s => s.RelativeUri == schema.RelativeUri).ToList();
             Debug.Assert(matches.Count == 1);
         }
 
@@ -266,8 +265,17 @@ namespace Gedcom551
         {
             foreach (GedcomStructureSchema schema in s_StructureSchemas)
             {
-                schema._pinnedFinalUri = schema.ConstructFinalUri();
+                schema._pinnedFinalRelativeUri = schema.ConstructFinalRelativeUri();
             }
+
+#if false
+            // Trim URIs.
+            foreach (GedcomStructureSchema schema in s_StructureSchemas)
+            {
+                string prefix = schema.GetPrefix();
+                //schema._pinnedFinalRelativeUri = finalUri;
+            }
+#endif
         }
 
         /// <summary>
@@ -302,7 +310,7 @@ namespace Gedcom551
             {
                 return new List<GedcomStructureSchema>();
             }
-            return s_StructureSchemas.Where(s => s.StandardTag == tag && s.Payload == payloadType && s.Substructures.Count == 0 && isRecord == s.IsRecord && s.DoSubstructuresMatch(substructures)).ToList();
+            return s_StructureSchemas.Where(s => s.StandardTag == tag && s.Payload == payloadType && isRecord == s.IsRecord && s.DoSubstructuresMatch(substructures)).ToList();
         }
 
         private bool DoSubstructuresMatch(Dictionary<GedcomStructureSchema, GedcomStructureCountInfo> substructures)
@@ -328,7 +336,7 @@ namespace Gedcom551
 
         private static void DumpStructurePathUris(GedcomStructureSchema schema, string prefix = "")
         {
-            Console.WriteLine(prefix + "{" + schema.ToString() + "} " + schema.Uri);
+            Console.WriteLine(prefix + "{" + schema.ToString() + "} " + schema.RelativeUri);
             foreach (GedcomStructureSchema super in schema.Superstructures)
             {
                 DumpStructurePathUris(super, "   " + prefix);
@@ -339,7 +347,7 @@ namespace Gedcom551
         {
             foreach (GedcomStructureSchema sub in schema.Substructures.Keys)
             {
-                Console.WriteLine("   {" + sub.ToString() + "} " + sub.Uri);
+                Console.WriteLine("   {" + sub.ToString() + "} " + sub.RelativeUri);
             }
         }
 
@@ -360,7 +368,6 @@ namespace Gedcom551
                 {
                     // We need to split the superstructure.  This happens when we're adding
                     // a substructure to a schema with multiple superstructures.
-                    //if (yes.Count() == 0)
                     {
                         Console.WriteLine();
                         Console.Write("Adding sub ");
@@ -406,14 +413,16 @@ namespace Gedcom551
             {
                 // See if we can collapse the superstructure.
                 List<GedcomStructureSchema> found = FindPossibleSchemas(this.StandardTag, this.Payload, this.IsRecord, this.Substructures);
-                if (found.Count > 0)
+                if (found.Count > 1)
                 {
                     foreach (GedcomStructureSchema other in found)
                     {
-                        if (other == this)
+                        // Verify 'other' hasn't already been merged.
+                        Debug.Assert(s_StructureSchemas.Contains(other));
+
+                        if (other != this)
                         {
                             CollapseOtherSchemaIntoThis(other);
-                            continue;
                         }
                     }
                 }
@@ -427,19 +436,77 @@ namespace Gedcom551
             Debug.Assert(this.Payload == other.Payload);
             Debug.Assert(this.StandardTag == other.StandardTag);
             Debug.Assert(this.Superstructures.Any() == other.Superstructures.Any());
-            Debug.Assert(this.Uri == other.Uri);
             Debug.Assert(this.Substructures.Intersect(other.Substructures).Count() == this.Substructures.Count());
 
             // Move all supers from other to this.
-            this.Superstructures.AddRange(other.Superstructures);
-            other.Superstructures = new List<GedcomStructureSchema>();
+            List<GedcomStructureSchema> supersToMove = other.Superstructures.ToList();
+            foreach (GedcomStructureSchema super in supersToMove)
+            {
+                GedcomStructureCountInfo info = super.Substructures[other];
+
+                other.Superstructures.Remove(super);
+                super.Substructures.Remove(other);
+
+                this.Superstructures.Add(super);
+                super.Substructures[this] = info;
+            }
 
             // Move all subs from other to this.
-            // XXX
+            var subsToMove = other.Substructures.ToList();
+            foreach (var sub in subsToMove)
+            {
+                if (!this.Substructures.Contains(sub))
+                {
+                    this.Substructures[sub.Key] = sub.Value;
+                    sub.Key.Superstructures.Add(this);
+                }
+                other.Substructures.Remove(sub.Key);
+                sub.Key.Superstructures.Remove(other);
+            }
 
             // Remove other.
             s_StructureSchemas.Remove(other);
-            // XXX check _schemaPath
+            for (int i = 0; i < SchemaPath.Length; i++)
+            {
+                if (SchemaPath[i] == null)
+                {
+                    continue;
+                }
+                if (SchemaPath[i].Contains(other))
+                {
+                    SchemaPath[i].Remove(other);
+                    SchemaPath[i].Add(this);
+                }
+            }
+
+            VerifyBackpointers();
+
+            // See if we can now merge any supers.
+            var superList = this.Superstructures.ToList();
+            foreach (var super in superList)
+            {
+                if (!s_StructureSchemas.Contains(super))
+                {
+                    // This superstructure was already merged with another one.
+                    continue;
+                }
+
+                // See if we can collapse the superstructure.
+                List<GedcomStructureSchema> found = FindPossibleSchemas(super.StandardTag, super.Payload, super.IsRecord, super.Substructures);
+                if (found.Count > 1)
+                {
+                    foreach (GedcomStructureSchema otherSuper in found)
+                    {
+                        // Verify 'otherSuper' hasn't already been merged.
+                        Debug.Assert(s_StructureSchemas.Contains(otherSuper));
+
+                        if (other != this)
+                        {
+                            super.CollapseOtherSchemaIntoThis(otherSuper);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -508,12 +575,16 @@ namespace Gedcom551
                 throw new Exception("Invalid tag");
             }
 
+            // Verify a duplicate doesn't exist.
+            List<GedcomStructureSchema> found = FindPossibleSchemas(tag, payloadType, (level == 0), new Dictionary<GedcomStructureSchema, GedcomStructureCountInfo>());
+            Debug.Assert(found.Count == 0);
+
             // Create a new schema to add.
             var schema = new GedcomStructureSchema(sourceProgram, tag);
             schema.Payload = payloadType;
             List<GedcomStructureSchema> superstructures = (level >= 1) ? SchemaPath[level - 1] : new List<GedcomStructureSchema>();
-            schema.AddSuperstructures(level, cardinality, superstructures, true);
             s_StructureSchemas.Add(schema);
+            schema.AddSuperstructures(level, cardinality, superstructures, true);
             return schema;
         }
 
@@ -580,12 +651,9 @@ namespace Gedcom551
             foreach (GedcomStructureSchema schema in s_StructureSchemas)
             {
                 var serializer = new YamlSerializer();
+                string relativeUri = schema.RelativeUri;
 
-                // Get rightmost component of URI.
-                string[] tokens = schema.Uri.Split('/');
-                string name = tokens[tokens.Length - 1];
-
-                string filePath = Path.Combine(path, name + ".yaml");
+                string filePath = Path.Combine(path, relativeUri + ".yaml");
                 try
                 {
                     // Create a StreamWriter object to open the file for writing.
@@ -598,7 +666,7 @@ namespace Gedcom551
                         writer.WriteLine();
                         writer.WriteLine("type: structure");
                         writer.WriteLine();
-                        writer.WriteLine("uri: " + schema.Uri);
+                        writer.WriteLine("uri: " + schema.AbsoluteUri);
                         writer.WriteLine();
                         writer.WriteLine("standard tag: '" + schema.StandardTag + "'");
                         writer.WriteLine();
@@ -660,11 +728,11 @@ namespace Gedcom551
                         else
                         {
                             writer.WriteLine();
-                            List<GedcomStructureSchema> sortedKeys = schema.Substructures.Keys.OrderBy(key => key.Uri).ToList();
+                            List<GedcomStructureSchema> sortedKeys = schema.Substructures.Keys.OrderBy(key => key.AbsoluteUri).ToList();
                             foreach (GedcomStructureSchema key in sortedKeys)
                             {
                                 GedcomStructureCountInfo subInfo = schema.Substructures[key];
-                                writer.WriteLine($"  \"{key.Uri}\": \"{subInfo}\"");
+                                writer.WriteLine($"  \"{key.AbsoluteUri}\": \"{subInfo}\"");
                             }
                         }
                         writer.WriteLine();
@@ -678,11 +746,11 @@ namespace Gedcom551
                         else
                         {
                             writer.WriteLine();
-                            List<GedcomStructureSchema> sortedKeys = schema.Superstructures.OrderBy(key => key.Uri).ToList();
+                            List<GedcomStructureSchema> sortedKeys = schema.Superstructures.OrderBy(key => key.AbsoluteUri).ToList();
                             foreach (GedcomStructureSchema key in sortedKeys)
                             {
                                 GedcomStructureCountInfo superInfo = key.Substructures[schema];
-                                writer.WriteLine($"  \"{key.Uri}\": \"{superInfo}\"");
+                                writer.WriteLine($"  \"{key.AbsoluteUri}\": \"{superInfo}\"");
                             }
                         }
                         writer.WriteLine();
@@ -706,7 +774,7 @@ namespace Gedcom551
         /// <returns></returns>
         public static GedcomStructureSchema GetFinalSchemaByUri(string uri)
         {
-            var list = s_StructureSchemas.Where(s => s.Uri == uri).ToList();
+            var list = s_StructureSchemas.Where(s => s.AbsoluteUri == uri).ToList();
             Debug.Assert(list.Count == 1);
             return list.First();
         }
@@ -999,37 +1067,64 @@ namespace Gedcom551
             return null;
         }
 
-        private string _pinnedFinalUri = string.Empty;
+        private string _pinnedFinalRelativeUri = string.Empty;
+
+#if false
+        private string GetPrefix()
+        {
+            string super = RelativeUri;
+            if (super.StartsWith("record-"))
+            {
+                super = super.Substring(7);
+            }
+            Debug.Assert(!super.Contains("-record"));
+            return super;
+        }
+
+        /// <summary>
+        /// Construct the shortest unambiguous prefix among matches.
+        /// </summary>
+        /// <param name="matches"></param>
+        /// <returns></returns>
+        private string GetUniquePrefix(List<GedcomStructureSchema> matches)
+        {
+            GedcomStructureSchema superstructure = this.Superstructures.First();
+            string prefix = superstructure.GetPrefix();
+            string[] prefixComponents = prefix.Split('-');
+
+            return prefix;
+        }
+#endif
 
         /// <summary>
         /// Construct what the correct URI for a schema should be, once all schemas are known.
         /// </summary>
         /// <returns>Correct URI for a schema</returns>
-        private string ConstructFinalUri()
+        private string ConstructFinalRelativeUri()
         {
-            if (_pinnedFinalUri != string.Empty)
+            if (_pinnedFinalRelativeUri != string.Empty)
             {
-                return _pinnedFinalUri;
+                return _pinnedFinalRelativeUri;
             }
             string tag = this.StandardTag;
 
             // Case 1: Pseudo-records.
             if (tag == "TRLR" || tag == "HEAD")
             {
-                return UriPrefix + tag;
+                return tag;
             }
 
             // Case 2: Actual records.
             if (this.IsRecord)
             {
-                return UriPrefix + "record-" + tag;
+                return "record-" + tag;
             }
 
             // Case 3: When there is only one non-record schema with the tag.
             var schemas = s_StructureSchemas.Where(s => (s.StandardTag == tag) && !s.IsRecord).ToList();
             if (schemas.Count == 1)
             {
-                return UriPrefix + tag;
+                return tag;
             }
 
             // Case 4: If there is only one superstructure, and the tag is sufficient under there.
@@ -1039,13 +1134,13 @@ namespace Gedcom551
                 var subs = superstructure.Substructures.Keys.Where(s => s.StandardTag == tag).ToList();
                 if (subs.Count == 1)
                 {
-                    string super = superstructure.Uri.Substring(UriPrefix.Length);
+                    string super = superstructure.RelativeUri;
                     if (super.StartsWith("record-"))
                     {
                         super = super.Substring(7);
                     }
                     Debug.Assert(!super.Contains("-record"));
-                    return UriPrefix + super + "-" + tag;
+                    return super + "-" + tag;
                 }
             }
 
@@ -1055,21 +1150,21 @@ namespace Gedcom551
             schemas = s_StructureSchemas.Where(s => s.StandardTag == tag && s.Payload == Payload && !s.IsRecord).ToList();
             if (schemas.Count == 1)
             {
-                return GenerateTagPayloadUri(string.Empty, tag, Payload);
+                return GenerateTagPayloadRelativeUri(string.Empty, tag, Payload);
             }
 
             // Case 6: When above is not sufficient.
             string supers = string.Empty;
             if (this.Superstructures.Count == 1)
             {
-                supers = this.Superstructures.First().Uri.Substring(UriPrefix.Length);
+                supers = this.Superstructures.First().RelativeUri;
             }
             else if (this.Superstructures.Count < 5)
             {
                 supers = "(";
                 foreach (var superstructure in this.Superstructures)
                 {
-                    string token = superstructure.Uri.Substring(UriPrefix.Length);
+                    string token = superstructure.RelativeUri;
                     if (supers == "(")
                     {
                         supers += token;
@@ -1082,12 +1177,12 @@ namespace Gedcom551
                 supers += ")";
                 Debug.Assert(!supers.Contains("-record"));
             }
-            return GenerateTagPayloadUri(supers, tag, Payload);
+            return GenerateTagPayloadRelativeUri(supers, tag, Payload);
         }
 
         public static readonly string UriPrefix = "https://gedcom.io/terms/v5.5.1/";
 
-        private static string GenerateTagPayloadUri(string super, string tag, string payload)
+        private static string GenerateTagPayloadRelativeUri(string super, string tag, string payload)
         {
             Debug.Assert(payload != GedcomStructureSchemaKey.Wildcard);
 
@@ -1098,9 +1193,9 @@ namespace Gedcom551
 
             if (super != string.Empty)
             {
-                return UriPrefix + super + "-" + tag + "-" + trimmedPayload;
+                return super + "-" + tag + "-" + trimmedPayload;
             }
-            return UriPrefix + tag + "-" + trimmedPayload;
+            return tag + "-" + trimmedPayload;
         }
 
         /// <summary>
@@ -1110,17 +1205,17 @@ namespace Gedcom551
         /// <param name="tag">Tag</param>
         /// <param name="payload">Payload type (short form, not URI), or "*" for wildcard</param>
         /// <returns>URI</returns>
-        public static string MakeUri(string superstructureUri, string tag, string? payload)
+        public static string MakeRelativeUri(string superstructureUri, string tag, string? payload)
         {
             Debug.Assert(superstructureUri != null);
 
             if (tag == "TRLR" || tag == "HEAD")
             {
-                return UriPrefix + tag;
+                return tag;
             }
             if (superstructureUri == "-")
             {
-                return UriPrefix + "record-" + tag;
+                return "record-" + tag;
             }
             string suffix = tag;
             if (payload != GedcomStructureSchemaKey.Wildcard)
@@ -1133,7 +1228,7 @@ namespace Gedcom551
             }
             if (superstructureUri == GedcomStructureSchemaKey.Wildcard)
             {
-                return UriPrefix + suffix;
+                return suffix;
             }
 
             // Get rightmost component.
@@ -1142,7 +1237,7 @@ namespace Gedcom551
             if (super.StartsWith("record-")) {
                 super = super.Substring(7);
             }
-            return UriPrefix + super + "-" + suffix;
+            return super + "-" + suffix;
         }
     }
 }
