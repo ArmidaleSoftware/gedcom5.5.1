@@ -22,11 +22,11 @@ namespace Tests
         // URI design
         // -----------------
         // There are 5 cases:
-        // 	1) "TRLR" or "HEAD": "<tag>"
-	    //  2) If no superstructures: "record-<tag>"
-	    //  3) If there is only one non-record schema with the tag: "<tag>"
-        //	4) If there is only one super: "<super>-<tag>"  where <super> is the super URI minus "record-" if present (would this collide in any actual case?)
-        //	5) "<tag>-<payload>"
+        //  1) "TRLR" or "HEAD": "<tag>"
+        //  2) If no superstructures: "record-<tag>"
+        //  3) If there is only one non-record schema with the tag: "<tag>"
+        //  4) If there is only one super: "<super>-<tag>"  where <super> is the super URI minus "record-" if present (would this collide in any actual case?)
+        //  5) "<tag>-<payload>"
 
         private GedcomStructureSchema VerifyPseudoStructure(string tag)
         {
