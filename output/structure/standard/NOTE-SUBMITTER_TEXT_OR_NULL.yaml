@@ -11,6 +11,8 @@ standard tag: 'NOTE'
 specification:
   - Additional information provided by the submitter for understanding the enclosing data.
 
+label: 'Note'
+
 payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT
 
 substructures: {}

@@ -11,6 +11,8 @@ standard tag: 'NMR'
 specification:
   - The number of times this person has participated in a family as a spouse or parent.
 
+label: 'Marriage Count'
+
 payload: https://gedcom.io/terms/v5.5.1/type-COUNT_OF_MARRIAGES
 
 substructures:

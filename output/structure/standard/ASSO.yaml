@@ -11,6 +11,8 @@ standard tag: 'ASSO'
 specification:
   - An indicator to link friends, neighbors, relatives, or associates of an individual.
 
+label: 'Associates'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
 
 substructures:

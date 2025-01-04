@@ -11,6 +11,8 @@ standard tag: 'PROP'
 specification:
   - Pertaining to possessions such as real estate or other property of interest.
 
+label: 'Property'
+
 payload: https://gedcom.io/terms/v5.5.1/type-POSSESSIONS
 
 substructures:

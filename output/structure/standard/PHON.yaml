@@ -11,6 +11,8 @@ standard tag: 'PHON'
 specification:
   - A unique number assigned to access a specific telephone.
 
+label: 'Phone'
+
 payload: https://gedcom.io/terms/v5.5.1/type-PHONE_NUMBER
 
 substructures: {}

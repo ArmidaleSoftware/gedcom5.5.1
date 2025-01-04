@@ -11,6 +11,8 @@ standard tag: 'ROMN'
 specification:
   - A romanized variation of a superior text string.
 
+label: 'Romanized'
+
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_ROMANIZED_VARIATION
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'QUAY'
 specification:
   - An assessment of the certainty of the evidence to support the conclusion drawn from evidence.
 
+label: 'Quality Of Data'
+
 payload: https://gedcom.io/terms/v5.5.1/type-CERTAINTY_ASSESSMENT
 
 substructures: {}

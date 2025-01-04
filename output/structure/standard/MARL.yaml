@@ -11,6 +11,8 @@ standard tag: 'MARL'
 specification:
   - An event of obtaining a legal license to marry.
 
+label: 'Marr License'
+
 payload: null
 
 substructures:

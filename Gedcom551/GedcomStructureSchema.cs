@@ -160,7 +160,7 @@ namespace Gedcom551
         public string AbsoluteUri => UriPrefix + RelativeUri;
         public string StandardTag { get; private set; }
         public List<string> Specification { get; private set; }
-        public string Label { get; private set; }
+        public string Label { get; set; }
         public string Payload { get; private set; }
         public string EnumerationSetUri { get; private set; }
         public EnumerationSet EnumerationSet => EnumerationSet.GetEnumerationSet(EnumerationSetUri);

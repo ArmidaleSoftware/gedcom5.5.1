@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Gedcom551
@@ -33,6 +34,14 @@ namespace Gedcom551
                         string tag = match.Groups[1].Value;
                         string longname = match.Groups[2].Value;
                         lastTag = tag;
+
+                        var schemas = GedcomStructureSchema.GetAllSchemasForTag(lastTag);
+                        foreach (GedcomStructureSchema schema in schemas)
+                        {
+                            string label = longname.Replace('_', ' ').ToLower();
+                            string label2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(label);
+                            schema.Label = label2;
+                        }
                     }
                     else if (lastTag != string.Empty)
                     {

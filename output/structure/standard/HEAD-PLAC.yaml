@@ -11,6 +11,8 @@ standard tag: 'PLAC'
 specification:
   - A jurisdictional name to identify the place or location of an event.
 
+label: 'Place'
+
 payload: null
 
 substructures:

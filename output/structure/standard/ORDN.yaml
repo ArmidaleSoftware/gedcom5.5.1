@@ -11,6 +11,8 @@ standard tag: 'ORDN'
 specification:
   - A religious event of receiving authority to act in religious matters.
 
+label: 'Ordination'
+
 payload: null
 
 substructures:

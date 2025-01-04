@@ -11,6 +11,8 @@ standard tag: 'HUSB'
 specification:
   - An individual in the family role of a married man or father.
 
+label: 'Husband'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
 
 substructures: {}

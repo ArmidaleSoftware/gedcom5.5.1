@@ -11,6 +11,8 @@ standard tag: 'SOUR'
 specification:
   - The initial or original material from which information was obtained.
 
+label: 'Source'
+
 payload: null
 
 substructures:

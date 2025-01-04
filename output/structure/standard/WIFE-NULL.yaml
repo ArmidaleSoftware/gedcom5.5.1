@@ -11,6 +11,8 @@ standard tag: 'WIFE'
 specification:
   - An individual in the role as a mother and/or married woman.
 
+label: 'Wife'
+
 payload: null
 
 substructures:

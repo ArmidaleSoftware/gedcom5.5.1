@@ -11,6 +11,8 @@ standard tag: 'CORP'
 specification:
   - A name of an institution, agency, corporation, or company.
 
+label: 'Corporate'
+
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_OF_BUSINESS
 
 substructures:

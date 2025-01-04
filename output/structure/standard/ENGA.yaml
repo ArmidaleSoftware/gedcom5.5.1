@@ -11,6 +11,8 @@ standard tag: 'ENGA'
 specification:
   - An event of recording or announcing an agreement between two people to become married.
 
+label: 'Engagement'
+
 payload: null
 
 substructures:

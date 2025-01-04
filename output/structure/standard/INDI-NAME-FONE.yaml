@@ -11,6 +11,8 @@ standard tag: 'FONE'
 specification:
   - A phonetic variation of a superior text string
 
+label: 'Phonetic'
+
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PHONETIC_VARIATION
 
 substructures:

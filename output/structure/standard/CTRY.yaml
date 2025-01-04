@@ -11,6 +11,8 @@ standard tag: 'CTRY'
 specification:
   - The name or code of the country.
 
+label: 'Country'
+
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_COUNTRY
 
 substructures: {}

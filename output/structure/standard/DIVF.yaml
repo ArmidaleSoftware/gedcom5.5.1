@@ -11,6 +11,8 @@ standard tag: 'DIVF'
 specification:
   - An event of filing for a divorce by a spouse.
 
+label: 'Divorce Filed'
+
 payload: null
 
 substructures:

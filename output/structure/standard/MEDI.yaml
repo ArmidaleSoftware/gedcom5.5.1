@@ -11,6 +11,8 @@ standard tag: 'MEDI'
 specification:
   - Identifies information about the media or having to do with the medium in which information is stored.
 
+label: 'Media'
+
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_MEDIA_TYPE
 
 substructures: {}

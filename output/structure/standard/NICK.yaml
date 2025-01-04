@@ -11,6 +11,8 @@ standard tag: 'NICK'
 specification:
   - A descriptive or familiar that is used instead of, or in addition to, one's proper name.
 
+label: 'Nickname'
+
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_NICKNAME
 
 substructures: {}

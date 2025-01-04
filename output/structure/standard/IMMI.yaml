@@ -11,6 +11,8 @@ standard tag: 'IMMI'
 specification:
   - An event of entering into a new locality with the intent of residing there.
 
+label: 'Immigration'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'BAPM'
 specification:
   - The event of baptism (not LDS), performed in infancy or later. (See also BAPL, above, and CHR, page 85.)
 
+label: 'Baptism'
+
 payload: null
 
 substructures:

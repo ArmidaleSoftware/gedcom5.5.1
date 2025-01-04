@@ -11,6 +11,8 @@ standard tag: 'EVEN'
 specification:
   - Pertaining to a noteworthy happening related to an individual, a group, or an organization. An EVENt structure is usually qualified or classified by a subordinate use of the TYPE tag.
 
+label: 'Event'
+
 payload: https://gedcom.io/terms/v5.5.1/type-EVENT_DESCRIPTOR
 
 substructures:

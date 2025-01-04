@@ -11,6 +11,8 @@ standard tag: 'CREM'
 specification:
   - Disposal of the remains of a person's body by fire.
 
+label: 'Cremation'
+
 payload: null
 
 substructures:

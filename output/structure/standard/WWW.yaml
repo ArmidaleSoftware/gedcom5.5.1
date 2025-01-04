@@ -11,6 +11,8 @@ standard tag: 'WWW'
 specification:
   - World Wide Web home page.
 
+label: 'Web'
+
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_WEB_PAGE
 
 substructures: {}

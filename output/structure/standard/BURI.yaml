@@ -11,6 +11,8 @@ standard tag: 'BURI'
 specification:
   - The event of the proper disposing of the mortal remains of a deceased person.
 
+label: 'Burial'
+
 payload: null
 
 substructures:

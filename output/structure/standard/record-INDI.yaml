@@ -11,6 +11,8 @@ standard tag: 'INDI'
 specification:
   - A person.
 
+label: 'Individual'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'CHAR'
 specification:
   - An indicator of the character set used in writing this automated information.
 
+label: 'Character'
+
 payload: https://gedcom.io/terms/v5.5.1/type-CHARACTER_SET
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'DIV'
 specification:
   - An event of dissolving a marriage through civil action.
 
+label: 'Divorce'
+
 payload: null
 
 substructures:

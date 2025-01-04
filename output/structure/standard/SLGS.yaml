@@ -11,6 +11,8 @@ standard tag: 'SLGS'
 specification:
   - A religious event pertaining to the sealing of a husband and wife in an LDS temple ceremony.
 
+label: 'Sealing Spouse'
+
 payload: null
 
 substructures:

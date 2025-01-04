@@ -11,6 +11,8 @@ standard tag: 'RELA'
 specification:
   - A relationship value between the indicated contexts.
 
+label: 'Relationship'
+
 payload: https://gedcom.io/terms/v5.5.1/type-RELATION_IS_DESCRIPTOR
 
 substructures: {}

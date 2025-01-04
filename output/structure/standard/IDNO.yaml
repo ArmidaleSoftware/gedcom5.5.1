@@ -11,6 +11,8 @@ standard tag: 'IDNO'
 specification:
   - A number assigned to identify a person within some significant external system.
 
+label: 'Ident Number'
+
 payload: https://gedcom.io/terms/v5.5.1/type-NATIONAL_ID_NUMBER
 
 substructures:

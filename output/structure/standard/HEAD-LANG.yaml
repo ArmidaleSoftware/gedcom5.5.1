@@ -11,6 +11,8 @@ standard tag: 'LANG'
 specification:
   - The name of the language used in a communication or transmission of information.
 
+label: 'Language'
+
 payload: https://gedcom.io/terms/v5.5.1/type-LANGUAGE_OF_TEXT
 
 substructures: {}

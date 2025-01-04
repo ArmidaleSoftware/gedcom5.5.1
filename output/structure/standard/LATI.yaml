@@ -11,6 +11,8 @@ standard tag: 'LATI'
 specification:
   - A value indicating a coordinate position on a line, plane, or space.
 
+label: 'Latitude'
+
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_LATITUDE
 
 substructures: {}

@@ -11,6 +11,8 @@ standard tag: 'RESN'
 specification:
   - A processing indicator signifying access to information has been denied or otherwise restricted.
 
+label: 'Restriction'
+
 payload: https://gedcom.io/terms/v5.5.1/type-RESTRICTION_NOTICE
 
 substructures: {}

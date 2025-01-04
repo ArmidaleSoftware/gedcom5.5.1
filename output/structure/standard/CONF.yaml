@@ -11,6 +11,8 @@ standard tag: 'CONF'
 specification:
   - The religious event (not LDS) of conferring the gift of the Holy Ghost and, among protestants, full church membership.
 
+label: 'Confirmation'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'FAMS'
 specification:
   - Identifies the family in which an individual appears as a spouse.
 
+label: 'Family Spouse'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-FAM>@"
 
 substructures:

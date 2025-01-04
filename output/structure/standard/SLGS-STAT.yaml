@@ -11,6 +11,8 @@ standard tag: 'STAT'
 specification:
   - An assessment of the state or condition of something.
 
+label: 'Status'
+
 payload: https://gedcom.io/terms/v5.5.1/type-LDS_SPOUSE_SEALING_DATE_STATUS
 
 substructures:

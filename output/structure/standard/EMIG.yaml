@@ -11,6 +11,8 @@ standard tag: 'EMIG'
 specification:
   - An event of leaving one's homeland with the intent of residing elsewhere.
 
+label: 'Emigration'
+
 payload: null
 
 substructures:

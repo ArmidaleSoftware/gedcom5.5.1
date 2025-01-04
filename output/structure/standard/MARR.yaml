@@ -11,6 +11,8 @@ standard tag: 'MARR'
 specification:
   - A legal, common-law, or customary event of creating a family unit of a man and a woman as husband and wife.
 
+label: 'Marriage'
+
 payload: Y|<NULL>
 
 substructures:

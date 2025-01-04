@@ -11,6 +11,8 @@ standard tag: 'ROLE'
 specification:
   - A name given to a role played by an individual in connection with an event.
 
+label: 'Role'
+
 payload: https://gedcom.io/terms/v5.5.1/type-ROLE_IN_EVENT
 
 substructures: {}

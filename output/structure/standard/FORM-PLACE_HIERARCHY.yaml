@@ -11,6 +11,8 @@ standard tag: 'FORM'
 specification:
   - An assigned name given to a consistent format in which information can be conveyed.
 
+label: 'Format'
+
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_HIERARCHY
 
 substructures: {}

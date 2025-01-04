@@ -11,6 +11,8 @@ standard tag: 'AUTH'
 specification:
   - The name of the individual who created or compiled information.
 
+label: 'Author'
+
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_ORIGINATOR
 
 substructures: {}

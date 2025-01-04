@@ -11,6 +11,8 @@ standard tag: 'ABBR'
 specification:
   - A short name of a title, description, or name.
 
+label: 'Abbreviation'
+
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_FILED_BY_ENTRY
 
 substructures: {}

@@ -11,6 +11,8 @@ standard tag: 'CAUS'
 specification:
   - A description of the cause of the associated event or fact, such as the cause of death.
 
+label: 'Cause'
+
 payload: https://gedcom.io/terms/v5.5.1/type-CAUSE_OF_EVENT
 
 substructures: {}

@@ -11,6 +11,8 @@ standard tag: 'REPO'
 specification:
   - An institution or person that has the specified item as part of their collection(s).
 
+label: 'Repository'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-REPO>@|<NULL>"
 
 substructures:

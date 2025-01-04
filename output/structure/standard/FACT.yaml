@@ -11,6 +11,8 @@ standard tag: 'FACT'
 specification:
   - Pertaining to a noteworthy attribute or fact concerning an individual, a group, or an organization. A FACT structure is usually qualified or classified by a subordinate use of the TYPE tag.
 
+label: 'Fact'
+
 payload: https://gedcom.io/terms/v5.5.1/type-ATTRIBUTE_DESCRIPTOR
 
 substructures:

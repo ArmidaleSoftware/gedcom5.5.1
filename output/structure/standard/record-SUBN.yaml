@@ -11,6 +11,8 @@ standard tag: 'SUBN'
 specification:
   - Pertains to a collection of data issued for processing.
 
+label: 'Submission'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'DATA'
 specification:
   - Pertaining to stored automated information.
 
+label: 'Data'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'CHAN'
 specification:
   - Indicates a change, correction, or modification. Typically used in connection with a DATE to specify when a change in information occurred.
 
+label: 'Change'
+
 payload: null
 
 substructures:

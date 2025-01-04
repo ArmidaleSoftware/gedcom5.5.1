@@ -11,6 +11,8 @@ standard tag: 'CALN'
 specification:
   - The number used by a repository to identify the specific items in its collections.
 
+label: 'Call Number'
+
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_CALL_NUMBER
 
 substructures:

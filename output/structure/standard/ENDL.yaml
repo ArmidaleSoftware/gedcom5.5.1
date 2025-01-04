@@ -11,6 +11,8 @@ standard tag: 'ENDL'
 specification:
   - A religious event where an endowment ordinance for an individual was performed by priesthood authority in an LDS temple.
 
+label: 'Endowment'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'ANUL'
 specification:
   - Declaring a marriage void from the beginning (never existed).
 
+label: 'Annulment'
+
 payload: null
 
 substructures:

@@ -11,6 +11,8 @@ standard tag: 'DEST'
 specification:
   - A system receiving data.
 
+label: 'Destination'
+
 payload: https://gedcom.io/terms/v5.5.1/type-RECEIVING_SYSTEM_NAME
 
 substructures: {}

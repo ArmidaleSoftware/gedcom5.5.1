@@ -12,6 +12,8 @@ specification:
   - Indicates an interest in research to identify additional descendants of this individual. (See also ANCI,
   - page 84.)
 
+label: 'Descendant Int'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-SUBM>@"
 
 substructures: {}

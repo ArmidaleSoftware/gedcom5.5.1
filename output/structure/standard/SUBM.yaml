@@ -11,6 +11,8 @@ standard tag: 'SUBM'
 specification:
   - An individual or organization who contributes genealogical data to a file or transfers it to someone else.
 
+label: 'Submitter'
+
 payload: "@<https://gedcom.io/terms/v5.5.1/record-SUBM>@"
 
 substructures: {}

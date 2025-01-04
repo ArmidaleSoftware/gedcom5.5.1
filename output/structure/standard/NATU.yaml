@@ -11,6 +11,8 @@ standard tag: 'NATU'
 specification:
   - The event of obtaining citizenship.
 
+label: 'Naturalization'
+
 payload: null
 
 substructures:

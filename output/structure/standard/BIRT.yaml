@@ -11,6 +11,8 @@ standard tag: 'BIRT'
 specification:
   - The event of entering into life.
 
+label: 'Birth'
+
 payload: Y|<NULL>
 
 substructures:

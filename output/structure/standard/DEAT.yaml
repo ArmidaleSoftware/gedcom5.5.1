@@ -11,6 +11,8 @@ standard tag: 'DEAT'
 specification:
   - The event when mortal life terminates.
 
+label: 'Death'
+
 payload: Y|<NULL>
 
 substructures:

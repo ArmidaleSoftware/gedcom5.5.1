@@ -11,6 +11,8 @@ standard tag: 'DESC'
 specification:
   - Pertaining to offspring of an individual.
 
+label: 'Descendants'
+
 payload: https://gedcom.io/terms/v5.5.1/type-GENERATIONS_OF_DESCENDANTS
 
 substructures: {}

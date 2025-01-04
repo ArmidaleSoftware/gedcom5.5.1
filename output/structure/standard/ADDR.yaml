@@ -11,6 +11,8 @@ standard tag: 'ADDR'
 specification:
   - The contemporary place, usually required for postal purposes, of an individual, a submitter of information, a repository, a business, a school, or a company.
 
+label: 'Address'
+
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_LINE
 
 substructures:

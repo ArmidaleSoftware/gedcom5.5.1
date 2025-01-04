@@ -11,6 +11,8 @@ standard tag: 'COPR'
 specification:
   - A statement that accompanies data to protect it from unlawful duplication and distribution.
 
+label: 'Copyright'
+
 payload: https://gedcom.io/terms/v5.5.1/type-COPYRIGHT_GEDCOM_FILE
 
 substructures: {}
