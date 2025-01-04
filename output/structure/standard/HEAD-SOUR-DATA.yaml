@@ -1,0 +1,22 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA
+
+standard tag: 'DATA'
+
+specification:
+
+payload: https://gedcom.io/terms/v5.5.1/type-NAME_OF_SOURCE_DATA
+
+substructures:
+  "https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA-COPR": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA-DATE": "{0:1}"
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/HEAD-SOUR": "{0:1}"
+
+contact: https://gedcom.io/community/

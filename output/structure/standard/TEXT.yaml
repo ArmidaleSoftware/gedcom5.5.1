@@ -15,8 +15,8 @@ payload: https://gedcom.io/terms/v5.5.1/type-TEXT_FROM_SOURCE
 substructures: {}
 
 superstructures:
-  "https://gedcom.io/terms/v5.5.1/ANUL-SOUR": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/record-SOUR": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SOUR-DATA": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR-DATA": "{0:M}"
 
 contact: https://gedcom.io/community/

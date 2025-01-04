@@ -13,13 +13,14 @@ specification:
 payload: null
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/DATE": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/FAMC": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/DATE-DATE_LDS_ORD": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/FAMC-XREF_FAM": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/PLAC": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SLGC-SOUR": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/PLAC-PLACE_LIVING_ORDINANCE": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SLGC-STAT": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/TEMP": "{0:1}"
 
 superstructures:

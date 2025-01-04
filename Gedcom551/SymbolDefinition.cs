@@ -8,6 +8,10 @@ namespace Gedcom551
 {
     public class SymbolComponent
     {
+        public override string ToString()
+        {
+            return LevelString + " " + Id + " " + TagOrSymbolReference + " " + PayloadType + " " + Cardinality;
+        }
         public string LevelString { get; set; }
         public int LevelDelta => LevelStringToInt(LevelString);
         public static int LevelStringToInt(string? level)

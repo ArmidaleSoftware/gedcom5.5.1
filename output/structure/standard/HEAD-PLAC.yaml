@@ -13,7 +13,7 @@ specification:
 payload: null
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/FORM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/FORM-PLACE_HIERARCHY": "{1:1}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/HEAD": "{0:1}"

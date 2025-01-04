@@ -14,9 +14,9 @@ payload: null
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/AGNC": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/DATA-EVEN": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-DATA-EVEN": "{0:M}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/record-SOUR": "{0:1}"

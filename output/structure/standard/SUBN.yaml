@@ -1,0 +1,20 @@
+%YAML 1.2
+---
+lang: en-US
+
+type: structure
+
+uri: https://gedcom.io/terms/v5.5.1/SUBN
+
+standard tag: 'SUBN'
+
+specification:
+
+payload: "@<https://gedcom.io/terms/v5.5.1/record-SUBN>@"
+
+substructures: {}
+
+superstructures:
+  "https://gedcom.io/terms/v5.5.1/HEAD": "{0:1}"
+
+contact: https://gedcom.io/community/

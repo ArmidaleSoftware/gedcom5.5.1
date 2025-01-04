@@ -13,8 +13,8 @@ specification:
 payload: https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FILE_REFERENCE
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/FILE-FORM": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/TITL": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-FILE-FORM": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/TITL-DESCRIPTIVE_TITLE": "{0:1}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/record-OBJE": "{1:M}"
