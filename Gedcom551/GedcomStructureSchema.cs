@@ -126,6 +126,8 @@ namespace Gedcom551
             return this.StandardTag + " " + ((this.Payload == null) ? "<NULL>" : this.Payload);
         }
 
+        public static List<GedcomStructureSchema> GetAllSchemasForTag(string tag) => s_StructureSchemas.Where(s => s.StandardTag == tag).ToList();
+
 #if false
         GedcomStructureSchema(Dictionary<object, object> dictionary)
         {
@@ -580,6 +582,21 @@ namespace Gedcom551
         }
 #endif
 
+        public void TrimSpecification()
+        {
+            // Trim any leading blank lines.
+            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[0]))
+            {
+                this.Specification.RemoveAt(0);
+            }
+
+            // Trim any trailing blank lines.
+            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[this.Specification.Count - 1]))
+            {
+                this.Specification.RemoveAt(this.Specification.Count - 1);
+            }
+        }
+
         /// <summary>
         /// Save all structure schemas in YAML files under a given file path.
         /// </summary>
@@ -602,6 +619,7 @@ namespace Gedcom551
             {
                 var serializer = new YamlSerializer();
                 string relativeUri = schema.RelativeUri;
+                schema.TrimSpecification();
 
                 string filePath = Path.Combine(path, relativeUri + ".yaml");
                 try
@@ -624,7 +642,12 @@ namespace Gedcom551
                         writer.WriteLine("specification:");
                         foreach (var line in schema.Specification)
                         {
-                            writer.WriteLine(line);
+                            writer.Write("  -");
+                            if (!string.IsNullOrEmpty(line))
+                            {
+                                writer.Write(" " + line);
+                            }
+                            writer.WriteLine();
                         }
                         writer.WriteLine();
 

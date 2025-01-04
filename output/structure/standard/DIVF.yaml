@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/DIVF
 standard tag: 'DIVF'
 
 specification:
+  - An event of filing for a divorce by a spouse.
 
 payload: null
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA
 standard tag: 'DATA'
 
 specification:
+  - Pertaining to stored automated information.
 
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_OF_SOURCE_DATA
 

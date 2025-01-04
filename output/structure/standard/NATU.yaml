@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/NATU
 standard tag: 'NATU'
 
 specification:
+  - The event of obtaining citizenship.
 
 payload: null
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/BIRT
 standard tag: 'BIRT'
 
 specification:
+  - The event of entering into life.
 
 payload: Y|<NULL>
 

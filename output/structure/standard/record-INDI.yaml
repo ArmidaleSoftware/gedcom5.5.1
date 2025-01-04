@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/record-INDI
 standard tag: 'INDI'
 
 specification:
+  - A person.
 
 payload: null
 

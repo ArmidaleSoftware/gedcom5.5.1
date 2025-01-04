@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/AGNC
 standard tag: 'AGNC'
 
 specification:
+  - The institution or individual having authority and/or responsibility to manage or govern.
 
 payload: https://gedcom.io/terms/v5.5.1/type-RESPONSIBLE_AGENCY
 

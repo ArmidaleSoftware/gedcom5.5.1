@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/CTRY
 standard tag: 'CTRY'
 
 specification:
+  - The name or code of the country.
 
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_COUNTRY
 

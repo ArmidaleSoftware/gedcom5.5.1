@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/REFN
 standard tag: 'REFN'
 
 specification:
+  - A description or number used to identify an item for filing, storage, or other reference purposes.
 
 payload: https://gedcom.io/terms/v5.5.1/type-USER_REFERENCE_NUMBER
 

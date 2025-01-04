@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/ANUL
 standard tag: 'ANUL'
 
 specification:
+  - Declaring a marriage void from the beginning (never existed).
 
 payload: null
 

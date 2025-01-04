@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/PEDI
 standard tag: 'PEDI'
 
 specification:
+  - Information pertaining to an individual to parent lineage chart.
 
 payload: https://gedcom.io/terms/v5.5.1/type-PEDIGREE_LINKAGE_TYPE
 

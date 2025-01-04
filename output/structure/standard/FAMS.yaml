@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/FAMS
 standard tag: 'FAMS'
 
 specification:
+  - Identifies the family in which an individual appears as a spouse.
 
 payload: "@<https://gedcom.io/terms/v5.5.1/record-FAM>@"
 

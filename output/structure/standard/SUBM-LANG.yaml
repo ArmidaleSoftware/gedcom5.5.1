@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SUBM-LANG
 standard tag: 'LANG'
 
 specification:
+  - The name of the language used in a communication or transmission of information.
 
 payload: https://gedcom.io/terms/v5.5.1/type-LANGUAGE_PREFERENCE
 

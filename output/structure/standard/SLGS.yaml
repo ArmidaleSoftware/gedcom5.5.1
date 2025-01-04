@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SLGS
 standard tag: 'SLGS'
 
 specification:
+  - A religious event pertaining to the sealing of a husband and wife in an LDS temple ceremony.
 
 payload: null
 

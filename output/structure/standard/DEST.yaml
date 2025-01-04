@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/DEST
 standard tag: 'DEST'
 
 specification:
+  - A system receiving data.
 
 payload: https://gedcom.io/terms/v5.5.1/type-RECEIVING_SYSTEM_NAME
 

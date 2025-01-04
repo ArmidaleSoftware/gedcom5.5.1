@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/TEMP
 standard tag: 'TEMP'
 
 specification:
+  - The name or code that represents the name of an LDS Church Temple.
 
 payload: https://gedcom.io/terms/v5.5.1/type-TEMPLE_CODE
 

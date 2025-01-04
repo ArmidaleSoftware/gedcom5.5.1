@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/OBJE-NULL-FILE
 standard tag: 'FILE'
 
 specification:
+  - An information storage place that is ordered and arranged for preservation and reference.
 
 payload: https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FILE_REFERENCE
 

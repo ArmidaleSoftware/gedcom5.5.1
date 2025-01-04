@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/PLAC-PLACE_NAME-FONE
 standard tag: 'FONE'
 
 specification:
+  - A phonetic variation of a superior text string
 
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_PHONETIC_VARIATION
 

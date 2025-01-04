@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/ORDN
 standard tag: 'ORDN'
 
 specification:
+  - A religious event of receiving authority to act in religious matters.
 
 payload: null
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SEX
 standard tag: 'SEX'
 
 specification:
+  - Indicates the sex of an individual--male or female.
 
 payload: https://gedcom.io/terms/v5.5.1/type-SEX_VALUE
 

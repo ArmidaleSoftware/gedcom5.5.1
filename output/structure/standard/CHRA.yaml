@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/CHRA
 standard tag: 'CHRA'
 
 specification:
+  - The religious event (not LDS) of baptizing and/or naming an adult person.
 
 payload: null
 

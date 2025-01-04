@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/BARM
 standard tag: 'BARM'
 
 specification:
+  - The ceremonial event held when a Jewish boy reaches age 13.
 
 payload: null
 

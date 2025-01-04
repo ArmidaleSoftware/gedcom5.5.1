@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/EMIG
 standard tag: 'EMIG'
 
 specification:
+  - An event of leaving one's homeland with the intent of residing elsewhere.
 
 payload: null
 

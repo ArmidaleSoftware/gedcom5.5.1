@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/MEDI
 standard tag: 'MEDI'
 
 specification:
+  - Identifies information about the media or having to do with the medium in which information is stored.
 
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_MEDIA_TYPE
 

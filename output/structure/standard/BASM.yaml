@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/BASM
 standard tag: 'BASM'
 
 specification:
+  - The ceremonial event held when a Jewish girl reaches age 13, also known as "Bat Mitzvah."
 
 payload: null
 

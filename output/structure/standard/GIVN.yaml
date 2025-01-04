@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/GIVN
 standard tag: 'GIVN'
 
 specification:
+  - A given or earned name used for official identification of a person.
 
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_GIVEN
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/CREM
 standard tag: 'CREM'
 
 specification:
+  - Disposal of the remains of a person's body by fire.
 
 payload: null
 

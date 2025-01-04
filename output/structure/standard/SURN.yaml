@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SURN
 standard tag: 'SURN'
 
 specification:
+  - A family name passed on or used by members of a family.
 
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_SURNAME
 

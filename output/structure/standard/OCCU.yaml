@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/OCCU
 standard tag: 'OCCU'
 
 specification:
+  - The type of work or profession of an individual.
 
 payload: https://gedcom.io/terms/v5.5.1/type-OCCUPATION
 

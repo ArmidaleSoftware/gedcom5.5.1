@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/AUTH
 standard tag: 'AUTH'
 
 specification:
+  - The name of the individual who created or compiled information.
 
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_ORIGINATOR
 

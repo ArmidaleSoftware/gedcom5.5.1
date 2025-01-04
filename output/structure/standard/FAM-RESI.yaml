@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/FAM-RESI
 standard tag: 'RESI'
 
 specification:
+  - An address or place of residence that a family or individual resided.
 
 payload: null
 

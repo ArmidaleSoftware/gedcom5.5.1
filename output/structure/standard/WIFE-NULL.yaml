@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/WIFE-NULL
 standard tag: 'WIFE'
 
 specification:
+  - An individual in the role as a mother and/or married woman.
 
 payload: null
 

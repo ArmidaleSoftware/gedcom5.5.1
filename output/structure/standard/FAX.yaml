@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/FAX
 standard tag: 'FAX'
 
 specification:
+  - Electronic facimilie transmission.
 
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_FAX
 

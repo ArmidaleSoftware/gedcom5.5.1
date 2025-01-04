@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/GRAD
 standard tag: 'GRAD'
 
 specification:
+  - An event of awarding educational diplomas or degrees to individuals.
 
 payload: null
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/EDUC
 standard tag: 'EDUC'
 
 specification:
+  - Indicator of a level of education attained.
 
 payload: https://gedcom.io/terms/v5.5.1/type-SCHOLASTIC_ACHIEVEMENT
 

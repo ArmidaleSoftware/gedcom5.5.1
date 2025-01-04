@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/INDI-ADOP
 standard tag: 'ADOP'
 
 specification:
+  - Pertaining to creation of a legally approved child-parent relationship that does not exist biologically.
 
 payload: null
 

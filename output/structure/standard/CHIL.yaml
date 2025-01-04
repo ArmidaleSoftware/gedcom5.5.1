@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/CHIL
 standard tag: 'CHIL'
 
 specification:
+  - The natural, adopted, or sealed (LDS) child of a father and a mother.
 
 payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
 

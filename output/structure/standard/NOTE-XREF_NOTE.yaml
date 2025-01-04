@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE
 standard tag: 'NOTE'
 
 specification:
+  - Additional information provided by the submitter for understanding the enclosing data.
 
 payload: "@<https://gedcom.io/terms/v5.5.1/record-NOTE>@"
 

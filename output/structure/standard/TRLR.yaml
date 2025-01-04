@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/TRLR
 standard tag: 'TRLR'
 
 specification:
+  - At level 0, specifies the end of a GEDCOM transmission.
 
 payload: null
 

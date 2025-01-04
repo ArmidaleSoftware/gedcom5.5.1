@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SUBN
 standard tag: 'SUBN'
 
 specification:
+  - Pertains to a collection of data issued for processing.
 
 payload: "@<https://gedcom.io/terms/v5.5.1/record-SUBN>@"
 

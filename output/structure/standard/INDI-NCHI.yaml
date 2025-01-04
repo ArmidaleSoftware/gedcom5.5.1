@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/INDI-NCHI
 standard tag: 'NCHI'
 
 specification:
+  - The number of children that this person is known to be the parent of (all marriages) when subordinate to an individual, or that belong to this family when subordinate to a FAM_RECORD.
 
 payload: https://gedcom.io/terms/v5.5.1/type-COUNT_OF_CHILDREN
 

@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/record-SOUR
 standard tag: 'SOUR'
 
 specification:
+  - The initial or original material from which information was obtained.
 
 payload: null
 

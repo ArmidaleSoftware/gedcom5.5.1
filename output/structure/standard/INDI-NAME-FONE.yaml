@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/INDI-NAME-FONE
 standard tag: 'FONE'
 
 specification:
+  - A phonetic variation of a superior text string
 
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PHONETIC_VARIATION
 

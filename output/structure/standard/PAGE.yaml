@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/PAGE
 standard tag: 'PAGE'
 
 specification:
+  - A number or description to identify where information can be found in a referenced work.
 
 payload: https://gedcom.io/terms/v5.5.1/type-WHERE_WITHIN_SOURCE
 

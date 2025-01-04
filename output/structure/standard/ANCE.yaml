@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/ANCE
 standard tag: 'ANCE'
 
 specification:
+  - Pertaining to forbearers of an individual.
 
 payload: https://gedcom.io/terms/v5.5.1/type-GENERATIONS_OF_ANCESTORS
 

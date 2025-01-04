@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SUBM-RFN
 standard tag: 'RFN'
 
 specification:
+  - A permanent number assigned to a record that uniquely identifies it within a known file.
 
 payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_REGISTERED_RFN
 

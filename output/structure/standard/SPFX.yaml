@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/SPFX
 standard tag: 'SPFX'
 
 specification:
+  - A name piece used as a non-indexing pre-part of a surname.
 
 payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_SURNAME_PREFIX
 

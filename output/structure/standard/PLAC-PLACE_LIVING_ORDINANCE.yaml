@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/PLAC-PLACE_LIVING_ORDINANCE
 standard tag: 'PLAC'
 
 specification:
+  - A jurisdictional name to identify the place or location of an event.
 
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_LIVING_ORDINANCE
 

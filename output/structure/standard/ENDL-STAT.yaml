@@ -9,6 +9,7 @@ uri: https://gedcom.io/terms/v5.5.1/ENDL-STAT
 standard tag: 'STAT'
 
 specification:
+  - An assessment of the state or condition of something.
 
 payload: https://gedcom.io/terms/v5.5.1/type-LDS_ENDOWMENT_DATE_STATUS
 
