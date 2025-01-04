@@ -13,12 +13,11 @@ specification:
 payload: null
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/FILE": "{1:M}"
-  "https://gedcom.io/terms/v5.5.1/TITL": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-NULL-FILE": "{1:M}"
+  "https://gedcom.io/terms/v5.5.1/TITL-DESCRIPTIVE_TITLE": "{0:1}"
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/ANUL": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/ANUL-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/BAPM": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/BARM": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/BASM": "{1:1}"
@@ -26,7 +25,6 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/BLES": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/BURI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CAST": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/CENS-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CHR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CHRA": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/CONF": "{1:1}"
@@ -47,8 +45,11 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/IDNO": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/IMMI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/INDI-ADOP": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/INDI-CENS": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/INDI-EVEN": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/INDI-NCHI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/INDI-RELI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/INDI-RESI": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/INDI-TITL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/MARB": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/MARC": "{1:1}"
@@ -67,6 +68,8 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/record-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/record-SUBM": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/RETI": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SSN": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/WILL": "{1:1}"
 

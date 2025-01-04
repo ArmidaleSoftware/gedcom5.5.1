@@ -17,8 +17,9 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/PLAC-PLACE_LIVING_ORDINANCE": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SLGS-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/SLGS-STAT": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/TEMP": "{0:1}"
 
 superstructures:

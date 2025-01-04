@@ -14,6 +14,7 @@ payload: null
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ANCE": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/CHAN": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/DESC": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/FAMF": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
@@ -21,7 +22,6 @@ substructures:
   "https://gedcom.io/terms/v5.5.1/ORDI": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SUBM": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/SUBN-CHAN": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/TEMP": "{0:1}"
 
 superstructures: {}

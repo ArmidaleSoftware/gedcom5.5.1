@@ -33,7 +33,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/FACT": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/FCOM": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/GRAD": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/HUSB": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/HUSB-NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/IDNO": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/IMMI": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/INDI-ADOP": "{0:1}"
@@ -52,7 +52,7 @@ superstructures:
   "https://gedcom.io/terms/v5.5.1/PROP": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/RETI": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/SSN": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/WIFE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/WIFE-NULL": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/WILL": "{0:1}"
 
 contact: https://gedcom.io/community/

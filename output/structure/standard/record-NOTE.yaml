@@ -14,9 +14,10 @@ payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/CHAN": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/NOTE-SOUR": "{1:1}"
   "https://gedcom.io/terms/v5.5.1/REFN": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/RIN": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-SOURCE_DESCRIPTION": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/SOUR-XREF_SOUR": "{1:1}"
 
 superstructures: {}
 

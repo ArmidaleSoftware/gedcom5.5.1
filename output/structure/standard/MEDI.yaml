@@ -16,6 +16,6 @@ substructures: {}
 
 superstructures:
   "https://gedcom.io/terms/v5.5.1/CALN": "{0:1}"
-  "https://gedcom.io/terms/v5.5.1/FILE-FORM": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/OBJE-NULL-FILE-FORM": "{0:1}"
 
 contact: https://gedcom.io/community/

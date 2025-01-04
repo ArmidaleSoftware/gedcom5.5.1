@@ -1160,7 +1160,7 @@ namespace Gedcom551
             {
                 supers = this.Superstructures.First().RelativeUri;
             }
-            else if (this.Superstructures.Count < 5)
+            else if (this.Superstructures.Count < 3)
             {
                 supers = "(";
                 foreach (var superstructure in this.Superstructures)
