@@ -123,7 +123,7 @@ namespace Gedcom551
         /// <summary>
         /// Unique schema id, for debugging purposes.
         /// </summary>
-        private Guid _guid = Guid.NewGuid();
+        private Guid Guid = Guid.NewGuid();
 
         GedcomStructureSchema(string sourceProgram, string tag)
         {
@@ -433,6 +433,7 @@ namespace Gedcom551
 
         private void CollapseOtherSchemaIntoThis(GedcomStructureSchema other)
         {
+            Debug.Assert(this != other);
             Debug.Assert(this.Payload == other.Payload);
             Debug.Assert(this.StandardTag == other.StandardTag);
             Debug.Assert(this.Superstructures.Any() == other.Superstructures.Any());
@@ -500,7 +501,7 @@ namespace Gedcom551
                         // Verify 'otherSuper' hasn't already been merged.
                         Debug.Assert(s_StructureSchemas.Contains(otherSuper));
 
-                        if (other != this)
+                        if (otherSuper != super)
                         {
                             super.CollapseOtherSchemaIntoThis(otherSuper);
                         }

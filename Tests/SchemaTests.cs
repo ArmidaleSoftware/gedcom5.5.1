@@ -110,9 +110,15 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestObjeFileForm()
+        public void TestMultimediaRecordFileForm()
         {
             VerifyQualifiedTag("OBJE-FILE", "FORM");
+        }
+
+        [TestMethod]
+        public void TestMultimediaLinkFileForm()
+        {
+            VerifyQualifiedTag("OBJE-NULL-FILE", "FORM");
         }
 
         [TestMethod]
@@ -146,12 +152,12 @@ namespace Tests
             VerifyQualifiedTag("OBJE", "FILE");
         }
 
-        private GedcomStructureSchema VerifyPayloadTag(string tag, string payload)
+        private GedcomStructureSchema VerifyPayloadTag(string tag, string suffix, string? payload)
         {
-            GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + payload);
+            GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + suffix);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count > 1);
-            Debug.Assert(payload == schema.Payload);
+            Debug.Assert(schema.Payload == payload);
             return schema;
         }
 
@@ -162,25 +168,19 @@ namespace Tests
         [TestMethod]
         public void TestObjeNull()
         {
-            VerifyPayloadTag("OBJE", "NULL");
+            VerifyPayloadTag("OBJE", "NULL", null);
         }
 
         [TestMethod]
         public void TestObjeXref()
         {
-            VerifyPayloadTag("OBJE", "XREF_OBJE");
-        }
-
-        [TestMethod]
-        public void TestFormMultimediaFormat()
-        {
-            VerifyPayloadTag("FORM", "MULTIMEDIA_FORMAT");
+            VerifyPayloadTag("OBJE", "XREF_OBJE", "@<XREF:OBJE>@");
         }
 
         [TestMethod]
         public void TestFormPlaceHierarchy()
         {
-            VerifyPayloadTag("FORM", "PLACE_HIERARCHY");
+            VerifyPayloadTag("FORM", "PLACE_HIERARCHY", "PLACE_HIERARCHY");
         }
     }
 }
