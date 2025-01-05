@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/HEAD
 standard tag: 'HEAD'
 
 specification:
+  - Identifies information pertaining to an entire GEDCOM transmission.
+
+label: 'Header'
 
 payload: null
 

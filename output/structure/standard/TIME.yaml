@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/TIME
 standard tag: 'TIME'
 
 specification:
+  - A time value in a 24-hour clock format, including hours, minutes, and optional seconds, separated by a colon (:). Fractions of seconds are shown in decimal notation.
+
+label: 'Time'
 
 payload: https://gedcom.io/terms/v5.5.1/type-TIME_VALUE
 

@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/RIN
 standard tag: 'RIN'
 
 specification:
+  - A number assigned to a record by an originating automated system that can be used by a receiving system to report results pertaining to that record.
+
+label: 'Rec Id Number'
 
 payload: https://gedcom.io/terms/v5.5.1/type-AUTOMATED_RECORD_ID
 

@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/TEXT
 standard tag: 'TEXT'
 
 specification:
+  - The exact wording found in an original source document.
+
+label: 'Text'
 
 payload: https://gedcom.io/terms/v5.5.1/type-TEXT_FROM_SOURCE
 

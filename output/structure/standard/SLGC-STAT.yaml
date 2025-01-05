@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/SLGC-STAT
 standard tag: 'STAT'
 
 specification:
+  - An assessment of the state or condition of something.
+
+label: 'Status'
 
 payload: https://gedcom.io/terms/v5.5.1/type-LDS_CHILD_SEALING_DATE_STATUS
 

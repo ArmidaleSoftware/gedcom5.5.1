@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/ORDI
 standard tag: 'ORDI'
 
 specification:
+  - Pertaining to a religious ordinance in general.
+
+label: 'Ordinance'
 
 payload: https://gedcom.io/terms/v5.5.1/type-ORDINANCE_PROCESS_FLAG
 

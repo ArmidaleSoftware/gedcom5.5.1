@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/MARL
 standard tag: 'MARL'
 
 specification:
+  - An event of obtaining a legal license to marry.
+
+label: 'Marr License'
 
 payload: null
 

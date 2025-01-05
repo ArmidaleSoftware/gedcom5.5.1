@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/DIV
 standard tag: 'DIV'
 
 specification:
+  - An event of dissolving a marriage through civil action.
+
+label: 'Divorce'
 
 payload: null
 

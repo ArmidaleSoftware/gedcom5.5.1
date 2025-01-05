@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/DEAT
 standard tag: 'DEAT'
 
 specification:
+  - The event when mortal life terminates.
+
+label: 'Death'
 
 payload: Y|<NULL>
 

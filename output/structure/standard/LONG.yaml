@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/LONG
 standard tag: 'LONG'
 
 specification:
+  - A value indicating a coordinate position on a line, plane, or space.
+
+label: 'Longitude'
 
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_LONGITUDE
 

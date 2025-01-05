@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/CHR
 standard tag: 'CHR'
 
 specification:
+  - The religious event (not LDS) of baptizing and/or naming a child.
+
+label: 'Christening'
 
 payload: Y|<NULL>
 

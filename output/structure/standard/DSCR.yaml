@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/DSCR
 standard tag: 'DSCR'
 
 specification:
+  - The physical characteristics of a person, place, or thing.
+
+label: 'Phy Description'
 
 payload: https://gedcom.io/terms/v5.5.1/type-PHYSICAL_DESCRIPTION
 

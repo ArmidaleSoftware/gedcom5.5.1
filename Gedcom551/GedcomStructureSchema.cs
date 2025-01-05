@@ -126,6 +126,8 @@ namespace Gedcom551
             return this.StandardTag + " " + ((this.Payload == null) ? "<NULL>" : this.Payload);
         }
 
+        public static List<GedcomStructureSchema> GetAllSchemasForTag(string tag) => s_StructureSchemas.Where(s => s.StandardTag == tag).ToList();
+
 #if false
         GedcomStructureSchema(Dictionary<object, object> dictionary)
         {
@@ -158,7 +160,7 @@ namespace Gedcom551
         public string AbsoluteUri => UriPrefix + RelativeUri;
         public string StandardTag { get; private set; }
         public List<string> Specification { get; private set; }
-        public string Label { get; private set; }
+        public string Label { get; set; }
         public string Payload { get; private set; }
         public string EnumerationSetUri { get; private set; }
         public EnumerationSet EnumerationSet => EnumerationSet.GetEnumerationSet(EnumerationSetUri);
@@ -580,6 +582,21 @@ namespace Gedcom551
         }
 #endif
 
+        public void TrimSpecification()
+        {
+            // Trim any leading blank lines.
+            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[0]))
+            {
+                this.Specification.RemoveAt(0);
+            }
+
+            // Trim any trailing blank lines.
+            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[this.Specification.Count - 1]))
+            {
+                this.Specification.RemoveAt(this.Specification.Count - 1);
+            }
+        }
+
         /// <summary>
         /// Save all structure schemas in YAML files under a given file path.
         /// </summary>
@@ -602,6 +619,7 @@ namespace Gedcom551
             {
                 var serializer = new YamlSerializer();
                 string relativeUri = schema.RelativeUri;
+                schema.TrimSpecification();
 
                 string filePath = Path.Combine(path, relativeUri + ".yaml");
                 try
@@ -621,10 +639,31 @@ namespace Gedcom551
                         writer.WriteLine("standard tag: '" + schema.StandardTag + "'");
                         writer.WriteLine();
 
-                        writer.WriteLine("specification:");
+                        writer.Write("specification:");
+                        if (schema.Specification.Count == 0)
+                        {
+                            writer.Write(" {}");
+                        }
+                        writer.WriteLine();
+                        int count = 0;
                         foreach (var line in schema.Specification)
                         {
+                            if (count == 0)
+                            {
+                                writer.Write("  - ");
+                            }
+                            else
+                            {
+                                writer.Write("    ");
+                            }
+
+                            if (string.IsNullOrEmpty(line))
+                            {
+                                count = 0;
+                                continue;
+                            }
                             writer.WriteLine(line);
+                            count++;
                         }
                         writer.WriteLine();
 

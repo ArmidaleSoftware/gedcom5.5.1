@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/VERS
 standard tag: 'VERS'
 
 specification:
+  - Indicates which version of a product, item, or publication is being used or referenced.
+
+label: 'Version'
 
 payload: https://gedcom.io/terms/v5.5.1/type-VERSION_NUMBER
 

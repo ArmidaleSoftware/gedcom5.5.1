@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA-COPR
 standard tag: 'COPR'
 
 specification:
+  - A statement that accompanies data to protect it from unlawful duplication and distribution.
+
+label: 'Copyright'
 
 payload: https://gedcom.io/terms/v5.5.1/type-COPYRIGHT_SOURCE_DATA
 

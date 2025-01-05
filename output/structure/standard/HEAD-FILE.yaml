@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/HEAD-FILE
 standard tag: 'FILE'
 
 specification:
+  - An information storage place that is ordered and arranged for preservation and reference.
+
+label: 'File'
 
 payload: https://gedcom.io/terms/v5.5.1/type-FILE_NAME
 

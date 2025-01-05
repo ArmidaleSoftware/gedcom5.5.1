@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/PUBL
 standard tag: 'PUBL'
 
 specification:
+  - Refers to when and/or where a work was published or created.
+
+label: 'Publication'
 
 payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_PUBLICATION_FACTS
 

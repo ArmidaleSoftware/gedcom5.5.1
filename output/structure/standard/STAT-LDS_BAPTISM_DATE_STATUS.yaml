@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/STAT-LDS_BAPTISM_DATE_STATUS
 standard tag: 'STAT'
 
 specification:
+  - An assessment of the state or condition of something.
+
+label: 'Status'
 
 payload: https://gedcom.io/terms/v5.5.1/type-LDS_BAPTISM_DATE_STATUS
 

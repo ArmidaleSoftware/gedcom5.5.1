@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/SSN
 standard tag: 'SSN'
 
 specification:
+  - A number assigned by the United States Social Security Administration. Used for tax identification purposes.
+
+label: 'Soc Sec Number'
 
 payload: https://gedcom.io/terms/v5.5.1/type-SOCIAL_SECURITY_NUMBER
 

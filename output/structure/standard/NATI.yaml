@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/NATI
 standard tag: 'NATI'
 
 specification:
+  - The national heritage of an individual.
+
+label: 'Nationality'
 
 payload: https://gedcom.io/terms/v5.5.1/type-NATIONAL_OR_TRIBAL_ORIGIN
 

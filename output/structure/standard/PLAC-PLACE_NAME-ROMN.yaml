@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/PLAC-PLACE_NAME-ROMN
 standard tag: 'ROMN'
 
 specification:
+  - A romanized variation of a superior text string.
+
+label: 'Romanized'
 
 payload: https://gedcom.io/terms/v5.5.1/type-PLACE_ROMANIZED_VARIATION
 

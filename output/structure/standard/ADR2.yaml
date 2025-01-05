@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/ADR2
 standard tag: 'ADR2'
 
 specification:
+  - The second line of an address.
+
+label: 'Address2'
 
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_LINE2
 

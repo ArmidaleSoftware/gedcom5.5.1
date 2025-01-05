@@ -1999,7 +1999,6 @@ Pertaining to offspring of an individual.
 
 DESI {DESCENDANT_INT}:=
 Indicates an interest in research to identify additional descendants of this individual. (See also ANCI,
-
 page 84.)
 
 DEST {DESTINATION}:=
@@ -2060,13 +2059,13 @@ An information storage place that is ordered and arranged for preservation and r
 FORM {FORMAT}:=
 An assigned name given to a consistent format in which information can be conveyed.
 
-FONE {PHONETIC}
+FONE {PHONETIC}:=
 A phonetic variation of a superior text string
 
 GEDC {GEDCOM}:=
 Information about the use of GEDCOM in a transmission.
 
-GIVN {GIVEN_NAME}
+GIVN {GIVEN_NAME}:=
 A given or earned name used for official identification of a person.
 
 GRAD {GRADUATION}:=
@@ -2281,7 +2280,6 @@ An individual in the role as a mother and/or married woman.
 
 WILL {WILL}:=
 A legal document treated as an event, by which a person disposes of his or her estate, to take effect after death. The event date is the date the will was signed while the person was alive. (See also
-
 PROBate, page 91.)
 
 WWW {WEB}:=

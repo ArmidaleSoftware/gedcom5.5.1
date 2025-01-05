@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/GEDC
 standard tag: 'GEDC'
 
 specification:
+  - Information about the use of GEDCOM in a transmission.
+
+label: 'Gedcom'
 
 payload: null
 

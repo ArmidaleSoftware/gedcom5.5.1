@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/FAM-WIFE
 standard tag: 'WIFE'
 
 specification:
+  - An individual in the role as a mother and/or married woman.
+
+label: 'Wife'
 
 payload: "@<https://gedcom.io/terms/v5.5.1/record-INDI>@"
 

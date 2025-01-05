@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/record-SUBN
 standard tag: 'SUBN'
 
 specification:
+  - Pertains to a collection of data issued for processing.
+
+label: 'Submission'
 
 payload: null
 

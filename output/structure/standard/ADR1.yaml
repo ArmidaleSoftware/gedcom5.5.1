@@ -9,6 +9,9 @@ uri: https://gedcom.io/terms/v5.5.1/ADR1
 standard tag: 'ADR1'
 
 specification:
+  - The first line of an address.
+
+label: 'Address1'
 
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_LINE1
 
