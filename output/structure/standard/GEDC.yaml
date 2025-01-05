@@ -11,7 +11,7 @@ standard tag: 'GEDC'
 specification:
   - Information about the use of GEDCOM in a transmission.
 
-label: 'Gedcom'
+label: 'GEDCOM'
 
 payload: null
 
