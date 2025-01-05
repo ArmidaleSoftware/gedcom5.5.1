@@ -40,7 +40,10 @@ namespace Gedcom551
                         {
                             string label = longname.Replace('_', ' ').ToLower();
                             string label2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(label);
-                            schema.Label = label2;
+                            string label3 = label2.Replace("Lds", "LDS");
+                            label3 = label3.Replace("Gedcom", "GEDCOM");
+                            label3 = label3.Replace("Afn", "AFN");
+                            schema.Label = label3;
                         }
                     }
                     else if (lastTag != string.Empty)
