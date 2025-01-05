@@ -639,15 +639,31 @@ namespace Gedcom551
                         writer.WriteLine("standard tag: '" + schema.StandardTag + "'");
                         writer.WriteLine();
 
-                        writer.WriteLine("specification:");
+                        writer.Write("specification:");
+                        if (schema.Specification.Count == 0)
+                        {
+                            writer.Write(" {}");
+                        }
+                        writer.WriteLine();
+                        int count = 0;
                         foreach (var line in schema.Specification)
                         {
-                            writer.Write("  -");
-                            if (!string.IsNullOrEmpty(line))
+                            if (count == 0)
                             {
-                                writer.Write(" " + line);
+                                writer.Write("  - ");
                             }
-                            writer.WriteLine();
+                            else
+                            {
+                                writer.Write("    ");
+                            }
+
+                            if (string.IsNullOrEmpty(line))
+                            {
+                                count = 0;
+                                continue;
+                            }
+                            writer.WriteLine(line);
+                            count++;
                         }
                         writer.WriteLine();
 

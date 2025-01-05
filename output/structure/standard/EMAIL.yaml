@@ -8,7 +8,7 @@ uri: https://gedcom.io/terms/v5.5.1/EMAIL
 
 standard tag: 'EMAIL'
 
-specification:
+specification: {}
 
 payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_EMAIL
 
