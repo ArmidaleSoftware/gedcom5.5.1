@@ -157,7 +157,7 @@ namespace Tests
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + suffix);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count > 1);
-            Debug.Assert(schema.Payload == payload);
+            Debug.Assert(schema.OriginalPayload == payload);
             return schema;
         }
 

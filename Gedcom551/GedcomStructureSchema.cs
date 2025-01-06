@@ -110,7 +110,8 @@ namespace Gedcom551
             this.Superstructures = new List<GedcomStructureSchema>();
             this.Lang = string.Empty;
             this.Label = string.Empty;
-            this.Payload = string.Empty;
+            this.OriginalPayload = string.Empty;
+            this.ActualPayload = string.Empty;
             this.Type = string.Empty;
             this.EnumerationSetUri = string.Empty;
         }
@@ -123,10 +124,12 @@ namespace Gedcom551
 
         public override string ToString()
         {
-            return this.StandardTag + " " + ((this.Payload == null) ? "<NULL>" : this.Payload);
+            return this.StandardTag + " " + ((this.OriginalPayload == null) ? "<NULL>" : this.OriginalPayload);
         }
 
         public static List<GedcomStructureSchema> GetAllSchemasForTag(string tag) => s_StructureSchemas.Where(s => s.StandardTag == tag).ToList();
+        public static List<GedcomStructureSchema> GetAllSchemasForPayload(string payload) => s_StructureSchemas.Where(s => s.OriginalPayload == payload).ToList();
+
 
 #if false
         GedcomStructureSchema(Dictionary<object, object> dictionary)
@@ -161,10 +164,11 @@ namespace Gedcom551
         public string StandardTag { get; private set; }
         public List<string> Specification { get; private set; }
         public string Label { get; set; }
-        public string Payload { get; private set; }
+        public string OriginalPayload { get; set; }
+        public string ActualPayload { get; set; }
         public string EnumerationSetUri { get; private set; }
         public EnumerationSet EnumerationSet => EnumerationSet.GetEnumerationSet(EnumerationSetUri);
-        public bool HasPointer => (this.Payload != null) && this.Payload.StartsWith("@<") && this.Payload.EndsWith(">@");
+        public bool HasPointer => (this.OriginalPayload != null) && this.OriginalPayload.StartsWith("@<") && this.OriginalPayload.EndsWith(">@");
         public Dictionary<GedcomStructureSchema, GedcomStructureCountInfo> Substructures { get; private set; }
         public List<GedcomStructureSchema> Superstructures { get; private set; }
         public bool IsRecord => (Superstructures.Count == 0);
@@ -188,9 +192,9 @@ namespace Gedcom551
                 {
                     GedcomStructureSchema schema = SchemaPath[i][j];
                     Console.Write(schema.ToString());
-                    if (schema.Payload != null)
+                    if (schema.OriginalPayload != null)
                     {
-                        Console.Write("[" + schema.Payload + "]");
+                        Console.Write("[" + schema.OriginalPayload + "]");
                     }
                     if (j + 1 < SchemaPath[i].Count)
                     {
@@ -261,7 +265,7 @@ namespace Gedcom551
             {
                 return new List<GedcomStructureSchema>();
             }
-            return s_StructureSchemas.Where(s => s.StandardTag == tag && s.Payload == payloadType && isRecord == s.IsRecord && s.DoSubstructuresMatch(substructures)).ToList();
+            return s_StructureSchemas.Where(s => s.StandardTag == tag && s.OriginalPayload == payloadType && isRecord == s.IsRecord && s.DoSubstructuresMatch(substructures)).ToList();
         }
 
         private bool DoSubstructuresMatch(Dictionary<GedcomStructureSchema, GedcomStructureCountInfo> substructures)
@@ -343,7 +347,8 @@ namespace Gedcom551
 
                     // Add a new duplicate schema.
                     var other = new GedcomStructureSchema(string.Empty, this.StandardTag);
-                    other.Payload = this.Payload;
+                    other.OriginalPayload = this.OriginalPayload;
+                    other.ActualPayload = this.ActualPayload;
                     other.AddSuperstructures(level, oldInfo.Cardinality, no, false);
                     s_StructureSchemas.Add(other);
 
@@ -362,30 +367,38 @@ namespace Gedcom551
 
             if (repath)
             {
-                // See if we can collapse the superstructure.
-                List<GedcomStructureSchema> found = FindPossibleSchemas(this.StandardTag, this.Payload, this.IsRecord, this.Substructures);
-                if (found.Count > 1)
-                {
-                    foreach (GedcomStructureSchema other in found)
-                    {
-                        // Verify 'other' hasn't already been merged.
-                        Debug.Assert(s_StructureSchemas.Contains(other));
-
-                        if (other != this)
-                        {
-                            CollapseOtherSchemaIntoThis(other);
-                        }
-                    }
-                }
+                // See if we can now combine the superstructure with any others.
+                TryCombineOtherSchemasIntoThis();
             }
 
             VerifyBackpointers();
         }
 
+        /// <summary>
+        /// See if we can combine any other schemas into this one as duplicates.
+        /// </summary>
+        private void TryCombineOtherSchemasIntoThis()
+        {
+            List<GedcomStructureSchema> found = FindPossibleSchemas(this.StandardTag, this.OriginalPayload, this.IsRecord, this.Substructures);
+            if (found.Count > 1)
+            {
+                foreach (GedcomStructureSchema other in found)
+                {
+                    // Verify 'other' hasn't already been merged.
+                    Debug.Assert(s_StructureSchemas.Contains(other));
+
+                    if (other != this)
+                    {
+                        CollapseOtherSchemaIntoThis(other);
+                    }
+                }
+            }
+        }
+
         private void CollapseOtherSchemaIntoThis(GedcomStructureSchema other)
         {
             Debug.Assert(this != other);
-            Debug.Assert(this.Payload == other.Payload);
+            Debug.Assert(this.OriginalPayload == other.OriginalPayload);
             Debug.Assert(this.StandardTag == other.StandardTag);
             Debug.Assert(this.Superstructures.Any() == other.Superstructures.Any());
             Debug.Assert(this.Substructures.Intersect(other.Substructures).Count() == this.Substructures.Count());
@@ -444,7 +457,7 @@ namespace Gedcom551
                 }
 
                 // See if we can collapse the superstructure.
-                List<GedcomStructureSchema> found = FindPossibleSchemas(super.StandardTag, super.Payload, super.IsRecord, super.Substructures);
+                List<GedcomStructureSchema> found = FindPossibleSchemas(super.StandardTag, super.OriginalPayload, super.IsRecord, super.Substructures);
                 if (found.Count > 1)
                 {
                     foreach (GedcomStructureSchema otherSuper in found)
@@ -533,7 +546,8 @@ namespace Gedcom551
 
             // Create a new schema to add.
             var schema = new GedcomStructureSchema(sourceProgram, tag);
-            schema.Payload = payloadType;
+            schema.OriginalPayload = payloadType;
+            schema.ActualPayload = payloadType;
             List<GedcomStructureSchema> superstructures = (level >= 1) ? SchemaPath[level - 1] : new List<GedcomStructureSchema>();
             s_StructureSchemas.Add(schema);
             schema.AddSuperstructures(level, cardinality, superstructures, true);
@@ -675,36 +689,36 @@ namespace Gedcom551
 
                         // Payload.
                         writer.Write("payload: ");
-                        if (string.IsNullOrEmpty(schema.Payload))
+                        if (string.IsNullOrEmpty(schema.ActualPayload))
                         {
                             writer.WriteLine("null");
                         }
-                        else if (schema.Payload == "[Y|<NULL>]")
+                        else if (schema.OriginalPayload == "[Y|<NULL>]")
                         {
                             writer.WriteLine("Y|<NULL>");
                         }
-                        else if (schema.Payload.StartsWith("@<XREF:"))
+                        else if (schema.OriginalPayload.StartsWith("@<XREF:"))
                         {
-                            string recordType = schema.Payload.Substring(7).Trim('@', '>');
+                            string recordType = schema.OriginalPayload.Substring(7).Trim('@', '>');
                             writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"");
                         }
-                        else if (schema.Payload.StartsWith("[@<XREF:") && schema.Payload.EndsWith(">@|<NULL>]"))
+                        else if (schema.OriginalPayload.StartsWith("[@<XREF:") && schema.OriginalPayload.EndsWith(">@|<NULL>]"))
                         {
-                            string recordType = schema.Payload.Substring(8, schema.Payload.Length - 18);
+                            string recordType = schema.OriginalPayload.Substring(8, schema.OriginalPayload.Length - 18);
                             writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@|<NULL>\"");
                         }
-                        else if (schema.Payload.StartsWith("[<") && schema.Payload.EndsWith(">|<NULL>]"))
+                        else if (schema.OriginalPayload.StartsWith("[<") && schema.OriginalPayload.EndsWith(">|<NULL>]"))
                         {
-                            string payloadType = schema.Payload.Substring(2, schema.Payload.Length - 11);
+                            string payloadType = schema.OriginalPayload.Substring(2, schema.OriginalPayload.Length - 11);
                             writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + payloadType);
                         }
-                        else if (schema.Payload.Contains('@') || schema.Payload.Contains('|'))
+                        else if (schema.OriginalPayload.Contains('@') || schema.OriginalPayload.Contains('|'))
                         {
                             throw new Exception("Bad payload");
                         }
                         else
                         {
-                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.Payload);
+                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.OriginalPayload);
                         }
                         writer.WriteLine();
 
@@ -821,10 +835,10 @@ namespace Gedcom551
             // Case 5: When the payload type is needed to disambiguate.
             // This case never occurs with FamilySearch GEDCOM 7.0,
             // but does occur with earlier versions of GEDCOM.
-            schemas = s_StructureSchemas.Where(s => s.StandardTag == tag && s.Payload == Payload && !s.IsRecord).ToList();
+            schemas = s_StructureSchemas.Where(s => s.StandardTag == tag && s.ActualPayload == ActualPayload && !s.IsRecord).ToList();
             if (schemas.Count == 1)
             {
-                return GenerateTagPayloadRelativeUri(string.Empty, tag, Payload);
+                return GenerateTagPayloadRelativeUri(string.Empty, tag, ActualPayload);
             }
 
             // Case 6: When above is not sufficient.
@@ -851,7 +865,7 @@ namespace Gedcom551
                 supers += ")";
                 Debug.Assert(!supers.Contains("-record"));
             }
-            return GenerateTagPayloadRelativeUri(supers, tag, Payload);
+            return GenerateTagPayloadRelativeUri(supers, tag, ActualPayload);
         }
 
         public static readonly string UriPrefix = "https://gedcom.io/terms/v5.5.1/";
