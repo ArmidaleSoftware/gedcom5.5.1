@@ -10,12 +10,10 @@ standard tag: 'MEDI'
 
 specification:
   - Identifies information about the media or having to do with the medium in which information is stored.
-  - [ audio | book | card | electronic | fiche | film | magazine | manuscript | map | newspaper | photo | tombstone | video ]
-    A code, selected from one of the media classifications choices above, that indicates the type of material in which the referenced source is stored.
 
 label: 'Media'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_MEDIA_TYPE
 
 substructures: {}
 

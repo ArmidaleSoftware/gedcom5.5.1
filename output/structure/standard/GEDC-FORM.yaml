@@ -10,12 +10,10 @@ standard tag: 'FORM'
 
 specification:
   - An assigned name given to a consistent format in which information can be conveyed.
-  - [ LINEAGE-LINKED ]
-    The GEDCOM form used to construct this transmission. There maybe other forms used such as CommSoft's "EVENT_LINEAGE_LINKED" but these specifications define only the LINEAGE- LINKED Form. Systems will use this value to specify GEDCOM compatible with these specifications.
 
 label: 'Format'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-GEDCOM_FORM
 
 substructures: {}
 

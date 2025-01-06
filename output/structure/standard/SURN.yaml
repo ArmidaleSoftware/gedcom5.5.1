@@ -10,12 +10,10 @@ standard tag: 'SURN'
 
 specification:
   - A family name passed on or used by members of a family.
-  - [ <NAME_PIECE> | <NAME_PIECE_SURNAME>, <NAME_PIECE> ]
-    Surname or family name. Different surnames are separated by a comma.
 
 label: 'Surname'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_SURNAME
 
 substructures: {}
 

@@ -50,6 +50,21 @@ namespace Gedcom551
     {
         public static readonly string Wildcard = "*";
 
+        public bool HasComplexPayloadType
+        {
+            get
+            {
+                foreach (string line in this.TypeSpecification)
+                {
+                    if (line.Contains('['))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         public static void AddStrings(List<string> list, Object[] array)
         {
             if (array != null)
@@ -615,34 +630,61 @@ namespace Gedcom551
 
         public static void ShowSpecification(StreamWriter writer, List<string> specification)
         {
-            int count = 0;
-            List<string> specificationLines = specification.ToList();
-            foreach (string line in specificationLines)
+            var paragraphs = new List<List<string>>();
+            var currentParagraph = new List<string>();
+
+            foreach (string line in specification)
             {
                 if (string.IsNullOrEmpty(line))
                 {
-                    count = 0;
+                    // End this paragraph and start a new one.
+                    if (currentParagraph.Count > 0)
+                    {
+                        paragraphs.Add(currentParagraph);
+                        currentParagraph = new List<string>();
+                    }
                     continue;
                 }
 
-                if (count == 0)
+                currentParagraph.Add(line);
+            }
+            if (currentParagraph.Count > 0)
+            {
+                paragraphs.Add(currentParagraph);
+                currentParagraph = null;
+            }
+
+            foreach (List<string> paragraph in paragraphs)
+            {
+                if (paragraph.Count <= 1)
                 {
+                    string line = paragraph.First();
                     writer.Write("  - ");
+                    if (line.EndsWith(':') || line.Contains(": ") || line.Contains('"'))
+                    {
+                        string line2 = line.Replace("\"", "\\\"");
+                        writer.WriteLine("\"" + line2 + "\"");
+                    }
+                    else
+                    {
+                        writer.WriteLine(line);
+                    }
+                    continue;
                 }
-                else
+                writer.WriteLine("  - |");
+                foreach (var line in paragraph)
                 {
                     writer.Write("    ");
+                    if (line.EndsWith(':') || line.Contains(": ") || line.Contains('"'))
+                    {
+                        string line2 = line.Replace("\"", "\\\"");
+                        writer.WriteLine("\"" + line2 + "\"");
+                    }
+                    else
+                    {
+                        writer.WriteLine(line);
+                    }
                 }
-
-                if (line.EndsWith(':'))
-                {
-                    writer.WriteLine("\"" + line + "\"");
-                }
-                else
-                {
-                    writer.WriteLine(line);
-                }
-                count++;
             }
         }
 
@@ -690,13 +732,21 @@ namespace Gedcom551
                         writer.WriteLine();
 
                         writer.Write("specification:");
-                        if (schema.TagSpecification.Count + schema.TypeSpecification.Count == 0)
+                        int count = schema.TagSpecification.Count;
+                        if (!schema.HasComplexPayloadType)
+                        {
+                            count += schema.TypeSpecification.Count;
+                        }
+                        if (count == 0)
                         {
                             writer.Write(" {}");
                         }
                         writer.WriteLine();
                         ShowSpecification(writer, schema.TagSpecification);
-                        ShowSpecification(writer, schema.TypeSpecification);
+                        if (!schema.HasComplexPayloadType)
+                        {
+                            ShowSpecification(writer, schema.TypeSpecification);
+                        }
                         writer.WriteLine();
 
                         if (!string.IsNullOrEmpty(schema.Label))

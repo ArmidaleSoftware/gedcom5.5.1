@@ -10,15 +10,10 @@ standard tag: 'TIME'
 
 specification:
   - A time value in a 24-hour clock format, including hours, minutes, and optional seconds, separated by a colon (:). Fractions of seconds are shown in decimal notation.
-  - [ hh:mm:ss.fs ]
-    "The time of a specific event, usually a computer-timed event, where:"
-    hh = hours on a 24-hour clock mm	= minutes
-    ss	= seconds (optional)
-    fs	= decimal fraction of a second (optional)
 
 label: 'Time'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-TIME_VALUE
 
 substructures: {}
 

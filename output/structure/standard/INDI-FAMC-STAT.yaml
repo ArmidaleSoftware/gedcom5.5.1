@@ -10,15 +10,10 @@ standard tag: 'STAT'
 
 specification:
   - An assessment of the state or condition of something.
-  - [challenged | disproven | proven]
-    A status code that allows passing on the users opinion of the status of a child to family link. challenged = Linking this child to this family is suspect, but the linkage has been neither proven nor
-    disproven.
-    disproven	= There has been a claim by some that this child belongs to this family, but the linkage has been disproven.
-    proven	= There has been a claim by some that this child does not belongs to this family, but the linkage has been proven.
 
 label: 'Status'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-CHILD_LINKAGE_STATUS
 
 substructures: {}
 

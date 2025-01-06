@@ -9,18 +9,14 @@ uri: https://gedcom.io/terms/v5.5.1/NSFX
 standard tag: 'NSFX'
 
 specification:
-  - Text which appears on a name line after or behind the given and surname parts of a name.
+  - |
+    Text which appears on a name line after or behind the given and surname parts of a name.
     i.e. Lt. Cmndr. Joseph /Allen/ (jr.)
-    In this example jr. is considered as the name suffix portion.
-  - [ <NAME_PIECE> | <NAME_PIECE_SUFFIX>, <NAME_PIECE> ]
-    Non-indexing name piece that appears after the given name and surname parts. Different name suffix parts are separated by a comma.
-    "For example:"
-    Lt. Cmndr. Joseph /Allen/ jr.
     In this example jr. is considered as the name suffix portion.
 
 label: 'Name Suffix'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_SUFFIX
 
 substructures: {}
 

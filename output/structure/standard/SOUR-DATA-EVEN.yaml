@@ -10,13 +10,10 @@ standard tag: 'EVEN'
 
 specification:
   - Pertaining to a noteworthy happening related to an individual, a group, or an organization. An EVENt structure is usually qualified or classified by a subordinate use of the TYPE tag.
-  - [<EVENT_ATTRIBUTE_TYPE>  |
-    <EVENTS_RECORDED>, <EVENT_ATTRIBUTE_TYPE>]
-    An enumeration of the different kinds of events that were recorded in a particular source. Each enumeration is separated by a comma. Such as a parish register of births, deaths, and marriages would be BIRT, DEAT, MARR.
 
 label: 'Event'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/SOUR-DATA-EVEN-DATE": "{0:1}"

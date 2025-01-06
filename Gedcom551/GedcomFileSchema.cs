@@ -192,7 +192,7 @@ namespace Gedcom551
 
                 // Don't change the original payload since there may be more
                 // specification lines to add yet.
-                schema.ActualPayload = XsdString;
+                schema.ActualPayload = schema.HasComplexPayloadType ? schema.OriginalPayload : XsdString;
                 // TODO: try to combine schemas after changing payload.
                 // Maybe we do this after changing lastPayload away from this time?
             }

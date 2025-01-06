@@ -10,15 +10,10 @@ standard tag: 'PEDI'
 
 specification:
   - Information pertaining to an individual to parent lineage chart.
-  - [ adopted | birth | foster | sealing ]
-    A code used to indicate the child to family relationship for pedigree navigation purposes.
-    "Where:"
-    adopted = indicates adoptive parents. birth	= indicates birth parents.
-    foster = indicates child was included in a foster or guardian family. sealing	= indicates child was sealed to parents other than birth parents.
 
 label: 'Pedigree'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: https://gedcom.io/terms/v5.5.1/type-PEDIGREE_LINKAGE_TYPE
 
 substructures: {}
 
