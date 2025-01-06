@@ -11,6 +11,7 @@ namespace Tests
     {
         private static GedcomFileSchema? fileSchema;
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
+        private const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
@@ -94,8 +95,11 @@ namespace Tests
         {
             VerifyUniqueTag("CITY", XsdString);
             VerifyUniqueTag("CORP", XsdString);
-            VerifyUniqueTag("NPFX", XsdString);
+            VerifyUniqueTag("NPFX");
             VerifyUniqueTag("ORDN");
+            VerifyUniqueTag("NMR", XsdNonNegativeInteger);
+            VerifyUniqueTag("ANCE", XsdNonNegativeInteger);
+            VerifyUniqueTag("DESC", XsdNonNegativeInteger);
         }
 
         private GedcomStructureSchema VerifyQualifiedTag(string super, string tag, string? expectedPayload = null)
@@ -124,6 +128,8 @@ namespace Tests
         public void TestGedcForm()
         {
             VerifyQualifiedTag("GEDC", "FORM");
+            VerifyQualifiedTag("FAM", "NCHI", XsdNonNegativeInteger);
+            VerifyQualifiedTag("INDI", "NCHI", XsdNonNegativeInteger);
         }
 
         [TestMethod]

@@ -14,7 +14,7 @@ specification:
 
 label: 'Marriage Count'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: http://www.w3.org/2001/XMLSchema#nonNegativeInteger
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

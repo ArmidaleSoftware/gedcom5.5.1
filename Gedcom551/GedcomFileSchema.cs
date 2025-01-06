@@ -178,6 +178,7 @@ namespace Gedcom551
         }
 
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
+        private const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
 
         private static void AddTypeSpecificationLine(string payload, string line)
         {
@@ -190,9 +191,11 @@ namespace Gedcom551
             {
                 schema.TypeSpecification.Add(line);
 
+                string primitiveType = schema.HasIntegerPayloadType ? XsdNonNegativeInteger : XsdString;
+
                 // Don't change the original payload since there may be more
                 // specification lines to add yet.
-                schema.ActualPayload = schema.HasComplexPayloadType ? schema.OriginalPayload : XsdString;
+                schema.ActualPayload = schema.HasComplexPayloadType ? schema.OriginalPayload : primitiveType;
                 // TODO: try to combine schemas after changing payload.
                 // Maybe we do this after changing lastPayload away from this time?
             }

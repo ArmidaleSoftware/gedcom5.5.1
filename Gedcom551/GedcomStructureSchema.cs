@@ -65,6 +65,22 @@ namespace Gedcom551
             }
         }
 
+        public bool HasIntegerPayloadType
+        {
+            get
+            {
+                foreach (string line in this.TypeSpecification)
+                {
+                    if (line.StartsWith("The number of ") ||
+                        line.StartsWith("The known number of "))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         public static void AddStrings(List<string> list, Object[] array)
         {
             if (array != null)

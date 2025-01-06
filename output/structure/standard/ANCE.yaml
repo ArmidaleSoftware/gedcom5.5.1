@@ -14,7 +14,7 @@ specification:
 
 label: 'Ancestors'
 
-payload: http://www.w3.org/2001/XMLSchema#string
+payload: http://www.w3.org/2001/XMLSchema#nonNegativeInteger
 
 substructures: {}
 
