@@ -10,10 +10,11 @@ standard tag: 'NOTE'
 
 specification:
   - Additional information provided by the submitter for understanding the enclosing data.
+  - Comments or opinions from the submitter.
 
 label: 'Note'
 
-payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/CHAN": "{1:1}"

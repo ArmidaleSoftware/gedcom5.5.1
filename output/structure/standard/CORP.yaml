@@ -10,10 +10,11 @@ standard tag: 'CORP'
 
 specification:
   - A name of an institution, agency, corporation, or company.
+  - Name of the business, corporation, or person that produced or commissioned the product.
 
 label: 'Corporate'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_OF_BUSINESS
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

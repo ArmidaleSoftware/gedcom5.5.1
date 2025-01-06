@@ -10,10 +10,11 @@ standard tag: 'ANCE'
 
 specification:
   - Pertaining to forbearers of an individual.
+  - The number of generations of ancestors included in this transmission. This value is usually provided when FamilySearch programs build a GEDCOM file for a patron requesting a download of ancestors.
 
 label: 'Ancestors'
 
-payload: https://gedcom.io/terms/v5.5.1/type-GENERATIONS_OF_ANCESTORS
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

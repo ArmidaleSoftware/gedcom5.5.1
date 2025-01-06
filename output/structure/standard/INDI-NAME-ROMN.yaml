@@ -10,10 +10,11 @@ standard tag: 'ROMN'
 
 specification:
   - A romanized variation of a superior text string.
+  - The romanized variation of the name is written in the same form prescribed for the name used in the superior <NAME_PERSONAL> context. The method used to romanize the name is indicated by the line_value of the subordinate <ROMANIZED_TYPE>, for example if romaji was used to provide a reading of a name written in kanji, then the ROMANIZED_TYPE subordinate to the ROMN tag would indicate romaji. See page 61.
 
 label: 'Romanized'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_ROMANIZED_VARIATION
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/GIVN": "{0:1}"

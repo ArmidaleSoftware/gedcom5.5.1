@@ -10,10 +10,11 @@ standard tag: 'NATI'
 
 specification:
   - The national heritage of an individual.
+  - "The person's division of national origin or other folk, house, kindred, lineage, or tribal interest. Examples: Irish, Swede, Egyptian Coptic, Sioux Dakota Rosebud, Apache Chiricawa, Navajo Bitter Water, Eastern Cherokee Taliwa Wolf, and so forth."
 
 label: 'Nationality'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NATIONAL_OR_TRIBAL_ORIGIN
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

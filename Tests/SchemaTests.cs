@@ -10,13 +10,19 @@ namespace Tests
     public class SchemaTests
     {
         private static GedcomFileSchema? fileSchema;
+        private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
             // TODO: don't hard-code path.
-            string sourceFile = "C:\\Users\\dthal\\git\\ArmidaleSoftware\\Gedcom551\\input\\ged.5.5.1.txt";
+            string directory = "C:\\Users\\dthal\\git\\ArmidaleSoftware\\Gedcom551\\input\\";
+
+            string sourceFile = Path.Combine(directory, "ged.5.5.1.txt");
             fileSchema = new GedcomFileSchema(sourceFile);
+
+            string specFullPathname = Path.Combine(directory, "ged551.txt");
+            GedcomFileSchema.ParseSpecFile(specFullPathname);
         }
 
         // URI design
@@ -68,11 +74,15 @@ namespace Tests
             VerifyRecord("SUBN");
         }
 
-        private GedcomStructureSchema VerifyUniqueTag(string tag)
+        private GedcomStructureSchema VerifyUniqueTag(string tag, string? expectedPayload = null)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count > 0);
+            if (expectedPayload != null)
+            {
+                Debug.Assert(schema.ActualPayload == expectedPayload);
+            }
             return schema;
         }
 
@@ -82,12 +92,13 @@ namespace Tests
         [TestMethod]
         public void TestSomeUniqueTags()
         {
-            VerifyUniqueTag("CORP");
-            VerifyUniqueTag("NPFX");
+            VerifyUniqueTag("CITY", XsdString);
+            VerifyUniqueTag("CORP", XsdString);
+            VerifyUniqueTag("NPFX", XsdString);
             VerifyUniqueTag("ORDN");
         }
 
-        private GedcomStructureSchema VerifyQualifiedTag(string super, string tag)
+        private GedcomStructureSchema VerifyQualifiedTag(string super, string tag, string? expectedPayload = null)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + super + "-" + tag);
             Debug.Assert(schema.StandardTag == tag);
@@ -96,6 +107,12 @@ namespace Tests
             string superstructureUri = schema.Superstructures.First().AbsoluteUri;
             Debug.Assert(superstructureUri == GedcomStructureSchema.UriPrefix + super ||
                          superstructureUri == GedcomStructureSchema.UriPrefix + "record-" + super);
+
+            if (expectedPayload != null)
+            {
+                Debug.Assert(schema.ActualPayload == expectedPayload);
+            }
+
             return schema;
         }
 
@@ -157,7 +174,7 @@ namespace Tests
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + suffix);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count > 1);
-            Debug.Assert(schema.Payload == payload);
+            Debug.Assert(schema.OriginalPayload == payload);
             return schema;
         }
 

@@ -10,10 +10,11 @@ standard tag: 'RFN'
 
 specification:
   - A permanent number assigned to a record that uniquely identifies it within a known file.
+  - A registered number of a submitter of Ancestral File data. This number is used in subsequent submissions or inquiries by the submitter for identification purposes.
 
 label: 'Rec File Number'
 
-payload: https://gedcom.io/terms/v5.5.1/type-SUBMITTER_REGISTERED_RFN
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

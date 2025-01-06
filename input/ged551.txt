@@ -1372,7 +1372,7 @@ For An unpublished work, such as:
 !	A family Bible containing genealogical information might have past and present owners and a physical description of the book.
 !	A personal interview would cite the informant and interviewer.
 
-SOURCE_FILED_BY_ENTRY:=	{Size= 1:60}
+SOURCE_FILED_BY_ENTRY:=	{Size=1:60}
 This entry is to provide a short title used for sorting, filing, and retrieving source records.
 
 SOURCE_JURISDICTION_PLACE:=	{Size=1:120}

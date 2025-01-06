@@ -10,10 +10,11 @@ standard tag: 'DATA'
 
 specification:
   - Pertaining to stored automated information.
+  - "The name of the electronic data source that was used to obtain the data in this transmission. For example, the data may have been obtained from a CD-ROM disc that was named \"U.S. 1880 CENSUS CD-ROM vol. 13.\""
 
 label: 'Data'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_OF_SOURCE_DATA
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/HEAD-SOUR-DATA-COPR": "{0:1}"

@@ -10,10 +10,11 @@ standard tag: 'OCCU'
 
 specification:
   - The type of work or profession of an individual.
+  - The kind of activity that an individual does for a job, profession, or principal activity.
 
 label: 'Occupation'
 
-payload: https://gedcom.io/terms/v5.5.1/type-OCCUPATION
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

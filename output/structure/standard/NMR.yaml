@@ -10,10 +10,11 @@ standard tag: 'NMR'
 
 specification:
   - The number of times this person has participated in a family as a spouse or parent.
+  - The number of different families that this person was known to have been a member of as a spouse or parent, regardless of whether the associated families are represented in the GEDCOM file.
 
 label: 'Marriage Count'
 
-payload: https://gedcom.io/terms/v5.5.1/type-COUNT_OF_MARRIAGES
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

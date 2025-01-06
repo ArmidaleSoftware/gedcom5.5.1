@@ -10,10 +10,11 @@ standard tag: 'PROP'
 
 specification:
   - Pertaining to possessions such as real estate or other property of interest.
+  - A list of possessions (real estate or other property) belonging to this individual.
 
 label: 'Property'
 
-payload: https://gedcom.io/terms/v5.5.1/type-POSSESSIONS
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

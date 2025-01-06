@@ -1,62 +1,16 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 
-using System.Globalization;
-using System.Text.RegularExpressions;
-
 namespace Gedcom551
 {
     public class Program
     {
-        public static void ParseSpecFile(string specFilename)
+        public enum SpecSection
         {
-            string pattern = @"(\w+)\s+\{([\w-]+)\}:=";
-            using (StreamReader sr = new StreamReader(specFilename))
-            {
-                string line;
-                int lineNumber = 0;
-                string lastTag = string.Empty;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    lineNumber++;
-                    line = line.Trim();
-
-                    // See if we're done.
-                    if (line.StartsWith("Appendix B Latter-day Saints Temple Codes"))
-                    {
-                        lastTag = string.Empty;
-                        break;
-                    }
-                    
-                    Match match = Regex.Match(line, pattern);
-                    if (match.Success)
-                    {
-                        string tag = match.Groups[1].Value;
-                        string longname = match.Groups[2].Value;
-                        lastTag = tag;
-
-                        var schemas = GedcomStructureSchema.GetAllSchemasForTag(lastTag);
-                        foreach (GedcomStructureSchema schema in schemas)
-                        {
-                            string label = longname.Replace('_', ' ').ToLower();
-                            string label2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(label);
-                            string label3 = label2.Replace("Lds", "LDS");
-                            label3 = label3.Replace("Gedcom", "GEDCOM");
-                            label3 = label3.Replace("Afn", "AFN");
-                            schema.Label = label3;
-                        }
-                    }
-                    else if (lastTag != string.Empty)
-                    {
-                        string value = line;
-                        var schemas = GedcomStructureSchema.GetAllSchemasForTag(lastTag);
-                        foreach (GedcomStructureSchema schema in schemas)
-                        {
-                            schema.Specification.Add(value);
-                        }
-                    }
-                }
-            }
+            None = 0,
+            PrimitiveElements,
+            AppendixA,
+            Done,
         }
 
         public static void Main(string[] args)
@@ -92,7 +46,7 @@ namespace Gedcom551
             try
             {
                 var file = new GedcomFileSchema(schemaFullPathname);
-                ParseSpecFile(specFullPathname);
+                GedcomFileSchema.ParseSpecFile(specFullPathname);
                 file.GenerateOutput(destinationDirectory);
             }
             catch (Exception ex)

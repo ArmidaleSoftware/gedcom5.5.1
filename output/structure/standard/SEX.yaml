@@ -10,10 +10,15 @@ standard tag: 'SEX'
 
 specification:
   - Indicates the sex of an individual--male or female.
+  - |
+    "A code that indicates the sex of the individual:"
+    M = Male
+    F = Female
+    U = Undetermined from available records and quite sure that it can't be.
 
 label: 'Sex'
 
-payload: https://gedcom.io/terms/v5.5.1/type-SEX_VALUE
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

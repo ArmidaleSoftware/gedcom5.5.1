@@ -10,10 +10,11 @@ standard tag: 'DESC'
 
 specification:
   - Pertaining to offspring of an individual.
+  - The number of generations of descendants included in this transmission. This value is usually provided when FamilySearch programs build a GEDCOM file for a patron requesting a download of descendants.
 
 label: 'Descendants'
 
-payload: https://gedcom.io/terms/v5.5.1/type-GENERATIONS_OF_DESCENDANTS
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

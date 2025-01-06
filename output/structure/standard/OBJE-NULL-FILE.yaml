@@ -10,10 +10,11 @@ standard tag: 'FILE'
 
 specification:
   - An information storage place that is ordered and arranged for preservation and reference.
+  - A complete local or remote file reference to the auxiliary data to be linked to the GEDCOM context. Remote reference would include a network address where the multimedia data may be obtained.
 
 label: 'File'
 
-payload: https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FILE_REFERENCE
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/OBJE-NULL-FILE-FORM": "{1:1}"

@@ -10,10 +10,11 @@ standard tag: 'PHON'
 
 specification:
   - A unique number assigned to access a specific telephone.
+  - A phone number.
 
 label: 'Phone'
 
-payload: https://gedcom.io/terms/v5.5.1/type-PHONE_NUMBER
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

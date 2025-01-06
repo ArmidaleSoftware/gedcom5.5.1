@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 using System.Diagnostics;
+using static Gedcom551.Program;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Gedcom551
 {
@@ -170,6 +173,132 @@ namespace Gedcom551
                     GedcomStructureSchema schema = GedcomStructureSchema.AddOrUpdateSchema(combinedLevel, tag, component.PayloadType, component.Cardinality);
                     Debug.Assert(!GedcomStructureSchema.SchemaPath[combinedLevel].Contains(schema));
                     GedcomStructureSchema.SchemaPath[combinedLevel].Add(schema);
+                }
+            }
+        }
+
+        private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
+
+        private static void AddTypeSpecificationLine(string payload, string line)
+        {
+            var schemas = GedcomStructureSchema.GetAllSchemasForPayload(payload);
+
+            // TODO: handle nested references to types.
+            // Debug.Assert(schemas.Count > 0);
+
+            foreach (GedcomStructureSchema schema in schemas)
+            {
+                schema.TypeSpecification.Add(line);
+
+                // Don't change the original payload since there may be more
+                // specification lines to add yet.
+                schema.ActualPayload = schema.HasComplexPayloadType ? schema.OriginalPayload : XsdString;
+                // TODO: try to combine schemas after changing payload.
+                // Maybe we do this after changing lastPayload away from this time?
+            }
+        }
+
+        public static void ParseSpecFile(string specFilename)
+        {
+            SpecSection currentSection = SpecSection.None;
+            string tagPattern = @"(\w+)\s+\{([\w-]+)\}:=";
+            string typePattern = @"(\w+):=\s*{Size=(\d+):(\d+)}";
+            using (StreamReader sr = new StreamReader(specFilename))
+            {
+                string line;
+                int lineNumber = 0;
+                string lastTag = string.Empty;
+                string lastPayload = string.Empty;
+                int lastMin = 0;
+                int lastMax = 0;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    lineNumber++;
+                    line = line.Trim();
+
+                    if (line.StartsWith("Appendix A"))
+                    {
+                        currentSection = SpecSection.AppendixA;
+                        continue;
+                    }
+
+                    if (line.StartsWith("Primitive Elements of the Lineage-Linked Form"))
+                    {
+                        currentSection = SpecSection.PrimitiveElements;
+                        continue;
+                    }
+
+                    // See if we're done.
+                    if (line.StartsWith("Appendix B Latter-day Saints Temple Codes"))
+                    {
+                        lastTag = string.Empty;
+                        currentSection = SpecSection.Done;
+                        break;
+                    }
+
+                    if (currentSection == SpecSection.PrimitiveElements)
+                    {
+                        Match match = Regex.Match(line, typePattern);
+                        if (match.Success)
+                        {
+                            string payload = match.Groups[1].Value;
+                            string min = match.Groups[2].Value;
+                            string max = match.Groups[3].Value;
+                            lastMin = int.Parse(min);
+                            lastMax = int.Parse(max);
+                            lastPayload = payload;
+
+                            int i = line.IndexOf('[');
+                            if (i >= 0)
+                            {
+                                string specLine = line.Substring(i);
+                                AddTypeSpecificationLine(payload, specLine);
+                            }
+                        }
+                        else if (lastPayload != string.Empty)
+                        {
+                            AddTypeSpecificationLine(lastPayload, line);
+                        }
+                    }
+
+                    if (currentSection == SpecSection.AppendixA)
+                    {
+                        Match match = Regex.Match(line, tagPattern);
+                        if (match.Success)
+                        {
+                            string tag = match.Groups[1].Value;
+                            string longname = match.Groups[2].Value;
+                            if (tag == "EMAI")
+                            {
+                                // Work around https://github.com/FamilySearch/GEDCOM/issues/583
+                                tag = "EMAIL";
+                            }
+                            lastTag = tag;
+
+                            var schemas = GedcomStructureSchema.GetAllSchemasForTag(lastTag);
+                            // TODO: handle CONT.
+                            Debug.Assert(lastTag == "CONC" || lastTag == "CONT" || schemas.Count > 0);
+
+                            foreach (GedcomStructureSchema schema in schemas)
+                            {
+                                string label = longname.Replace('_', ' ').ToLower();
+                                string label2 = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(label);
+                                string label3 = label2.Replace("Lds", "LDS");
+                                label3 = label3.Replace("Gedcom", "GEDCOM");
+                                label3 = label3.Replace("Afn", "AFN");
+                                schema.Label = label3;
+                            }
+                        }
+                        else if (lastTag != string.Empty && !string.IsNullOrEmpty(line))
+                        {
+                            string value = line;
+                            var schemas = GedcomStructureSchema.GetAllSchemasForTag(lastTag);
+                            foreach (GedcomStructureSchema schema in schemas)
+                            {
+                                schema.TagSpecification.Add(value);
+                            }
+                        }
+                    }
                 }
             }
         }
