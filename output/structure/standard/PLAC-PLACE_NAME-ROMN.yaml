@@ -10,10 +10,11 @@ standard tag: 'ROMN'
 
 specification:
   - A romanized variation of a superior text string.
+  - The romanized variation of the place name is written in the same form prescribed for the place name used in the superior <PLACE_NAME> context. The method used to romanize the name is indicated by the line_value of the subordinate <ROMANIZED_TYPE>, for example if romaji was used to provide a reading of a place name written in kanji, then the <ROMANIZED_TYPE> subordinate to the ROMN tag would indicate 'romaji'. (See <ROMANIZED_TYPE> page 61.)
 
 label: 'Romanized'
 
-payload: https://gedcom.io/terms/v5.5.1/type-PLACE_ROMANIZED_VARIATION
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/TYPE-ROMANIZED_TYPE": "{1:1}"

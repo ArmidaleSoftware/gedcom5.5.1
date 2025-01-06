@@ -10,10 +10,12 @@ standard tag: 'GIVN'
 
 specification:
   - A given or earned name used for official identification of a person.
+  - [ <NAME_PIECE> | <NAME_PIECE_GIVEN>, <NAME_PIECE> ]
+    Given name or earned name. Different given names are separated by a comma.
 
 label: 'Given Name'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_GIVEN
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

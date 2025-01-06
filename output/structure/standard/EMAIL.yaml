@@ -8,9 +8,13 @@ uri: https://gedcom.io/terms/v5.5.1/EMAIL
 
 standard tag: 'EMAIL'
 
-specification: {}
+specification:
+  - An electronic mail address.
+  - An electronic address that can be used for contact such as an email address.
 
-payload: https://gedcom.io/terms/v5.5.1/type-ADDRESS_EMAIL
+label: 'Email'
+
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

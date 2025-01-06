@@ -10,10 +10,12 @@ standard tag: 'FORM'
 
 specification:
   - An assigned name given to a consistent format in which information can be conveyed.
+  - [ bmp | gif | jpg | ole | pcx | tif | wav ]
+    Indicates the format of the multimedia data associated with the specific GEDCOM context. This allows processors to determine whether they can process the data object. Any linked files should contain the data required, in the indicated format, to process the file data.
 
 label: 'Format'
 
-payload: https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FORMAT
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/MEDI": "{0:1}"

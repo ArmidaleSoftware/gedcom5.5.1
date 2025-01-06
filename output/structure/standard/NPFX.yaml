@@ -12,10 +12,15 @@ specification:
   - Text which appears on a name line before the given and surname parts of a name.
     i.e. (Lt. Cmndr.) Joseph /Allen/ jr.
     In this example Lt. Cmndr. is considered as the name prefix portion.
+  - [ <NAME_PIECE> | <NAME_PIECE_PREFIX>, <NAME_PIECE> ]
+    Non indexing name piece that appears preceding the given name and surname parts. Different name prefix parts are separated by a comma.
+    For example:
+    Lt. Cmndr. Joseph /Allen/ jr.
+    In this example Lt. Cmndr. is considered as the name prefix portion.
 
 label: 'Name Prefix'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_PREFIX
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

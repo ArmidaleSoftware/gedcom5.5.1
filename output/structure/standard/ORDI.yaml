@@ -10,10 +10,12 @@ standard tag: 'ORDI'
 
 specification:
   - Pertaining to a religious ordinance in general.
+  - [ yes | no ]
+    A flag that indicates whether submission should be processed for clearing temple ordinances.
 
 label: 'Ordinance'
 
-payload: https://gedcom.io/terms/v5.5.1/type-ORDINANCE_PROCESS_FLAG
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

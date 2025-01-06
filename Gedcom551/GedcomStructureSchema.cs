@@ -105,7 +105,8 @@ namespace Gedcom551
         GedcomStructureSchema(string sourceProgram, string tag)
         {
             this.StandardTag = tag;
-            this.Specification = new List<string>();
+            this.TagSpecification = new List<string>();
+            this.TypeSpecification = new List<string>();
             this.Substructures = new Dictionary<GedcomStructureSchema, GedcomStructureCountInfo>();
             this.Superstructures = new List<GedcomStructureSchema>();
             this.Lang = string.Empty;
@@ -162,7 +163,8 @@ namespace Gedcom551
         public string RelativeUri => ConstructFinalRelativeUri();
         public string AbsoluteUri => UriPrefix + RelativeUri;
         public string StandardTag { get; private set; }
-        public List<string> Specification { get; private set; }
+        public List<string> TagSpecification { get; private set; }
+        public List<string> TypeSpecification { get; private set; }
         public string Label { get; set; }
         public string OriginalPayload { get; set; }
         public string ActualPayload { get; set; }
@@ -596,18 +598,44 @@ namespace Gedcom551
         }
 #endif
 
-        public void TrimSpecification()
+        public static void TrimSpecification(List<string> specification)
         {
             // Trim any leading blank lines.
-            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[0]))
+            while (specification.Count > 0 && string.IsNullOrEmpty(specification[0]))
             {
-                this.Specification.RemoveAt(0);
+                specification.RemoveAt(0);
             }
 
             // Trim any trailing blank lines.
-            while (this.Specification.Count > 0 && string.IsNullOrEmpty(this.Specification[this.Specification.Count - 1]))
+            while (specification.Count > 0 && string.IsNullOrEmpty(specification[specification.Count - 1]))
             {
-                this.Specification.RemoveAt(this.Specification.Count - 1);
+                specification.RemoveAt(specification.Count - 1);
+            }
+        }
+
+        public static void ShowSpecification(StreamWriter writer, List<string> specification)
+        {
+            int count = 0;
+            List<string> specificationLines = specification.ToList();
+            foreach (string line in specificationLines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    count = 0;
+                    continue;
+                }
+
+                if (count == 0)
+                {
+                    writer.Write("  - ");
+                }
+                else
+                {
+                    writer.Write("    ");
+                }
+
+                writer.WriteLine(line);
+                count++;
             }
         }
 
@@ -633,7 +661,8 @@ namespace Gedcom551
             {
                 var serializer = new YamlSerializer();
                 string relativeUri = schema.RelativeUri;
-                schema.TrimSpecification();
+                TrimSpecification(schema.TagSpecification);
+                TrimSpecification(schema.TypeSpecification);
 
                 string filePath = Path.Combine(path, relativeUri + ".yaml");
                 try
@@ -654,31 +683,13 @@ namespace Gedcom551
                         writer.WriteLine();
 
                         writer.Write("specification:");
-                        if (schema.Specification.Count == 0)
+                        if (schema.TagSpecification.Count + schema.TypeSpecification.Count == 0)
                         {
                             writer.Write(" {}");
                         }
                         writer.WriteLine();
-                        int count = 0;
-                        foreach (var line in schema.Specification)
-                        {
-                            if (count == 0)
-                            {
-                                writer.Write("  - ");
-                            }
-                            else
-                            {
-                                writer.Write("    ");
-                            }
-
-                            if (string.IsNullOrEmpty(line))
-                            {
-                                count = 0;
-                                continue;
-                            }
-                            writer.WriteLine(line);
-                            count++;
-                        }
+                        ShowSpecification(writer, schema.TagSpecification);
+                        ShowSpecification(writer, schema.TypeSpecification);
                         writer.WriteLine();
 
                         if (!string.IsNullOrEmpty(schema.Label))
@@ -693,32 +704,36 @@ namespace Gedcom551
                         {
                             writer.WriteLine("null");
                         }
-                        else if (schema.OriginalPayload == "[Y|<NULL>]")
+                        else if (schema.ActualPayload == "[Y|<NULL>]")
                         {
                             writer.WriteLine("Y|<NULL>");
                         }
-                        else if (schema.OriginalPayload.StartsWith("@<XREF:"))
+                        else if (schema.ActualPayload.StartsWith("@<XREF:"))
                         {
-                            string recordType = schema.OriginalPayload.Substring(7).Trim('@', '>');
+                            string recordType = schema.ActualPayload.Substring(7).Trim('@', '>');
                             writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"");
                         }
-                        else if (schema.OriginalPayload.StartsWith("[@<XREF:") && schema.OriginalPayload.EndsWith(">@|<NULL>]"))
+                        else if (schema.ActualPayload.StartsWith("[@<XREF:") && schema.ActualPayload.EndsWith(">@|<NULL>]"))
                         {
-                            string recordType = schema.OriginalPayload.Substring(8, schema.OriginalPayload.Length - 18);
+                            string recordType = schema.ActualPayload.Substring(8, schema.ActualPayload.Length - 18);
                             writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@|<NULL>\"");
                         }
-                        else if (schema.OriginalPayload.StartsWith("[<") && schema.OriginalPayload.EndsWith(">|<NULL>]"))
+                        else if (schema.ActualPayload.StartsWith("[<") && schema.ActualPayload.EndsWith(">|<NULL>]"))
                         {
-                            string payloadType = schema.OriginalPayload.Substring(2, schema.OriginalPayload.Length - 11);
+                            string payloadType = schema.ActualPayload.Substring(2, schema.ActualPayload.Length - 11);
                             writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + payloadType);
                         }
-                        else if (schema.OriginalPayload.Contains('@') || schema.OriginalPayload.Contains('|'))
+                        else if (schema.ActualPayload.Contains('@') || schema.ActualPayload.Contains('|'))
                         {
                             throw new Exception("Bad payload");
                         }
+                        else if (!schema.ActualPayload.StartsWith("http"))
+                        {
+                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.ActualPayload);
+                        }
                         else
                         {
-                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.OriginalPayload);
+                            writer.WriteLine(schema.ActualPayload);
                         }
                         writer.WriteLine();
 

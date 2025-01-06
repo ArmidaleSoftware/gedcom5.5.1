@@ -10,10 +10,12 @@ standard tag: 'NICK'
 
 specification:
   - A descriptive or familiar that is used instead of, or in addition to, one's proper name.
+  - [ <NAME_PIECE> | <NAME_PIECE_NICKNAME>, <NAME_PIECE> ]
+    A descriptive or familiar name used in connection with one's proper name.
 
 label: 'Nickname'
 
-payload: https://gedcom.io/terms/v5.5.1/type-NAME_PIECE_NICKNAME
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

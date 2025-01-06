@@ -10,10 +10,11 @@ standard tag: 'EDUC'
 
 specification:
   - Indicator of a level of education attained.
+  - A description of a scholastic or educational achievement or pursuit.
 
 label: 'Education'
 
-payload: https://gedcom.io/terms/v5.5.1/type-SCHOLASTIC_ACHIEVEMENT
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"

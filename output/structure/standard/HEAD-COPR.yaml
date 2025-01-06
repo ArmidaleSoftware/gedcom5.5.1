@@ -10,10 +10,11 @@ standard tag: 'COPR'
 
 specification:
   - A statement that accompanies data to protect it from unlawful duplication and distribution.
+  - A copyright statement needed to protect the copyrights of the submitter of this GEDCOM file.
 
 label: 'Copyright'
 
-payload: https://gedcom.io/terms/v5.5.1/type-COPYRIGHT_GEDCOM_FILE
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

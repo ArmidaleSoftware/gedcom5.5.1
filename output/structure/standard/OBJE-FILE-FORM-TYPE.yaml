@@ -10,10 +10,12 @@ standard tag: 'TYPE'
 
 specification:
   - A further qualification to the meaning of the associated superior tag. The value does not have any computer processing reliability. It is more in the form of a short one or two word note that should be displayed any time the associated data is displayed.
+  - [ audio | book | card | electronic | fiche | film | magazine | manuscript | map | newspaper | photo | tombstone | video ]
+    A code, selected from one of the media classifications choices above, that indicates the type of material in which the referenced source is stored.
 
 label: 'Type'
 
-payload: https://gedcom.io/terms/v5.5.1/type-SOURCE_MEDIA_TYPE
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

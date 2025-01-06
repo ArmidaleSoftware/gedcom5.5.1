@@ -10,10 +10,12 @@ standard tag: 'REFN'
 
 specification:
   - A description or number used to identify an item for filing, storage, or other reference purposes.
+  - A user-defined number or text that the submitter uses to identify this record. For instance, it may be a record number within the submitter's automated or manual system, or it may be a page and position
+  - number on a pedigree chart.
 
 label: 'Reference'
 
-payload: https://gedcom.io/terms/v5.5.1/type-USER_REFERENCE_NUMBER
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/REFN-TYPE": "{0:1}"

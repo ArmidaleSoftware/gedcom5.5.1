@@ -10,10 +10,11 @@ standard tag: 'NOTE'
 
 specification:
   - Additional information provided by the submitter for understanding the enclosing data.
+  - A note that a user enters to describe the contents of the lineage-linked file in terms of "ancestors or descendants of" so that the person receiving the data knows what genealogical information the transmission contains.
 
 label: 'Note'
 
-payload: https://gedcom.io/terms/v5.5.1/type-GEDCOM_CONTENT_DESCRIPTION
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 

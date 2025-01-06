@@ -10,10 +10,15 @@ standard tag: 'PLAC'
 
 specification:
   - A jurisdictional name to identify the place or location of an event.
+  - [
+  - <PLACE_TEXT> |
+    <PLACE_TEXT>, <PLACE_NAME>
+    ]
+    The jurisdictional name of the place where the event took place. Jurisdictions are separated by commas, for example, "Cove, Cache, Utah, USA." If the actual jurisdictional names of these places have been identified, they can be shown using a PLAC.FORM structure either in the HEADER or in the event structure. (See <PLACE_HIERARCHY>, page 58.)
 
 label: 'Place'
 
-payload: https://gedcom.io/terms/v5.5.1/type-PLACE_NAME
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/FORM-PLACE_HIERARCHY": "{0:1}"

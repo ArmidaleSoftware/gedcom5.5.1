@@ -10,10 +10,11 @@ standard tag: 'VERS'
 
 specification:
   - Indicates which version of a product, item, or publication is being used or referenced.
+  - An identifier that represents the version level assigned to the associated product. It is defined and changed by the creators of the product.
 
 label: 'Version'
 
-payload: https://gedcom.io/terms/v5.5.1/type-VERSION_NUMBER
+payload: http://www.w3.org/2001/XMLSchema#string
 
 substructures: {}
 
