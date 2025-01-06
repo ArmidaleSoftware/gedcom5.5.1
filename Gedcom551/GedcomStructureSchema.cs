@@ -634,7 +634,14 @@ namespace Gedcom551
                     writer.Write("    ");
                 }
 
-                writer.WriteLine(line);
+                if (line.EndsWith(':'))
+                {
+                    writer.WriteLine("\"" + line + "\"");
+                }
+                else
+                {
+                    writer.WriteLine(line);
+                }
                 count++;
             }
         }

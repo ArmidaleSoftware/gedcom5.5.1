@@ -10,7 +10,7 @@ standard tag: 'SEX'
 
 specification:
   - Indicates the sex of an individual--male or female.
-  - A code that indicates the sex of the individual:
+  - "A code that indicates the sex of the individual:"
     M = Male
     F = Female
     U = Undetermined from available records and quite sure that it can't be.

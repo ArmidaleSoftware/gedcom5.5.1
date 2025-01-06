@@ -17,7 +17,7 @@ specification:
     <DATE_APPROXIMATED>  |
     INT <DATE> (<DATE_PHRASE>) | (<DATE_PHRASE>)
     ]
-  - The DATE_VALUE represents the date of an activity, attribute, or event where:
+  - "The DATE_VALUE represents the date of an activity, attribute, or event where:"
     INT	= Interpreted from knowledge about the associated date phrase included in parentheses.
   - An acceptable alternative to the date phrase choice is to use one of the other choices such as
     <DATE_APPROXIMATED> choice as the DATE line value and then include the date phrase value as a NOTE value subordinate to the DATE line tag.

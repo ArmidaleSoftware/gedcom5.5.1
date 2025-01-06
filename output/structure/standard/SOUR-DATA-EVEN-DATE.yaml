@@ -14,9 +14,9 @@ specification:
     FROM <DATE> | TO <DATE> |
     FROM <DATE> TO <DATE>
     ]
-    Where:
+    "Where:"
     FROM	= Indicates the beginning of a happening or state. TO	= Indicates the ending of a happening or state.
-  - Examples:
+  - "Examples:"
     FROM 1904 to 1915
     = The state of some attribute existed from 1904 to 1915 inclusive.
     FROM 1904

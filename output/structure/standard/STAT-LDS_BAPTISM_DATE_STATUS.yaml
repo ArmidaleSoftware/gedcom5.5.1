@@ -10,8 +10,9 @@ standard tag: 'STAT'
 
 specification:
   - An assessment of the state or condition of something.
-  - STILLBORN | SUBMITTED | UNCLEARED ]
-  - A code indicating the status of an LDS baptism and confirmation date where:
+  - [ CHILD | COMPLETED | EXCLUDED | PRE-1970 |
+    STILLBORN | SUBMITTED | UNCLEARED ]
+  - "A code indicating the status of an LDS baptism and confirmation date where:"
   - CHILD
     =
     Died before becoming eight years old, baptism not required.

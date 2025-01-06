@@ -14,7 +14,7 @@ specification:
     In this example Lt. Cmndr. is considered as the name prefix portion.
   - [ <NAME_PIECE> | <NAME_PIECE_PREFIX>, <NAME_PIECE> ]
     Non indexing name piece that appears preceding the given name and surname parts. Different name prefix parts are separated by a comma.
-    For example:
+    "For example:"
     Lt. Cmndr. Joseph /Allen/ jr.
     In this example Lt. Cmndr. is considered as the name prefix portion.
 

@@ -10,7 +10,8 @@ standard tag: 'ADOP'
 
 specification:
   - Pertaining to creation of a legally approved child-parent relationship that does not exist biologically.
-  - A code which shows which parent in the associated family record adopted this person. Where:
+  - [ HUSB | WIFE | BOTH ]
+    "A code which shows which parent in the associated family record adopted this person. Where:"
     HUSB		= The HUSBand in the associated family adopted this person. WIFE	= The WIFE in the associated family adopted this person.
     BOTH	= Both HUSBand and WIFE adopted this person.
 

@@ -10,7 +10,8 @@ standard tag: 'STAT'
 
 specification:
   - An assessment of the state or condition of something.
-  - STILLBORN | SUBMITTED | UNCLEARED ]
+  - [ BIC | COMPLETED | EXCLUDED | DNS | PRE-1970 |
+    STILLBORN | SUBMITTED | UNCLEARED ]
   - BIC
     EXCLUDED
     =

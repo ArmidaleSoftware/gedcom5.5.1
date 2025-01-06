@@ -179,6 +179,25 @@ namespace Gedcom551
 
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
 
+        private static void AddTypeSpecificationLine(string payload, string line)
+        {
+            var schemas = GedcomStructureSchema.GetAllSchemasForPayload(payload);
+
+            // TODO: handle nested references to types.
+            // Debug.Assert(schemas.Count > 0);
+
+            foreach (GedcomStructureSchema schema in schemas)
+            {
+                schema.TypeSpecification.Add(line);
+
+                // Don't change the original payload since there may be more
+                // specification lines to add yet.
+                schema.ActualPayload = XsdString;
+                // TODO: try to combine schemas after changing payload.
+                // Maybe we do this after changing lastPayload away from this time?
+            }
+        }
+
         public static void ParseSpecFile(string specFilename)
         {
             SpecSection currentSection = SpecSection.None;
@@ -228,25 +247,17 @@ namespace Gedcom551
                             lastMin = int.Parse(min);
                             lastMax = int.Parse(max);
                             lastPayload = payload;
+
+                            int i = line.IndexOf('[');
+                            if (i >= 0)
+                            {
+                                string specLine = line.Substring(i);
+                                AddTypeSpecificationLine(payload, specLine);
+                            }
                         }
                         else if (lastPayload != string.Empty)
                         {
-                            string value = line;
-                            var schemas = GedcomStructureSchema.GetAllSchemasForPayload(lastPayload);
-
-                            // TODO: handle nested references to types.
-                            // Debug.Assert(schemas.Count > 0);
-
-                            foreach (GedcomStructureSchema schema in schemas)
-                            {
-                                schema.TypeSpecification.Add(value);
-
-                                // Don't change the original payload since there may be more
-                                // specification lines to add yet.
-                                schema.ActualPayload = XsdString;
-                                // TODO: try to combine schemas after changing payload.
-                                // Maybe we do this after changing lastPayload away from this time?
-                            }
+                            AddTypeSpecificationLine(lastPayload, line);
                         }
                     }
 

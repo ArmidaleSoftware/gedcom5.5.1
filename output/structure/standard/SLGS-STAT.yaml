@@ -10,7 +10,8 @@ standard tag: 'STAT'
 
 specification:
   - An assessment of the state or condition of something.
-  - DNS/CAN | PRE-1970 | SUBMITTED | UNCLEARED ]
+  - [ CANCELED | COMPLETED | DNS | EXCLUDED |
+    DNS/CAN | PRE-1970 | SUBMITTED | UNCLEARED ]
   - CANCELED	= Canceled and considered invalid. COMPLETED =	Completed but the date is not known.
     EXCLUDED	= Patron excluded this ordinance from being cleared in this submission. DNS	= This ordinance is not authorized.
     DNS/CAN	= This ordinance is not authorized, previous sealing cancelled.
@@ -18,7 +19,7 @@ specification:
     UNCLEARED =	Data for clearing ordinance request was insufficient.
   - MONTH:=	{Size=3}
     [ JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC ]
-    Where:
+    "Where:"
     JAN
     =
     January
@@ -57,7 +58,7 @@ specification:
     December
   - MONTH_FREN:=	{Size=4}
     [ VEND | BRUM | FRIM | NIVO | PLUV | VENT | GERM | FLOR | PRAI | MESS | THER | FRUC | COMP ]
-  - Where:
+  - "Where:"
   - VEND
     =
     VENDEMIAIRE
@@ -99,7 +100,7 @@ specification:
     JOUR_COMPLEMENTAIRS
   - MONTH_HEBR:=	{Size=3}
     [ TSH | CSH | KSL | TVT | SHV | ADR | ADS | NSN | IYR | SVN | TMZ | AAV | ELL ]
-  - Where:
+  - "Where:"
   - TSH
     =
     Tishri
