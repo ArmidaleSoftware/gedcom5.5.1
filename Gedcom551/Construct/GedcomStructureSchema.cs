@@ -64,6 +64,10 @@ namespace Gedcom551.Construct
                     {
                         return true;
                     }
+                    if (line.StartsWith('<'))
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }
