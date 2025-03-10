@@ -1,12 +1,20 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 using System.Diagnostics;
-using static Gedcom551.Program;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Data;
 
-namespace Gedcom551
+namespace Gedcom551.Constructed
 {
+    public enum SpecSection
+    {
+        None = 0,
+        PrimitiveElements,
+        AppendixA,
+        Done,
+    }
+
     public class GedcomFileSchema
     {
         Dictionary<string, SymbolDefinition> symbols = new Dictionary<string,SymbolDefinition>();
@@ -14,7 +22,7 @@ namespace Gedcom551
         
         void ProcessInputLine(string line)
         {
-            if ((currentSymbolDefinition == null) && !line.StartsWith('~'))
+            if (currentSymbolDefinition == null && !line.StartsWith('~'))
             {
                 // Skip any lines before the first symbol definition.
                 return;
@@ -155,7 +163,7 @@ namespace Gedcom551
                 string input = component.TagOrSymbolReference;
                 // Remove '[' from the beginning and ']' from the end if present.
                 string trimmedInput = input.Trim('[', ']');
-                // Split the string using '|' as the separator
+                // Split the string using '|' as the separator.
                 string[] result = trimmedInput.Split('|');
                 GedcomStructureSchema.SchemaPath[combinedLevel] = new List<GedcomStructureSchema>();
                 for (int i = combinedLevel + 1; i < GedcomStructureSchema.SchemaPath.Length; i++)
@@ -180,6 +188,35 @@ namespace Gedcom551
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
         private const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
 
+        private static bool IsAliasLine(GedcomStructureSchema schema, string line)
+        {
+            // Any alias lines must come before any English text lines.
+            if (!schema.TypeSpecification.Any())
+            {
+                if (line.StartsWith("<") || line.StartsWith("["))
+                {
+                    return true;
+                }
+
+                // It's also an alias continuation if we have a mismatched number of []
+                // in the previous alias lines.
+                int opens = 0;
+                int closes = 0;
+                foreach (string aliasLine in schema.AliasSpecification)
+                {
+                    opens += aliasLine.Count(c => c == '[');
+                    closes += aliasLine.Count(c => c == ']');
+                }
+                Debug.Assert(opens >= closes);
+                if (opens > closes)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static void AddTypeSpecificationLine(string payload, string line)
         {
             var schemas = GedcomStructureSchema.GetAllSchemasForPayload(payload);
@@ -189,15 +226,24 @@ namespace Gedcom551
 
             foreach (GedcomStructureSchema schema in schemas)
             {
-                schema.TypeSpecification.Add(line);
-
-                string primitiveType = schema.HasIntegerPayloadType ? XsdNonNegativeInteger : XsdString;
+                // Some types may be aliases...
+                if (IsAliasLine(schema, line))
+                {
+                    schema.AliasSpecification.Add(line);
+                }
+                else
+                {
+                    schema.TypeSpecification.Add(line);
+                }
 
                 // Don't change the original payload since there may be more
                 // specification lines to add yet.
+#if false
+                string primitiveType = schema.HasIntegerPayloadType ? XsdNonNegativeInteger : XsdString;
                 schema.ActualPayload = schema.HasComplexPayloadType ? schema.OriginalPayload : primitiveType;
                 // TODO: try to combine schemas after changing payload.
                 // Maybe we do this after changing lastPayload away from this time?
+#endif
             }
         }
 
@@ -254,6 +300,7 @@ namespace Gedcom551
                             int i = line.IndexOf('[');
                             if (i >= 0)
                             {
+                                // Alternatives are listed later on the same line after the size.
                                 string specLine = line.Substring(i);
                                 AddTypeSpecificationLine(payload, specLine);
                             }

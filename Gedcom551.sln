@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcom551", "Gedcom551\Gedc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{74292443-48D8-4415-A7D4-C59352F77F64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GedValidate", "GedValidate\GedValidate.csproj", "{C2E7E5D5-CCF4-4432-A4B4-BECE82721593}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcom551Construct", "Gedcom551Construct\Gedcom551Construct.csproj", "{EF99E9AA-1761-4E66-BCC5-C3DBB2BDB68E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,19 @@ Global
 		{74292443-48D8-4415-A7D4-C59352F77F64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74292443-48D8-4415-A7D4-C59352F77F64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74292443-48D8-4415-A7D4-C59352F77F64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2E7E5D5-CCF4-4432-A4B4-BECE82721593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2E7E5D5-CCF4-4432-A4B4-BECE82721593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2E7E5D5-CCF4-4432-A4B4-BECE82721593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2E7E5D5-CCF4-4432-A4B4-BECE82721593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF99E9AA-1761-4E66-BCC5-C3DBB2BDB68E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF99E9AA-1761-4E66-BCC5-C3DBB2BDB68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF99E9AA-1761-4E66-BCC5-C3DBB2BDB68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF99E9AA-1761-4E66-BCC5-C3DBB2BDB68E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0F1943ED-73BE-440B-B3DB-1A67DCAE04E1}
 	EndGlobalSection
 EndGlobal

@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
-using Gedcom551;
+using Gedcom551.Constructed;
 
 namespace Tests
 {
     [TestClass]
 
-    public class SchemaTests
+    public class ConstructSchemaTests
     {
         private static GedcomFileSchema? fileSchema;
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
@@ -82,7 +82,7 @@ namespace Tests
             Debug.Assert(schema.Superstructures.Count > 0);
             if (expectedPayload != null)
             {
-                Debug.Assert(schema.ActualPayload == expectedPayload);
+                Debug.Assert(schema.EffectivePayload == expectedPayload);
             }
             return schema;
         }
@@ -114,7 +114,7 @@ namespace Tests
 
             if (expectedPayload != null)
             {
-                Debug.Assert(schema.ActualPayload == expectedPayload);
+                Debug.Assert(schema.EffectivePayload == expectedPayload);
             }
 
             return schema;
@@ -153,7 +153,6 @@ namespace Tests
         [TestMethod]
         public void TestNameFone()
         {
-            // TODO: change this to ("NAME", "FONE")
             VerifyQualifiedTag("INDI-NAME", "FONE");
         }
 
