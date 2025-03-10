@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
-using Gedcom551;
+using Gedcom551.Construct;
 using System;
 using System.Collections.Generic;
 using System.IO;

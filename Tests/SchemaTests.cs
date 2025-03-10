@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
-using Gedcom551;
+using Gedcom551.Construct;
 
 namespace Tests
 {

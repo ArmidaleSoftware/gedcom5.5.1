@@ -1,12 +1,19 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 using System.Diagnostics;
-using static Gedcom551.Program;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Gedcom551
+namespace Gedcom551.Construct
 {
+    public enum SpecSection
+    {
+        None = 0,
+        PrimitiveElements,
+        AppendixA,
+        Done,
+    }
+
     public class GedcomFileSchema
     {
         Dictionary<string, SymbolDefinition> symbols = new Dictionary<string,SymbolDefinition>();
@@ -14,7 +21,7 @@ namespace Gedcom551
         
         void ProcessInputLine(string line)
         {
-            if ((currentSymbolDefinition == null) && !line.StartsWith('~'))
+            if (currentSymbolDefinition == null && !line.StartsWith('~'))
             {
                 // Skip any lines before the first symbol definition.
                 return;
