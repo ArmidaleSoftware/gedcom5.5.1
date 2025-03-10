@@ -1,18 +1,10 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 
-namespace Gedcom551
+namespace Gedcom551.Construct
 {
     public class Program
     {
-        public enum SpecSection
-        {
-            None = 0,
-            PrimitiveElements,
-            AppendixA,
-            Done,
-        }
-
         public static void Main(string[] args)
         {
             string schemaFilename = "ged.5.5.1.txt";
