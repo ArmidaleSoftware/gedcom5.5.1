@@ -1,7 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright (c) Armidale Software
+// SPDX-License-Identifier: MIT
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using Gedcom551.Construct;
+using System.IO;
+using System.Linq;
 
 namespace Tests
 {
