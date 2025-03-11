@@ -1,7 +1,11 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Yaml.Serialization;
 
 namespace Gedcom551.Construct
@@ -11,7 +15,7 @@ namespace Gedcom551.Construct
         public bool Required; // True: Minimum = 1, False: Minimum = 0.
         public bool Singleton; // True: Maximum = 1, False: Maximum = M.
         public int FixedMax; // 0: no arbitrary max, non-zero: arbitrary max.
-        public string Cardinality => "{" + (Required? "1" : "0") + ":" + (Singleton? "1" : FixedMax > 0 ? FixedMax : "M") + "}";
+        public string Cardinality => "{" + (Required? "1" : "0") + ":" + (Singleton? "1" : FixedMax > 0 ? FixedMax.ToString() : "M") + "}";
         public override string ToString() => Cardinality;
         public bool Matches(GedcomStructureCountInfo other) => Cardinality == other.Cardinality;
         public static GedcomStructureCountInfo FromCardinality(string cardinality)

@@ -1,7 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright (c) Armidale Software
+// SPDX-License-Identifier: MIT
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using Gedcom551.Construct;
+using System.IO;
+using System.Linq;
 
 namespace Tests
 {
@@ -16,8 +20,8 @@ namespace Tests
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
-            // TODO: don't hard-code path.
-            string directory = "C:\\Users\\dthal\\git\\ArmidaleSoftware\\Gedcom551\\input\\";
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string directory = Path.Combine(baseDirectory, "../../../../input/");
 
             string sourceFile = Path.Combine(directory, "ged.5.5.1.txt");
             fileSchema = new GedcomFileSchema(sourceFile);

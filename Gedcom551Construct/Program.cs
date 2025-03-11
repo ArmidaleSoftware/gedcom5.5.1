@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
 
+using System;
+using System.IO;
+
 namespace Gedcom551.Construct
 {
     public class Program
