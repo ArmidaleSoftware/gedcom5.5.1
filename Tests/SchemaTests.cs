@@ -20,8 +20,8 @@ namespace Tests
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
-            // TODO: don't hard-code path.
-            string directory = "C:\\Users\\dthal\\git\\ArmidaleSoftware\\Gedcom551\\input\\";
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string directory = Path.Combine(baseDirectory, "../../../../input/");
 
             string sourceFile = Path.Combine(directory, "ged.5.5.1.txt");
             fileSchema = new GedcomFileSchema(sourceFile);
