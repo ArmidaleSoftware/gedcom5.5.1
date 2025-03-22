@@ -256,6 +256,9 @@ namespace Gedcom551.Constructed
         /// </summary>
         public string OriginalPayload { get; set; }
 
+        public static readonly string XsdString = "http://www.w3.org/2001/XMLSchema#string";
+        public static readonly string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
+
         /// <summary>
         /// Payload as it should appear in a YAML file, after recursively
         /// resolving any aliases.
@@ -276,6 +279,10 @@ namespace Gedcom551.Constructed
                     Debug.Assert(others.Count == 1);
                     GedcomStructureSchema other = others.First();
                     return other.EffectivePayload;
+                }
+                if (HasIntegerPayloadType)
+                {
+                    return XsdNonNegativeInteger;
                 }
                 return payload;
             }

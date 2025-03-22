@@ -10,8 +10,6 @@ namespace Tests
     public class ConstructSchemaTests
     {
         private static GedcomFileSchema? fileSchema;
-        private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
-        private const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
@@ -86,6 +84,9 @@ namespace Tests
             }
             return schema;
         }
+
+        private string XsdString => GedcomStructureSchema.XsdString;
+        private string XsdNonNegativeInteger => GedcomStructureSchema.XsdNonNegativeInteger;
 
         /// <summary>
         /// Test cases where the tag is unique across all non-record structures.
