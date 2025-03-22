@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Gedcom551
@@ -55,7 +52,7 @@ namespace Gedcom551
         static int ShowHelp()
         {
             Console.WriteLine("usage: GedValidate <gedcomRegistriesPath> <filename>");
-            Console.WriteLine("          to check a file as being a valid FamilySearch GEDCOM 7 or GEDZIP file");
+            Console.WriteLine("          to check a file as being a FamilySearch GEDCOM 5.5.1 file");
             Console.WriteLine("          <gedcomRegistriesPath> must be a local path to the GEDCOM-registries repository");
             return 1;
         }
@@ -69,7 +66,7 @@ namespace Gedcom551
 
             string gedcomRegistriesPath = args[0];
             string sourcePath = args[1];
-            string searchPattern = @"(?i).*\.(ged|gdz)$"; // Case-insensitive regex pattern for .ged or .gdz files
+            string searchPattern = @"(?i).*\.ged$"; // Case-insensitive regex pattern for .ged or .gdz files
 
             try
             {
