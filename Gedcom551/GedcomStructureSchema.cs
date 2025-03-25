@@ -236,15 +236,16 @@ namespace Gedcom551
         /// </summary>
         /// <param name="sourceProgram">source program string, or null for wildcard</param>
         /// <param name="superstructureUri">superstructure URI, or null for wildcard</param>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        public static GedcomStructureSchema GetSchema(string sourceProgram, string superstructureUri, string tag)
+        /// <param name="tag">GEDCOM tag</param>
+        /// <param name="isPointer">True if payload is a pointer</param>
+        /// <returns>Schema object</returns>
+        public static GedcomStructureSchema GetSchema(string sourceProgram, string superstructureUri, string tag, bool isPointer)
         {
             // First look for a schema with a wildcard source program.
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SuperstructureUri = superstructureUri;
             structureSchemaKey.Tag = tag;
-            structureSchemaKey.IsPointer = false;
+            structureSchemaKey.IsPointer = isPointer;
             if (s_StructureSchemas.ContainsKey(structureSchemaKey))
             {
                 return s_StructureSchemas[structureSchemaKey];

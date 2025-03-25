@@ -19,11 +19,11 @@ namespace Tests
         public void LoadStructureSchema()
         {
             GedcomStructureSchema.LoadAll();
-            var schema = GedcomStructureSchema.GetSchema(null, GedcomStructureSchema.RecordSuperstructureUri, "HEAD");
+            var schema = GedcomStructureSchema.GetSchema(null, GedcomStructureSchema.RecordSuperstructureUri, "HEAD", false);
             Assert.AreEqual(schema?.Uri, "https://gedcom.io/terms/v5.5.1/HEAD");
-            schema = GedcomStructureSchema.GetSchema(null, "https://gedcom.io/terms/v5.5.1/SOUR-DATA-EVEN", "DATE");
+            schema = GedcomStructureSchema.GetSchema(null, "https://gedcom.io/terms/v5.5.1/SOUR-DATA-EVEN", "DATE", false);
             Assert.AreEqual(schema?.Uri, "https://gedcom.io/terms/v5.5.1/SOUR-DATA-EVEN-DATE");
-            schema = GedcomStructureSchema.GetSchema(null, "https://gedcom.io/terms/v5.5.1/HEAD", "DATE");
+            schema = GedcomStructureSchema.GetSchema(null, "https://gedcom.io/terms/v5.5.1/HEAD", "DATE", false);
             Assert.AreEqual(schema?.Uri, "https://gedcom.io/terms/v5.5.1/HEAD-DATE");
         }
 
@@ -36,8 +36,12 @@ namespace Tests
             {
                 errors.AddRange(file.Validate());
             }
-            var intersect = errors.Intersect(expected_errors);
-            Assert.AreEqual(intersect.Count(), errors.Count());
+            Assert.AreEqual(expected_errors?.Length ?? 0, errors.Count());
+            if (expected_errors != null)
+            {
+                var intersect = errors.Intersect(expected_errors);
+                Assert.AreEqual(intersect.Count(), errors.Count());
+            }
         }
 
         public static void ValidateGedcomText(string text, string expected_result = null)
@@ -122,6 +126,18 @@ namespace Tests
                 "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
                 "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
             });
+        }
+
+        [TestMethod]
+        public void ValidateFileCharAscii1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileCharAscii2()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_2.ged"));
         }
 
         [TestMethod]

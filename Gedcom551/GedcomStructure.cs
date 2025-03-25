@@ -61,7 +61,34 @@ namespace Gedcom551
                 _tag = value;
                 string sourceProgram = this.File.SourceProduct?.LineVal;
                 string superstructureUri = (this.Level == 0) ? GedcomStructureSchema.RecordSuperstructureUri : this.Superstructure?.Schema?.Uri;
-                this.Schema = GedcomStructureSchema.GetSchema(sourceProgram, superstructureUri, value);
+
+                string[] tokens = OriginalLine.Split(' ');
+                int index = 0;
+                GedcomVersion gedcomVersion = this.File.GedcomVersion;
+                if (gedcomVersion != GedcomVersion.V70)
+                {
+                    // Prior to GEDCOM 7, leading whitespace was allowed.
+                    while (tokens[index].Length == 0)
+                    {
+                        index++;
+                    }
+                }
+
+                // Skip level.
+                index++;
+
+                if ((tokens.Length > index) && (tokens[index].Length > 0) && (tokens[index][0] == '@'))
+                {
+                    // Skip Xref.
+                    index++;
+                }
+
+                // Skip tag.
+                index++;
+
+                bool isPointer = (tokens.Length > index) && (tokens[index].Length > 0) && (tokens[index][0] == '@');
+
+                this.Schema = GedcomStructureSchema.GetSchema(sourceProgram, superstructureUri, value, isPointer);
             }
         }
         public bool IsExtensionTag => (this.Tag.Length > 0) && (this.Tag[0] == '_');
@@ -765,6 +792,19 @@ namespace Gedcom551
                         if (!IsValidName(this.LineVal))
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid name");
+                        }
+                        break;
+                    // TODO(#4): handle some GEDCOM 5.5.1 enum types.
+                    case "https://gedcom.io/terms/v5.5.1/type-GEDCOM_FORM":
+                        if (this.LineVal != "LINEAGE-LINKED")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
+                    case "https://gedcom.io/terms/v5.5.1/type-CHARACTER_SET":
+                        if (this.LineVal != "ANSEL" && this.LineVal != "UTF-8" && this.LineVal != "UNICODE" && this.LineVal != "ASCII")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                         }
                         break;
                     case "https://gedcom.io/terms/v7/type-Enum":
