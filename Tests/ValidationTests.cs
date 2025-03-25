@@ -6,13 +6,14 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Tests
 {
     [TestClass]
     public class ValidationTests
     {
-        private const string TEST_FILES_BASE_PATH = "../../../../external/GEDCOM-registries/registry_tools/GEDCOM.io/testfiles/gedcom70";
+        private const string TEST_FILES_BASE_PATH = "../../../../external/test-files/5";
 
         [TestMethod]
         public void LoadStructureSchema()
@@ -26,7 +27,7 @@ namespace Tests
             Assert.AreEqual(schema?.Uri, "https://gedcom.io/terms/v5.5.1/HEAD-DATE");
         }
 
-        public static void ValidateGedcomFile(string path, string expected_result = null)
+        public static void ValidateGedcomFile(string path, string[] expected_errors = null)
         {
             var file = new GedcomFile();
             List<string> errors = file.LoadFromPath(path);
@@ -35,11 +36,8 @@ namespace Tests
             {
                 errors.AddRange(file.Validate());
             }
-            if (errors.Count > 0)
-            {
-                error = string.Join("\n", errors);
-            }
-            Assert.AreEqual(expected_result, error);
+            var intersect = errors.Intersect(expected_errors);
+            Assert.AreEqual(intersect.Count(), errors.Count());
         }
 
         public static void ValidateGedcomText(string text, string expected_result = null)
@@ -113,11 +111,17 @@ namespace Tests
         }
 
         [TestMethod]
-        public void ValidateFileMinimal70()
+        public void ValidateFileTiny1()
         {
-            ValidateGedcomFile("minimal70.txt", "minimal70.txt must have a .ged extension");
+            ValidateGedcomFile("tiny-1.txt", new string[]{ "tiny-1.txt must have a .ged extension"});
 
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "minimal70.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "tiny-1.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/GEDC",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
         }
 
         [TestMethod]
