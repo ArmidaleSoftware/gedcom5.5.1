@@ -202,7 +202,7 @@ namespace Gedcom551
             if (gedcomRegistriesPath == null)
             {
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                gedcomRegistriesPath = Path.Combine(baseDirectory, "../../../../../gedcom7/external/GEDCOM-registries");
+                gedcomRegistriesPath = Path.Combine(baseDirectory, "../../../../output");
             }
             var path = Path.Combine(gedcomRegistriesPath, "structure/standard");
             string[] files = Directory.GetFiles(path);
