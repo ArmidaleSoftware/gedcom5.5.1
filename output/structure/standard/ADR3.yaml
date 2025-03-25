@@ -9,7 +9,10 @@ uri: https://gedcom.io/terms/v5.5.1/ADR3
 standard tag: 'ADR3'
 
 specification:
+  - The third line of an address.
   - The third line of the address used for indexing. This is the value of the second CONT line subordinate to the ADDR tag in the address structure.
+
+label: 'Address3'
 
 payload: http://www.w3.org/2001/XMLSchema#string
 

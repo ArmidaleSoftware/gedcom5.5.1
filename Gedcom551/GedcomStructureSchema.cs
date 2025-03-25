@@ -13,10 +13,10 @@ namespace Gedcom551
     public struct GedcomStructureCountInfo
     {
         public bool Required; // True: Minimum = 1, False: Minimum = 0.
-        public bool Singleton; // True: Maximum = 1, False: Maximum = M.
+        public int Maximum; // 1, 3, int.MaxValue
         public override string ToString()
         {
-            return "{" + (Required ? "1" : "0") + ":" + (Singleton ? "1" : "M") + "}";
+            return "{" + (Required ? "1" : "0") + ":" + (Maximum == int.MaxValue ? "M" : Maximum.ToString()) + "}";
         }
     }
     public struct GedcomStructureSchemaKey
@@ -24,6 +24,9 @@ namespace Gedcom551
         public string SourceProgram; // null (wildcard) for standard tags.
         public string SuperstructureUri; // null (wildcard) for undocumented extensions, "-" for records.
         public string Tag;
+
+        // GEDCOM 5.5.1 can have two URIs per superstructure+tag pair, one for a pointer and a non-pointer.
+        public bool IsPointer;
         public override string ToString()
         {
             return SourceProgram + "|" + SuperstructureUri + "|" + Tag;
@@ -52,22 +55,27 @@ namespace Gedcom551
                     if (value == "{0:1}")
                     {
                         info.Required = false;
-                        info.Singleton = true;
+                        info.Maximum = 1;
                     }
                     else if (value == "{1:1}")
                     {
                         info.Required = true;
-                        info.Singleton = true;
+                        info.Maximum = 1;
                     }
                     else if (value == "{0:M}")
                     {
                         info.Required = false;
-                        info.Singleton = false;
+                        info.Maximum = int.MaxValue;
                     }
                     else if (value == "{1:M}")
                     {
                         info.Required = true;
-                        info.Singleton = false;
+                        info.Maximum = int.MaxValue;
+                    }
+                    else if (value == "{0:3}")
+                    {
+                        info.Required = false;
+                        info.Maximum = 3;
                     }
                     else
                     {
@@ -148,6 +156,7 @@ namespace Gedcom551
             structureSchemaKey.SourceProgram = sourceProgram;
             structureSchemaKey.SuperstructureUri = superstructureUri;
             structureSchemaKey.Tag = tag;
+            structureSchemaKey.IsPointer = (schema.Payload != null) && schema.Payload.StartsWith('@');
             Debug.Assert(!s_StructureSchemas.ContainsKey(structureSchemaKey));
             s_StructureSchemas[structureSchemaKey] = schema;
         }
@@ -160,10 +169,11 @@ namespace Gedcom551
         /// <param name="uri">Structure URI</param>
         public static void AddSchema(string sourceProgram, string tag, string uri)
         {
-            GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
+            var structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SourceProgram = sourceProgram;
             // Leave SuperstructureUri as null for a wildcard.
             structureSchemaKey.Tag = tag;
+            structureSchemaKey.IsPointer = false;
 
             // The spec says:
             //    "The schema structure may contain the same tag more than once with different URIs.
@@ -234,6 +244,7 @@ namespace Gedcom551
             GedcomStructureSchemaKey structureSchemaKey = new GedcomStructureSchemaKey();
             structureSchemaKey.SuperstructureUri = superstructureUri;
             structureSchemaKey.Tag = tag;
+            structureSchemaKey.IsPointer = false;
             if (s_StructureSchemas.ContainsKey(structureSchemaKey))
             {
                 return s_StructureSchemas[structureSchemaKey];

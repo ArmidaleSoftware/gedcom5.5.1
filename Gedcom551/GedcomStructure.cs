@@ -218,12 +218,19 @@ namespace Gedcom551
                 {
                     // Missing required substructure.
                     errors.Add(ErrorMessage(this.Tag + " is missing a substructure of type " + uri));
+                    continue;
                 }
-                if (countInfo.Singleton && foundCount.ContainsKey(uri) &&
+                if ((countInfo.Maximum == 1) && foundCount.ContainsKey(uri) &&
                     (foundCount[uri] > 1))
                 {
                     // Contains multiple when only a singleton is permitted.
                     errors.Add(ErrorMessage(this.Tag + " does not permit multiple substructures of type " + uri));
+                    continue;
+                }
+                if (foundCount.ContainsKey(uri) && foundCount[uri] > countInfo.Maximum)
+                {
+                    errors.Add(ErrorMessage(this.Tag + " has too many substructures of type " + uri));
+                    continue;
                 }
             }
 

@@ -36,7 +36,16 @@ namespace Gedcom551
                 return;
             }
             var path = Path.Combine(gedcomRegistriesPath, "month/standard");
-            string[] files = Directory.GetFiles(path);
+            string[] files;
+            try
+            {
+                files = Directory.GetFiles(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
             foreach (string filename in files)
             {
                 var serializer = new YamlSerializer();

@@ -50,7 +50,16 @@ namespace Gedcom551
             }
             MonthSchema.LoadAll(gedcomRegistriesPath);
             var path = Path.Combine(gedcomRegistriesPath, "calendar/standard");
-            string[] files = Directory.GetFiles(path);
+            string[] files;
+            try
+            {
+                files = Directory.GetFiles(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
             foreach (string filename in files)
             {
                 var serializer = new YamlSerializer();
