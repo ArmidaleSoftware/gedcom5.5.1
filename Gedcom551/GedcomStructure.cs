@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
 namespace Gedcom551
@@ -656,6 +659,10 @@ namespace Gedcom551
                 if ((tokens.Length > index) && (tokens[index].Length > 0) && (tokens[index][0] == '@'))
                 {
                     this.Xref = tokens[index++];
+                    if (!this.Xref.EndsWith('@') && (tokens.Length > index) && tokens[index].EndsWith('@')) {
+                        // GEDCOM 5.5.1 permits space inside Xref.
+                        this.Xref += " " + tokens[index++];
+                    }
                     if ((this.Xref.Length < 3) || !this.Xref.EndsWith('@'))
                     {
                         return ErrorMessage("Xref must start and end with @");
@@ -753,6 +760,8 @@ namespace Gedcom551
                             return ErrorMessage(this.Tag + " payload must be 'Y' or empty");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-NAME_TYPE": // TODO
+                    case "https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT": // TODO
                     case "http://www.w3.org/2001/XMLSchema#string":
                         if ((this.Schema.Uri == "https://gedcom.io/terms/v7/TAG") && (tokens.Length > 3))
                         {
@@ -805,6 +814,32 @@ namespace Gedcom551
                         if (this.LineVal != "ANSEL" && this.LineVal != "UTF-8" && this.LineVal != "UNICODE" && this.LineVal != "ASCII")
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
+                    case "https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FORMAT":
+                        if (this.LineVal != "bmp" && this.LineVal != "gif" && this.LineVal != "jpg" && this.LineVal != "ole" && this.LineVal != "pcx" && this.LineVal != "tif" && this.LineVal != "wav")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
+                    case "https://gedcom.io/terms/v5.5.1/type-PEDIGREE_LINKAGE_TYPE":
+                        if (this.LineVal != "adopted" && this.LineVal != "birth" && this.LineVal != "foster" && this.LineVal != "sealing")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
+                    case "https://gedcom.io/terms/v5.5.1/type-NAME_PERSONAL":
+                        if (this.LineVal.Count(c => c == '/') > 2)
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        {
+                            string charactersToCheck = ",1234567890";
+                            char[] charArray = charactersToCheck.ToCharArray();
+                            if (this.LineVal.IndexOfAny(charArray) != -1)
+                            {
+                                return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                            }
                         }
                         break;
                     case "https://gedcom.io/terms/v7/type-Enum":

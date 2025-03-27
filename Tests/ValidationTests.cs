@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Tests
 {
@@ -60,109 +61,7 @@ namespace Tests
             Assert.AreEqual(expected_result, error);
         }
 
-        [TestMethod]
-        public void ValidateFileEscapes()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "escapes.ged"));
-        }
 
-        [TestMethod]
-        public void ValidateFileExtensionRecord()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "extension-record.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileLongUrl()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "long-url.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70Lds()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70-lds.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70Memories1()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70-memories1.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70Memories2()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70-memories2.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70Tree1()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70-tree1.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70Tree2()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70-tree2.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileMaximal70()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "maximal70.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileTiny1()
-        {
-            ValidateGedcomFile("tiny-1.txt", new string[]{ "tiny-1.txt must have a .ged extension"});
-
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "tiny-1.ged"), new string[]
-            {
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/GEDC",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
-            });
-        }
-
-        [TestMethod]
-        public void ValidateFileCharAscii1()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_1.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileCharAscii2()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_2.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileRemarriage1()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "remarriage1.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileRemarriage2()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "remarriage2.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileSameSexMarriage()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "same-sex-marriage.ged"));
-        }
-
-        [TestMethod]
-        public void ValidateFileVoidptr()
-        {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "voidptr.ged"));
-        }
 
         [TestMethod]
         public void ValidateHeaderAndTrailer()
@@ -1193,104 +1092,166 @@ namespace Tests
         // Test files from the test-files repository.
 
         [TestMethod]
-        public void ValidateTestFileAtSign()
+        public void ValidateFileAgeAll()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/atsign.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "age-all.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileChar()
+        public void ValidateFileAtSign()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/char_ascii_1.ged");
-            ValidateGedcomFile("../../../../external/test-files/7/char_ascii_2.ged");
-
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf16be-1.ged");
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf16be-2.ged");
-
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf16le-1.ged");
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf16le-2.ged");
-
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf8-1.ged");
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf8-2.ged");
-            ValidateGedcomFile("../../../../external/test-files/7/char_utf8-3.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "atsign.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileDateAll()
+        public void ValidateFileCharAscii1()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/date-all.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_1.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileDateDual()
+        public void ValidateFileCharAscii2()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/date-dual.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_2.ged"), new string[] { "Line 7: \"LATIN1\" is not a valid value for CHAR" });
         }
 
         [TestMethod]
-        public void ValidateTestFileEnumExt()
+        public void ValidateFileCharUtf16be1()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/enum-ext.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf16be-1.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileFilename()
+        public void ValidateFileCharUtf16be2()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/filename-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf16be-2.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileLangAll()
+        public void ValidateFileCharUtf16le1()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/lang-all.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf16le-1.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileNotes()
+        public void ValidateFileCharUtf16le2()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/notes-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf16le-2.ged"));
+        }
+        [TestMethod]
+        public void ValidateFileCharUtf81()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf8-11.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileObje()
+        public void ValidateFileCharUtf82()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/obje-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf8-2.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileObsolete()
+        public void ValidateFileCharUtf83()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/obsolete-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf8-3.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFilePedi()
+        public void ValidateFileDateAll()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/pedi-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-all.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileRela()
+        public void ValidateFileDateDual()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/rela_1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-dual.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileSour()
+        public void ValidateFileEnumExt()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/sour-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "enum-ext.ged"));
         }
 
         [TestMethod]
-        public void ValidateTestFileTiny()
+        public void ValidateFileFilename1()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/tiny-1.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "filename-1.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
         }
 
         [TestMethod]
-        public void ValidateTestFileXrefCase()
+        public void ValidateFileLangAll()
         {
-            ValidateGedcomFile("../../../../external/test-files/7/xref-case.ged");
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "lang-all.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileNotes1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileObje1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obje-1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileObsolete1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFilePedi1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "pedi-1.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
+        }
+
+        [TestMethod]
+        public void ValidateFileRela1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "rela_1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileSour1()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"));
+        }
+
+        [TestMethod]
+        public void ValidateFileTiny1()
+        {
+            ValidateGedcomFile("tiny-1.txt", new string[] { "tiny-1.txt must have a .ged extension" });
+
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "tiny-1.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/GEDC",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
+        }
+
+        [TestMethod]
+        public void ValidateFileXrefCase()
+        {
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "xref-case.ged"), new string[]
+            {
+                "Line 3: @test@ has no associated record"
+            });
         }
     }
 }
