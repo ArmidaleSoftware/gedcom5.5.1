@@ -1266,6 +1266,8 @@ namespace Tests
 1 CHAR ASCII
 0 TRLR
 ", new string[] { "Line 3: Payload must be a pointer" });
+
+            // TODO: Error should be "Line 3: Payload must be a pointer"
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
 1 SUBM
@@ -1274,7 +1276,10 @@ namespace Tests
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
 0 TRLR
-", new string[] { "Line 3: Payload must be a pointer" });
+", new string[] {
+                "Line 3: SUBM is not a valid substructure of HEAD",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM"
+            });
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
 1 SUBM S1@
@@ -1283,7 +1288,11 @@ namespace Tests
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
 0 TRLR
-", new string[] { "Line 3: Payload must be a pointer" });
+", new string[] {
+                "Line 3: SUBM is not a valid substructure of HEAD",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM"
+            });
+
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
 1 SUBM @S1@
@@ -1295,7 +1304,7 @@ namespace Tests
 ", new string[] { "Line 3: @S1@ has no associated record" });
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
-1 SUBM @S1@
+1 SUBM @I1@
 1 GEDC
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
@@ -1312,7 +1321,7 @@ namespace Tests
 1 CHAR ASCII
 0 @I1@ _SUBM
 0 TRLR
-", new string[] { "Line 4: SUBM points to a _SUBM record" });
+", new string[] { "Line 3: SUBM points to a _SUBM record" });
 
             // We can't validate the record type for an
             // undocumented extension.
@@ -1325,7 +1334,7 @@ namespace Tests
 1 CHAR ASCII
 0 @I1@ INDI
 0 TRLR
-");
+", new string[] { "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM" });
         }
 
         // Test files from the test-files repository.
