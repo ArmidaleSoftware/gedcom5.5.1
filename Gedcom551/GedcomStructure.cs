@@ -828,6 +828,15 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-SOURCE_MEDIA_TYPE":
+                        if (this.LineVal != "audio" && this.LineVal != "book" && this.LineVal != "card" && this.LineVal != "electronic" &&
+                            this.LineVal != "fiche" && this.LineVal != "film" && this.LineVal != "magazine" && this.LineVal != "manuscript" &&
+                            this.LineVal != "map" && this.LineVal != "newspaper" && this.LineVal != "photo" && this.LineVal != "tombstone" &&
+                            this.LineVal != "video")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
                     case "https://gedcom.io/terms/v5.5.1/type-NAME_PERSONAL":
                         if (this.LineVal.Count(c => c == '/') > 2)
                         {
