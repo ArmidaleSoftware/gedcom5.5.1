@@ -1276,7 +1276,8 @@ namespace Tests
         [TestMethod]
         public void ValidateFileObsolete1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"),
+                               new string[] { "Line 12: CHAN payload must be null" });
         }
 
         [TestMethod]

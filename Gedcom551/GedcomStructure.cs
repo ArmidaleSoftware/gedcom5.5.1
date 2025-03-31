@@ -822,6 +822,12 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-ORDINANCE_PROCESS_FLAG":
+                        if (this.LineVal != "yes" && this.LineVal != "no")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
                     case "https://gedcom.io/terms/v5.5.1/type-MULTIMEDIA_FORMAT":
                         if (this.LineVal != "bmp" && this.LineVal != "gif" && this.LineVal != "jpg" && this.LineVal != "ole" && this.LineVal != "pcx" && this.LineVal != "tif" && this.LineVal != "wav")
                         {
