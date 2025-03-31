@@ -3,6 +3,7 @@
 /**/[Bb]in/**
 /**/[Oo]bj/**
 launchSettings.json
+packages
 
 # VIM junk.
 *.swp

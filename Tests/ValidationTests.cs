@@ -496,42 +496,72 @@ namespace Tests
         {
             // Validate null.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC 1
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
-", new string[] { "Line 2: GEDC payload must be null" });
+", new string[] { "Line 4: GEDC payload must be null" });
 
             // Validate an integer.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 1 NCHI 0
 0 TRLR
 ");
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 1 NCHI -1
 0 TRLR
-", new string[] { "Line 5: \"-1\" is not a non-negative integer" });
+", new string[] { "Line 11: \"-1\" is not a non-negative integer" });
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 1 NCHI
 0 TRLR
-", new string[] { "Line 5: \"\" is not a non-negative integer" });
+", new string[] { "Line 11: \"\" is not a non-negative integer" });
 
             // Test Y|<NULL>.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 1 BIRT N
 0 TRLR
-", new string[] { "Line 5: BIRT payload must be 'Y' or empty" });
+", new string[] { "Line 11: BIRT payload must be 'Y' or empty" });
 
             // We can't validate "standard" structures
             // under an extension, since they may be
@@ -552,12 +582,12 @@ namespace Tests
 ");
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
-1 SUBM @S1@
+1 SUBM @SU1@
 1 GEDC
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
-0 @S1@ SUBM
+0 @SU1@ SUBM
 1 NAME Test
 0 @U1@ _UNKNOWN
 1 SOUR @S1@
