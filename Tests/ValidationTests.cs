@@ -1411,7 +1411,11 @@ namespace Tests
         [TestMethod]
         public void ValidateFileDateAll()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-all.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-all.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
         }
 
         [TestMethod]

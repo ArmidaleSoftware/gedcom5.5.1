@@ -688,7 +688,7 @@ namespace Gedcom551
                         {
                             return ErrorMessage("Xref \"" + this.Xref + "\" does not start with a letter or digit");
                         }
-                        if (value.Contains('_'))
+                        if (value.Contains('_') && (gedcomVersion == GedcomVersion.V70))
                         {
                             return ErrorMessage("Invalid character '_' in Xref \"" + this.Xref + "\"");
                         }
