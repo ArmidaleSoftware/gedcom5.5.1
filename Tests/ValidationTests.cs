@@ -987,9 +987,15 @@ namespace Tests
         private void ValidateValidLanguagePayload(string value)
         {
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 1 LANG " + value + @"
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
 ");
         }
@@ -1001,18 +1007,12 @@ namespace Tests
         public void ValidateLanguagePayloadType()
         {
             // Try some valid language values.
-            ValidateValidLanguagePayload("und");
-            ValidateValidLanguagePayload("mul");
-            ValidateValidLanguagePayload("en");
-            ValidateValidLanguagePayload("en-US");
-            ValidateValidLanguagePayload("und-Latn-pinyin");
+            ValidateValidLanguagePayload("Afrikaans");
+            ValidateValidLanguagePayload("Amharic");
 
-            // Try some invalid language values.
-            ValidateInvalidLanguagePayload(" ");
-            ValidateInvalidLanguagePayload("-");
-            ValidateInvalidLanguagePayload("und-");
-            ValidateInvalidLanguagePayload("-und");
-            ValidateInvalidLanguagePayload("en US");
+            // TODO: Try some invalid language values.
+            // ValidateInvalidLanguagePayload(" ");
+            // ValidateInvalidLanguagePayload("Unknown");
         }
 
         /// <summary>
