@@ -155,56 +155,97 @@ namespace Tests
         public void ValidateStructureCardinality()
         {
             // Try zero GEDC which should be {1:1}.
-            ValidateGedcomText("0 HEAD\n0 TRLR\n", new string[] { "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v7/GEDC" });
+            ValidateGedcomText("0 HEAD\n0 TRLR\n", new string[] {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/GEDC",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
 
             // Try two VERS which should be {1:1}.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
-2 VERS 7.0
+2 VERS 5.5.1
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
-", new string[] { "Line 2: GEDC does not permit multiple substructures of type https://gedcom.io/terms/v7/GEDC-VERS" });
+", new string[] { "Line 4: GEDC does not permit multiple substructures of type https://gedcom.io/terms/v5.5.1/VERS" });
 
-            // Try two SCHMA which should be {0:1}.
+            // Try two SOUR.VERS which should be {0:1}.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+2 VERS 1
+2 VERS 2
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
-1 SCHMA
-1 SCHMA
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
-", new string[] { "Line 1: HEAD does not permit multiple substructures of type https://gedcom.io/terms/v7/SCHMA" });
+", new string[] { "Line 2: SOUR does not permit multiple substructures of type https://gedcom.io/terms/v5.5.1/VERS" });
 
             // Try zero FILE which should be {1:M}.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @O1@ OBJE
 0 TRLR
-", new string[] { "Line 4: OBJE is missing a substructure of type https://gedcom.io/terms/v7/FILE" });
+", new string[] { "Line 10: OBJE is missing a substructure of type https://gedcom.io/terms/v5.5.1/OBJE-FILE" });
 
             // Try a COPR at level 0.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @C0@ COPR
 0 TRLR
-", new string[] { "Line 4: Undocumented standard record" });
+", new string[] { "Line 10: Undocumented standard record" });
 
             // Try HEAD.PHON.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 1 PHON
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
-", new string[] { "Line 4: PHON is not a valid substructure of HEAD" });
+", new string[] { "Line 8: PHON is not a valid substructure of HEAD" });
 
             // Try a CONT in the wrong place.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 1 CONT bad
+0 @S1@ SUBM
+1 NAME Test
 0 TRLR
-", new string[] { "Line 4: CONT is not a valid substructure of HEAD" });
+", new string[] { "Line 8: CONT is not a valid substructure of HEAD" });
         }
 
         [TestMethod]
