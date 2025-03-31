@@ -1251,7 +1251,13 @@ namespace Tests
         [TestMethod]
         public void ValidateFileNotes1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"),
+                new string[]
+                {
+                    "Line 13: An empty payload is not valid after a space",
+                    "Line 18: CHAN payload must be null",
+                    "Line 20: CHAN payload must be null"
+                });
         }
 
         [TestMethod]
