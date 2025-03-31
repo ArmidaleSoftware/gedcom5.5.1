@@ -762,6 +762,12 @@ namespace Gedcom551
                         break;
                     case "https://gedcom.io/terms/v5.5.1/type-NAME_TYPE": // TODO
                     case "https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT": // TODO
+                    case "https://gedcom.io/terms/v5.5.1/type-TEXT_FROM_SOURCE": // TODO
+                    case "https://gedcom.io/terms/v5.5.1/type-ROLE_IN_EVENT": // TODO
+                    case "https://gedcom.io/terms/v5.5.1/type-EVENT_TYPE_CITED_FROM": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD": // TODO complex validation
                     case "http://www.w3.org/2001/XMLSchema#string":
                         if ((this.Schema.Uri == "https://gedcom.io/terms/v7/TAG") && (tokens.Length > 3))
                         {
@@ -824,6 +830,12 @@ namespace Gedcom551
                         break;
                     case "https://gedcom.io/terms/v5.5.1/type-PEDIGREE_LINKAGE_TYPE":
                         if (this.LineVal != "adopted" && this.LineVal != "birth" && this.LineVal != "foster" && this.LineVal != "sealing")
+                        {
+                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                        }
+                        break;
+                    case "https://gedcom.io/terms/v5.5.1/type-CERTAINTY_ASSESSMENT":
+                        if (this.LineVal != "0" && this.LineVal != "1" && this.LineVal != "2" && this.LineVal != "3")
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                         }

@@ -32,7 +32,6 @@ namespace Tests
         {
             var file = new GedcomFile();
             List<string> errors = file.LoadFromPath(path);
-            string error = null;
             if (errors.Count == 0)
             {
                 errors.AddRange(file.Validate());
@@ -1299,7 +1298,8 @@ namespace Tests
         [TestMethod]
         public void ValidateFileSour1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"),
+                new string[] { "Line 40: CHAN payload must be null" });
         }
 
         [TestMethod]
