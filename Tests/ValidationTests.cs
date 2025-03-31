@@ -212,43 +212,42 @@ namespace Tests
         {
             // Leading whitespace is valid prior to 7.0 but not in 7.0.
             ValidateGedcomText(@"0 HEAD
-1 GEDC
- 2 VERS 5.5.1
+ 1 SOUR test
+ 1 SUBM @S1@
+ 1 GEDC
+  2 VERS 5.5.1
+  2 FORM LINEAGE-LINKED
+ 1 CHAR ASCII
+0 @S1@ SUBM
+ 1 NAME Test
 0 TRLR
 ");
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
- 2 VERS 7.0
-0 TRLR
-", new string[] { "Line 3: Line must start with an integer" });
-            ValidateGedcomText(@"0 HEAD
- 1 GEDC
- 2 VERS 7.0
-0 TRLR
-", new string[] { "Line 2: Line must start with an integer",
-                "Line 3: Line must start with an integer" });
 
             // Extra space before the tag is not valid.
             ValidateGedcomText(@"0 HEAD
-1 GEDC
-2  VERS 5.5.1
+1  SOUR test
+1  SUBM @S1@
+1  GEDC
+2   VERS 5.5.1
+2   FORM LINEAGE-LINKED
+1  CHAR ASCII
+0 @S1@ SUBM
+1  NAME Test
 0 TRLR
-", new string[] { "Line 3: Tag must not be empty" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2  VERS 7.0
-0 TRLR
-", new string[] { "Line 3: Tag must not be empty" });
+", new string[] {
+                "Line 2: Tag must not be empty",
+                "Line 3: Tag must not be empty",
+                "Line 4: Tag must not be empty",
+                "Line 5: Tag must not be empty",
+                "Line 6: Tag must not be empty",
+                "Line 7: Tag must not be empty",
+                "Line 9: Tag must not be empty"
+            });
 
             // Trailing whitespace is not valid.
             ValidateGedcomText(@"0 HEAD
 1 GEDC 
 2 VERS 5.5.1
-0 TRLR
-", new string[] { "Line 2: An empty payload is not valid after a space" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC 
-2 VERS 7.0
 0 TRLR
 ", new string[] { "Line 2: An empty payload is not valid after a space" });
         }
@@ -1045,40 +1044,58 @@ namespace Tests
         public void ValidateXrefPayloadType()
         {
             ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+1 SOUR test
 1 SUBM @S1
-0 TRLR
-", new string[] { "Line 4: Payload must be a pointer" });
-            ValidateGedcomText(@"0 HEAD
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 TRLR
+", new string[] { "Line 3: Payload must be a pointer" });
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
 1 SUBM
-0 TRLR
-", new string[] { "Line 4: Payload must be a pointer" });
-            ValidateGedcomText(@"0 HEAD
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 TRLR
+", new string[] { "Line 3: Payload must be a pointer" });
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
 1 SUBM S1@
-0 TRLR
-", new string[] { "Line 4: Payload must be a pointer" });
-            ValidateGedcomText(@"0 HEAD
 1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 TRLR
+", new string[] { "Line 3: Payload must be a pointer" });
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
 1 SUBM @S1@
-0 TRLR
-", new string[] { "Line 4: @S1@ has no associated record" });
-            ValidateGedcomText(@"0 HEAD
 1 GEDC
-2 VERS 7.0
-1 SUBM @I1@
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 TRLR
+", new string[] { "Line 3: @S1@ has no associated record" });
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 0 @I1@ INDI
 0 TRLR
-", new string[] { "Line 4: SUBM points to a INDI record" });
+", new string[] { "Line 3: SUBM points to a INDI record" });
             ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+1 SOUR test
 1 SUBM @I1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 0 @I1@ _SUBM
 0 TRLR
 ", new string[] { "Line 4: SUBM points to a _SUBM record" });
@@ -1086,9 +1103,12 @@ namespace Tests
             // We can't validate the record type for an
             // undocumented extension.
             ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+1 SOUR test
 1 _SUBM @I1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
 0 @I1@ INDI
 0 TRLR
 ");
