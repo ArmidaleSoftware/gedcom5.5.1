@@ -1254,9 +1254,7 @@ namespace Tests
             ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"),
                 new string[]
                 {
-                    "Line 13: An empty payload is not valid after a space",
-                    "Line 18: CHAN payload must be null",
-                    "Line 20: CHAN payload must be null"
+                    "Line 13: An empty payload is not valid after a space"
                 });
         }
 
@@ -1274,8 +1272,12 @@ namespace Tests
         [TestMethod]
         public void ValidateFileObsolete1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"),
-                               new string[] { "Line 12: CHAN payload must be null" });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
+            });
         }
 
         [TestMethod]
@@ -1298,7 +1300,8 @@ namespace Tests
         public void ValidateFileSour1()
         {
             ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"),
-                new string[] { "Line 40: CHAN payload must be null" });
+                new string[] { "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"});
         }
 
         [TestMethod]

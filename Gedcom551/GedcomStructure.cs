@@ -768,6 +768,8 @@ namespace Gedcom551
                     case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-DATE_VALUE": // TODO: complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-CHANGE_DATE": // TODO: complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_PREFERENCE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_OF_TEXT": // TODO complex validation
                     case "http://www.w3.org/2001/XMLSchema#string":
