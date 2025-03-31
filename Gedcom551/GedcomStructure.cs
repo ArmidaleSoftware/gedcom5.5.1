@@ -615,7 +615,7 @@ namespace Gedcom551
             this.Substructures = new List<GedcomStructure>();
 
             // Parse line into Level, Xref, Tag, Pointer, and LineVal.
-            if (line == null)
+            if (line == null || line == "")
             {
                 return ErrorMessage("No line text");
             }

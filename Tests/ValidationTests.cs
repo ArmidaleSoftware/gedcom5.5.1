@@ -1362,7 +1362,8 @@ namespace Tests
         [TestMethod]
         public void ValidateFileDateDual()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-dual.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-dual.ged"),
+                new string[] { "Line 261: No line text" });
         }
 
         [TestMethod]
