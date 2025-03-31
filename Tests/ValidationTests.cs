@@ -12,7 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Tests
 {
     [TestClass]
-    public class ValidationTests
+    public class Validation551Tests
     {
         private const string TEST_FILES_BASE_PATH = "../../../../external/test-files/5";
 
@@ -64,7 +64,7 @@ namespace Tests
 
 
         [TestMethod]
-        public void Validate551HeaderAndTrailer()
+        public void ValidateHeaderAndTrailer()
         {
             // Missing TRLR.
             ValidateGedcomText(@"0 HEAD
@@ -275,14 +275,14 @@ namespace Tests
             // but does not need to have one. A substructure or pseudo-
             // structure must not have a cross-reference identifier."
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
-0 INDI
-0 TRLR
-");
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 INDI
 0 TRLR
 ");
@@ -293,22 +293,11 @@ namespace Tests
 2 VERS 5.5.1
 0 @T1@ TRLR
 ", new string[] { "Line 4: Xref is not valid for TRLR" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @T1@ TRLR
-", new string[] { "Line 4: Xref is not valid for TRLR" });
 
             // Xref must start with @.
             ValidateGedcomText(@"0 HEAD
 1 GEDC
 2 VERS 5.5.1
-0 I1@ INDI
-0 TRLR
-", new string[] { "Line 4: Undocumented standard record" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
 0 I1@ INDI
 0 TRLR
 ", new string[] { "Line 4: Undocumented standard record" });
@@ -320,23 +309,11 @@ namespace Tests
 0 @I1 INDI
 0 TRLR
 ", new string[] { "Line 4: Xref must start and end with @" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @I1 INDI
-0 TRLR
-", new string[] { "Line 4: Xref must start and end with @" });
-
+            
             // Xref must contain something.
             ValidateGedcomText(@"0 HEAD
 1 GEDC
 2 VERS 5.5.1
-0 @ INDI
-0 TRLR
-", new string[] { "Line 4: Xref must start and end with @" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
 0 @ INDI
 0 TRLR
 ", new string[] { "Line 4: Xref must start and end with @" });
@@ -348,12 +325,6 @@ namespace Tests
 0 I1@ INDI
 0 TRLR
 ", new string[] { "Line 4: Undocumented standard record" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 I1@ INDI
-0 TRLR
-", new string[] { "Line 4: Undocumented standard record" });
 
             // Xref must end with @.
             ValidateGedcomText(@"0 HEAD
@@ -362,23 +333,11 @@ namespace Tests
 0 @I1 INDI
 0 TRLR
 ", new string[] { "Line 4: Xref must start and end with @" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @I1 INDI
-0 TRLR
-", new string[] { "Line 4: Xref must start and end with @" });
 
             // Xref must contain something.
             ValidateGedcomText(@"0 HEAD
 1 GEDC
 2 VERS 5.5.1
-0 @ INDI
-0 TRLR
-", new string[] { "Line 4: Xref must start and end with @" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
 0 @ INDI
 0 TRLR
 ", new string[] { "Line 4: Xref must start and end with @" });
@@ -392,86 +351,99 @@ namespace Tests
 
             // Upper case letters and numbers are fine.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
-0 @I1@ INDI
-0 TRLR
-");
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 0 TRLR
 ");
 
-            // GEDCOM 7.0 disallows @VOID@ as an actual xref id.
+            // @VOID@ is ok in GEDCOM 5.5.1 but not 7.0.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @VOID@ INDI
 0 TRLR
 ");
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @VOID@ INDI
-0 TRLR
-", new string[] { "Line 4: Xref must not be @VOID@" });
 
             // Hash is ok in GEDCOM 5.5.1 (except at the start) but not 7.0.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I#1@ INDI
 0 TRLR
 ");
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @#I1@ INDI
 0 TRLR
-", new string[] { "Line 4: Xref \"@#I1@\" does not start with a letter or digit" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @I#1@ INDI
-0 TRLR
-", new string[] { "Line 4: Invalid character '#' in Xref \"@I#1@\"" });
+", new string[] { "Line 10: Xref \"@#I1@\" does not start with a letter or digit" });
 
             // Underscore is ok in GEDCOM 7.0 but not 5.5.1.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I_1@ INDI
 0 TRLR
-", new string[] { "Line 4: Invalid character '_' in Xref \"@I_1@\"" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
-0 @I_1@ INDI
-0 TRLR
-");
+", new string[] { "Line 10: Invalid character '_' in Xref \"@I_1@\"" });
 
             // Lower-case letters are ok in GEDCOM 5.5.1 but not 7.0.
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
 2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @i1@ INDI
 0 TRLR
 ");
+
             ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
 1 GEDC
-2 VERS 7.0
-0 @i1@ INDI
-0 TRLR
-", new string[] { "Line 4: Invalid character 'i' in Xref \"@i1@\"" });
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 7.0
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
 0 @I1@ INDI
 0 @I1@ INDI
 0 TRLR
-", new string[] { "Line 5: Duplicate Xref @I1@" });
+", new string[] { "Line 11: Duplicate Xref @I1@" });
         }
 
         [TestMethod]
