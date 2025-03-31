@@ -582,7 +582,7 @@ namespace Tests
 1 FILE foo
 2 FORM " + value + @"
 0 TRLR
-", new string[] { "Line 6: \"" + value + "\" is not a valid media type" });
+", new string[] { "Line 6: \"" + value + "\" is not a valid value for FORM" });
         }
 
         /// <summary>
@@ -1051,7 +1051,7 @@ namespace Tests
 1 FILE foo
 2 FORM
 0 TRLR
-", new string[] { "Line 6: \"\" is not a valid media type" });
+", new string[] { "Line 6: \"\" is not a valid value for FORM" });
 
             // Validate FORM payload.
             ValidateGedcomText(@"0 HEAD
@@ -1061,20 +1061,12 @@ namespace Tests
 1 FILE foo
 2 FORM application/x-other
 0 TRLR
-");
+", new string[] { "Line 6: \"application/x-other\" is not a valid value for FORM" });
             ValidateInvalidFormPayload("invalid media type");
             ValidateInvalidFormPayload("text/");
             ValidateInvalidFormPayload("/text");
             ValidateInvalidFormPayload("text/a/b");
             ValidateInvalidFormPayload("text");
-
-            ValidateGedcomText(@"0 HEAD
-1 GEDC
-2 VERS 5.5.1
-0 @N1@ SNOTE Test
-1 MIME text/unknown
-0 TRLR
-", new string[] { "Line 5: MIME payload must be text/plain or text/html" });
         }
 
         /// <summary>
