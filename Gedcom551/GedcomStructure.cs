@@ -688,7 +688,7 @@ namespace Gedcom551
                         {
                             return ErrorMessage("Xref \"" + this.Xref + "\" does not start with a letter or digit");
                         }
-                        if (value.Contains('_') && (gedcomVersion == GedcomVersion.V70))
+                        if (value.Contains('_'))
                         {
                             return ErrorMessage("Invalid character '_' in Xref \"" + this.Xref + "\"");
                         }
@@ -766,6 +766,7 @@ namespace Gedcom551
                     case "https://gedcom.io/terms/v5.5.1/type-ROLE_IN_EVENT": // TODO
                     case "https://gedcom.io/terms/v5.5.1/type-TIME_VALUE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENT_TYPE_CITED_FROM": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-RESTRICTION_NOTICE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD": // TODO complex validation
