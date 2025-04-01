@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Armidale Software
 // SPDX-License-Identifier: MIT
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Gedcom551
