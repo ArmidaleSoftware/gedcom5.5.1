@@ -69,7 +69,7 @@ namespace Gedcom551
 
             string gedcomRegistriesPath = args[0];
             string sourcePath = args[1];
-            string searchPattern = @"(?i).*\.ged$"; // Case-insensitive regex pattern for .ged or .gdz files
+            string searchPattern = @"(?i).*\.ged$"; // Case-insensitive regex pattern for .ged files.
 
             try
             {

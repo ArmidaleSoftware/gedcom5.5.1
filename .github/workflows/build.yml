@@ -90,11 +90,6 @@ jobs:
           .\GedValidate.exe ${{github.workspace}}\output ${{github.workspace}}\external\test-files\5\lang-all.ged
           .\GedValidate.exe ${{github.workspace}}\output ${{github.workspace}}\external\test-files\5\rela_1.ged
 
-      - name: Dump memory usage
-        if: steps.skip_check.outputs.should_skip != 'true'
-        working-directory: ./Tests/bin/${{env.BUILD_CONFIGURATION}}/net6.0/TestResults
-        run: findstr bytes *.trx
-
       - name: Upload GedValidate binary
         if: steps.skip_check.outputs.should_skip != 'true'
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882
