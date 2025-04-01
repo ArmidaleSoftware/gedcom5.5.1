@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gedcom551Construct", "Gedcom551Construct\Gedcom551Construct.csproj", "{3B69F9EF-57F1-4301-B72B-AA256376AA3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GedValidate", "GedValidate\GedValidate.csproj", "{7D301746-F649-1296-4D84-0AAD83721F3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3B69F9EF-57F1-4301-B72B-AA256376AA3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B69F9EF-57F1-4301-B72B-AA256376AA3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B69F9EF-57F1-4301-B72B-AA256376AA3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D301746-F649-1296-4D84-0AAD83721F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D301746-F649-1296-4D84-0AAD83721F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D301746-F649-1296-4D84-0AAD83721F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D301746-F649-1296-4D84-0AAD83721F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

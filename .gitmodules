@@ -1,0 +1,3 @@
+[submodule "external/test-files"]
+	path = external/test-files
+	url = https://github.com/gedcom7code/test-files.git

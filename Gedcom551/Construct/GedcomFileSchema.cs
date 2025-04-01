@@ -180,11 +180,34 @@ namespace Gedcom551.Construct
                         continue;
                     }
 
-                    GedcomStructureSchema schema = GedcomStructureSchema.AddOrUpdateSchema(combinedLevel, tag, component.PayloadType, component.Cardinality);
+                    string effectiveCardinality =  (component.LevelDelta == 0) ? GetEffectiveCardinality(cardinality, component.Cardinality) : component.Cardinality;
+                    GedcomStructureSchema schema = GedcomStructureSchema.AddOrUpdateSchema(combinedLevel, tag, component.PayloadType, effectiveCardinality);
                     Debug.Assert(!GedcomStructureSchema.SchemaPath[combinedLevel].Contains(schema));
                     GedcomStructureSchema.SchemaPath[combinedLevel].Add(schema);
                 }
             }
+        }
+
+        private string GetEffectiveCardinality(string typeCardinality, string structureCardinality)
+        {
+            if (typeCardinality == "{1:1}")
+            {
+                return structureCardinality;
+            }
+            if (structureCardinality == "{1:1}")
+            {
+                return typeCardinality;
+            }
+            if (typeCardinality == structureCardinality)
+            {
+                return typeCardinality;
+            }
+            if (typeCardinality == "{0:1}" && structureCardinality.StartsWith("{0:"))
+            {
+                return structureCardinality;
+            }
+            Debug.Assert(false); // Should never happen.
+            return structureCardinality;
         }
 
         private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";

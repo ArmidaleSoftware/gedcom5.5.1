@@ -16,12 +16,12 @@ label: 'Repository'
 payload: null
 
 substructures:
-  "https://gedcom.io/terms/v5.5.1/ADDR": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/CHAN": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/ADDR": "{0:1}"
+  "https://gedcom.io/terms/v5.5.1/CHAN": "{0:1}"
   "https://gedcom.io/terms/v5.5.1/EMAIL": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/FAX": "{0:3}"
-  "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{1:1}"
-  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{1:1}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-SUBMITTER_TEXT_OR_NULL": "{0:M}"
+  "https://gedcom.io/terms/v5.5.1/NOTE-XREF_NOTE": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/PHON": "{0:3}"
   "https://gedcom.io/terms/v5.5.1/REFN": "{0:M}"
   "https://gedcom.io/terms/v5.5.1/REPO-NAME": "{1:1}"
