@@ -809,7 +809,7 @@ namespace Tests
 0 @I1@ INDI
 1 NAME " + value + @"
 0 TRLR
-", new string[] { "Line 5: \"" + value + "\" is not a valid name" });
+", new string[] { "Line 11: \"" + value + "\" is not a valid name" });
         }
 
         private void ValidateValidNamePayload(string value)
@@ -840,10 +840,10 @@ namespace Tests
             ValidateValidNamePayload("John /Smith/");
             ValidateValidNamePayload("John /Smith/ Jr.");
 
-            // TODO: Try some invalid name values.
-            // ValidateInvalidNamePayload("/");
-            // ValidateInvalidNamePayload("a/b/c/d");
-            // ValidateInvalidNamePayload("a\tb");
+            // Try some invalid name values.
+            ValidateInvalidNamePayload("/");
+            ValidateInvalidNamePayload("a/b/c/d");
+            ValidateInvalidNamePayload("a\tb");
         }
 
         private void ValidateInvalidExactDatePayload(string value)
@@ -855,7 +855,7 @@ namespace Tests
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
-1 DATE "" + value + @""
+1 DATE " + value + @"
 0 @S1@ SUBM
 1 NAME Test
 0 TRLR
@@ -871,7 +871,7 @@ namespace Tests
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
-1 DATE "" + value + @""
+1 DATE " + value + @"
 0 @S1@ SUBM
 1 NAME Test
 0 TRLR
@@ -884,16 +884,16 @@ namespace Tests
         [TestMethod]
         public void ValidateExactDatePayloadType()
         {
-            // Try some valid name values.
+            // Try some valid exact dates.
             ValidateValidExactDatePayload("3 DEC 2023");
             ValidateValidExactDatePayload("03 DEC 2023");
 
-            // TODO: Try some invalid name values.
-            // ValidateInvalidExactDatePayload("invalid");
-            // ValidateInvalidExactDatePayload("3 dec 2023");
-            // ValidateInvalidExactDatePayload("3 JUNE 2023");
-            // ValidateInvalidExactDatePayload("DEC 2023");
-            // ValidateInvalidExactDatePayload("2023");
+            // Try some invalid exact dates.
+            ValidateInvalidExactDatePayload("invalid");
+            ValidateInvalidExactDatePayload("3 dec 2023");
+            ValidateInvalidExactDatePayload("3 JUNE 2023");
+            ValidateInvalidExactDatePayload("DEC 2023");
+            ValidateInvalidExactDatePayload("2023");
         }
 
         private void ValidateInvalidDatePeriodPayload(string value)
@@ -1078,7 +1078,7 @@ namespace Tests
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
 1 DATE 1 DEC 2023
-2 TIME "" + value + @""
+2 TIME " + value + @"
 0 @S1@ SUBM
 1 NAME Test
 0 TRLR
@@ -1096,14 +1096,14 @@ namespace Tests
             ValidateValidTimePayload("2:50");
             ValidateValidTimePayload("2:50:00.00Z");
 
-            // TODO: Try some invalid time values.
-            // ValidateInvalidTimePayload(" ");
-            // ValidateInvalidTimePayload("invalid");
-            // ValidateInvalidTimePayload("000:00");
-            // ValidateInvalidTimePayload("24:00:00");
-            // ValidateInvalidTimePayload("2:5");
-            // ValidateInvalidTimePayload("2:60");
-            // ValidateInvalidTimePayload("2:00:60");
+            // Try some invalid time values.
+            ValidateInvalidTimePayload(" ");
+            ValidateInvalidTimePayload("invalid");
+            ValidateInvalidTimePayload("000:00");
+            ValidateInvalidTimePayload("24:00:00");
+            ValidateInvalidTimePayload("2:5");
+            ValidateInvalidTimePayload("2:60");
+            ValidateInvalidTimePayload("2:00:60");
         }
 
         private void ValidateInvalidAgePayload(string value)
@@ -1161,15 +1161,15 @@ namespace Tests
             ValidateValidAgePayload("> 79y");
             ValidateValidAgePayload("< 79y 1m 1w 1d");
 
-            // TODO: Try some invalid age values.
-            // ValidateInvalidAgePayload(" ");
-            // ValidateInvalidAgePayload("invalid");
-            // ValidateInvalidAgePayload("d");
-            // ValidateInvalidAgePayload("79");
-            // ValidateInvalidAgePayload("1d 1m");
-            // ValidateInvalidAgePayload("<>1y");
-            // ValidateInvalidAgePayload(">79y");
-            // ValidateInvalidAgePayload("<79y 1m 1w 1d");
+            // Try some invalid age values.
+            ValidateInvalidAgePayload(" ");
+            ValidateInvalidAgePayload("invalid");
+            ValidateInvalidAgePayload("d");
+            ValidateInvalidAgePayload("79");
+            ValidateInvalidAgePayload("1d 1m");
+            ValidateInvalidAgePayload("<>1y");
+            ValidateInvalidAgePayload(">79y");
+            ValidateInvalidAgePayload("<79y 1m 1w 1d");
         }
 
         private void ValidateInvalidLanguagePayload(string value)
