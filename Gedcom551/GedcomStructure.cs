@@ -764,17 +764,13 @@ namespace Gedcom551
                     case "https://gedcom.io/terms/v5.5.1/type-SUBMITTER_TEXT": // TODO
                     case "https://gedcom.io/terms/v5.5.1/type-TEXT_FROM_SOURCE": // TODO
                     case "https://gedcom.io/terms/v5.5.1/type-ROLE_IN_EVENT": // TODO
-                    case "https://gedcom.io/terms/v5.5.1/type-TIME_VALUE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENT_TYPE_CITED_FROM": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-RESTRICTION_NOTICE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-TRANSMISSION_DATE": // TODO:complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-DATE_VALUE": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-CHANGE_DATE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_PREFERENCE": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-AGE_AT_EVENT": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_OF_TEXT": // TODO complex validation
                     case "http://www.w3.org/2001/XMLSchema#string":
                         if ((this.Schema.Uri == "https://gedcom.io/terms/v7/TAG") && (tokens.Length > 3))
@@ -787,6 +783,8 @@ namespace Gedcom551
                         }
                         // We currently don't do any further validation.
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-CHANGE_DATE": // TODO: should be DATE_EXACT
+                    case "https://gedcom.io/terms/v5.5.1/type-TRANSMISSION_DATE": // TODO: should be DATE_EXACT
                     case "https://gedcom.io/terms/v7/type-Date#exact":
                         if (!IsValidExactDate(this.LineVal))
                         {
@@ -805,12 +803,14 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid date period");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-TIME_VALUE":
                     case "https://gedcom.io/terms/v7/type-Time":
                         if (!IsValidTime(this.LineVal))
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid time");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-NAME_PERSONAL":
                     case "https://gedcom.io/terms/v7/type-Name":
                         if (!IsValidName(this.LineVal))
                         {
@@ -863,20 +863,6 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                         }
                         break;
-                    case "https://gedcom.io/terms/v5.5.1/type-NAME_PERSONAL":
-                        if (this.LineVal.Count(c => c == '/') > 2)
-                        {
-                            return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
-                        }
-                        {
-                            string charactersToCheck = ",1234567890";
-                            char[] charArray = charactersToCheck.ToCharArray();
-                            if (this.LineVal.IndexOfAny(charArray) != -1)
-                            {
-                                return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
-                            }
-                        }
-                        break;
                     case "https://gedcom.io/terms/v7/type-Enum":
                         if (!this.Schema.EnumerationSet.IsValidValue(this.LineVal))
                         {
@@ -915,6 +901,7 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid language");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-AGE_AT_EVENT":
                     case "https://gedcom.io/terms/v7/type-Age":
                         if (!IsValidAge(this.LineVal))
                         {
