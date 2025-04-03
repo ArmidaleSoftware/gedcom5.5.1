@@ -418,7 +418,7 @@ namespace Gedcom551
             // Get calendar schema.
             if (string.IsNullOrEmpty(calendar))
             {
-                calendar = "GREGORIAN";
+                calendar = "@#DGREGORIAN@"; // GEDCOM 5.5.1 specific calendar tag.
             }
             CalendarSchema calendarSchema = CalendarSchema.GetCalendarByTag(calendar);
 
@@ -441,10 +441,10 @@ namespace Gedcom551
         private const string TagCharRegex = @"([A-Z0-9_])";
         private const string StdTagRegex = @"[A-Z]" + TagCharRegex + "*";
         private const string ExtTagRegex = @"_" + TagCharRegex + "+";
-        private const string CalendarRegex = @"(GREGORIAN|JULIAN|FRENCH_R|HEBREW|" + ExtTagRegex + ")";
+        private const string Calendar551Regex = @"(@#DGREGORIAN@|@#DJULIAN@|@#DFRENCH R@|@#DHEBREW@|@#DROMAN@|@#DUNKNOWN@)";
         private const string MonthRegex = @"(" + StdTagRegex + "|" + ExtTagRegex + ")";
-        private const string EpochRegex = @"(BCE|" + ExtTagRegex + ")";
-        private const string DateRegex = @"(" + CalendarRegex + @" )?(((\d{1,2}) )?" + MonthRegex + @" )?(\d{1,4})( " + EpochRegex + @")?";
+        private const string Epoch551Regex = @"(B.C.|" + ExtTagRegex + ")";
+        private const string DateRegex = @"(" + Calendar551Regex + @" )?(((\d{1,2}) )?" + MonthRegex + @" )?(\d{1,4})( " + Epoch551Regex + @")?";
 
         /// <summary>
         /// Test whether a given string is a valid date period.
@@ -462,10 +462,10 @@ namespace Gedcom551
             if (match.Success)
             {
                 string calendar = match.Groups[2].Value;
-                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month = match.Groups[7].Value;
-                uint year = uint.Parse(match.Groups[10].Value);
-                string epoch = match.Groups[12].Value;
+                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
+                string month = match.Groups[6].Value;
+                uint year = uint.Parse(match.Groups[9].Value);
+                string epoch = match.Groups[11].Value;
                 return IsValidDate(calendar, day, month, year, epoch);
             }
 
@@ -477,16 +477,16 @@ namespace Gedcom551
             if (match.Success)
             {
                 string calendar1 = match.Groups[2].Value;
-                uint day1 = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month1 = match.Groups[7].Value;
-                uint year1 = uint.Parse(match.Groups[10].Value);
-                string epoch1 = match.Groups[12].Value;
+                uint day1 = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
+                string month1 = match.Groups[6].Value;
+                uint year1 = uint.Parse(match.Groups[9].Value);
+                string epoch1 = match.Groups[11].Value;
 
-                string calendar2 = match.Groups[15].Value;
-                uint day2 = match.Groups[19].Success ? uint.Parse(match.Groups[19].Value) : 0;
-                string month2 = match.Groups[20].Value;
-                uint year2 = match.Groups[23].Success ? uint.Parse(match.Groups[23].Value) : 0;
-                string epoch2 = match.Groups[25].Value;
+                string calendar2 = match.Groups[14].Value;
+                uint day2 = match.Groups[17].Success ? uint.Parse(match.Groups[17].Value) : 0;
+                string month2 = match.Groups[18].Value;
+                uint year2 = match.Groups[21].Success ? uint.Parse(match.Groups[21].Value) : 0;
+                string epoch2 = match.Groups[23].Value;
 
                 return IsValidDate(calendar1, day1, month1, year1, epoch1) &&
                        IsValidDate(calendar2, day2, month2, year2, epoch2);
@@ -498,10 +498,10 @@ namespace Gedcom551
             if (match.Success)
             {
                 string calendar = match.Groups[2].Value;
-                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month = match.Groups[7].Value;
-                uint year = uint.Parse(match.Groups[10].Value);
-                string epoch = match.Groups[12].Value;
+                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
+                string month = match.Groups[6].Value;
+                uint year = uint.Parse(match.Groups[9].Value);
+                string epoch = match.Groups[11].Value;
                 return IsValidDate(calendar, day, month, year, epoch);
             }
 
@@ -528,10 +528,10 @@ namespace Gedcom551
             {
                 string modifier = match.Groups[1].Value;
                 string calendar = match.Groups[3].Value;
-                uint day = match.Groups[7].Success ? uint.Parse(match.Groups[7].Value) : 0;
-                string month = match.Groups[8].Value;
-                uint year = uint.Parse(match.Groups[11].Value);
-                string epoch = match.Groups[13].Value;
+                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
+                string month = match.Groups[7].Value;
+                uint year = uint.Parse(match.Groups[10].Value);
+                string epoch = match.Groups[12].Value;
                 return IsValidDate(calendar, day, month, year, epoch);
             }
             regex = new Regex("^BET " + DateRegex + " AND " + DateRegex + @"$");
@@ -539,16 +539,16 @@ namespace Gedcom551
             if (match.Success)
             {
                 string calendar1 = match.Groups[2].Value;
-                uint day1 = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month1 = match.Groups[7].Value;
-                uint year1 = uint.Parse(match.Groups[10].Value);
-                string epoch1 = match.Groups[12].Value;
+                uint day1 = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
+                string month1 = match.Groups[6].Value;
+                uint year1 = uint.Parse(match.Groups[9].Value);
+                string epoch1 = match.Groups[11].Value;
 
-                string calendar2 = match.Groups[15].Value;
-                uint day2 = match.Groups[19].Success ? uint.Parse(match.Groups[19].Value) : 0;
-                string month2 = match.Groups[20].Value;
-                uint year2 = match.Groups[23].Success ? uint.Parse(match.Groups[23].Value) : 0;
-                string epoch2 = match.Groups[25].Value;
+                string calendar2 = match.Groups[14].Value;
+                uint day2 = match.Groups[17].Success ? uint.Parse(match.Groups[17].Value) : 0;
+                string month2 = match.Groups[18].Value;
+                uint year2 = match.Groups[21].Success ? uint.Parse(match.Groups[21].Value) : 0;
+                string epoch2 = match.Groups[23].Value;
 
                 return IsValidDate(calendar1, day1, month1, year1, epoch1) &&
                        IsValidDate(calendar2, day2, month2, year2, epoch2);
@@ -561,10 +561,10 @@ namespace Gedcom551
             {
                 string modifier = match.Groups[1].Value;
                 string calendar = match.Groups[3].Value;
-                uint day = match.Groups[7].Success ? uint.Parse(match.Groups[7].Value) : 0;
-                string month = match.Groups[8].Value;
-                uint year = uint.Parse(match.Groups[11].Value);
-                string epoch = match.Groups[13].Value;
+                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
+                string month = match.Groups[7].Value;
+                uint year = uint.Parse(match.Groups[10].Value);
+                string epoch = match.Groups[12].Value;
                 return IsValidDate(calendar, day, month, year, epoch);
             }
 
@@ -576,10 +576,10 @@ namespace Gedcom551
             if (match.Success)
             {
                 string calendar = match.Groups[2].Value;
-                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month = match.Groups[7].Value;
-                uint year = uint.Parse(match.Groups[10].Value);
-                string epoch = match.Groups[12].Value;
+                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
+                string month = match.Groups[6].Value;
+                uint year = uint.Parse(match.Groups[9].Value);
+                string epoch = match.Groups[11].Value;
                 return IsValidDate(calendar, day, month, year, epoch);
             }
 
@@ -766,10 +766,7 @@ namespace Gedcom551
                     case "https://gedcom.io/terms/v5.5.1/type-ROLE_IN_EVENT": // TODO
                     case "https://gedcom.io/terms/v5.5.1/type-EVENT_TYPE_CITED_FROM": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-RESTRICTION_NOTICE": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD": // TODO complex validation
-                    case "https://gedcom.io/terms/v5.5.1/type-DATE_VALUE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_PREFERENCE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_OF_TEXT": // TODO complex validation
                     case "http://www.w3.org/2001/XMLSchema#string":
@@ -791,12 +788,15 @@ namespace Gedcom551
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid exact date");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO: should be DATE_VALUE
+                    case "https://gedcom.io/terms/v5.5.1/type-DATE_VALUE":
                     case "https://gedcom.io/terms/v7/type-Date":
                         if (!IsValidDateValue(this.LineVal))
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid date value");
                         }
                         break;
+                    case "https://gedcom.io/terms/v5.5.1/type-DATE_PERIOD":
                     case "https://gedcom.io/terms/v7/type-Date#period":
                         if (!IsValidDatePeriod(this.LineVal))
                         {
@@ -995,7 +995,10 @@ namespace Gedcom551
         static bool IsPointer(string lineval)
         {
             if (lineval == null || lineval.Length == 0) return false;
-            Regex regex = new Regex(@"^@[a-zA-Z0-9][^@]*@$");
+
+            // Calendar tags in GEDCOM 5.5.1 are of the form "@#CALENDAR NAME@".
+            Regex regex = new Regex(@"^@(?!#)[a-zA-Z0-9][^@]*@$");
+            
             return regex.IsMatch(lineval);
         }
 
