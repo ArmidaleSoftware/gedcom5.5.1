@@ -1273,6 +1273,7 @@ namespace Tests
         [TestMethod]
         public void ValidateXrefPayloadType()
         {
+            // TODO: Error should be "Line 3: Payload must be a pointer"
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
 1 SUBM @S1
@@ -1281,7 +1282,10 @@ namespace Tests
 2 FORM LINEAGE-LINKED
 1 CHAR ASCII
 0 TRLR
-", new string[] { "Line 3: Payload must be a pointer" });
+", new string[] {
+                "Line 3: SUBM is not a valid substructure of HEAD",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM"
+            });
 
             // TODO: Error should be "Line 3: Payload must be a pointer"
             ValidateGedcomText(@"0 HEAD
@@ -1366,8 +1370,12 @@ namespace Tests
         [TestMethod]
         public void ValidateFileAtSign()
         {
-            // TODO: fix IsPointer logic
-            // ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "atsign.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "atsign.ged"), new string[]
+            {
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
+                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR",
+                "Line 25: CONC is not a valid substructure of NOTE" // TODO: CONC support
+            });
         }
 
         [TestMethod]
