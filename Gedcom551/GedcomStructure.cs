@@ -89,7 +89,7 @@ namespace Gedcom551
                 // Skip tag.
                 index++;
 
-                bool isPointer = (tokens.Length > index) && (tokens[index].Length > 0) && (tokens[index][0] == '@');
+                bool isPointer = (tokens.Length > index) && (tokens[index].Length > 0) && IsPointer(tokens[index]);
 
                 this.Schema = GedcomStructureSchema.GetSchema(sourceProgram, superstructureUri, value, isPointer);
             }
@@ -994,7 +994,9 @@ namespace Gedcom551
         /// <returns>true if a pointer, false if not</returns>
         static bool IsPointer(string lineval)
         {
-            return (lineval != null && lineval.Length > 2 && lineval[0] == '@' && lineval[1] != '@');
+            if (lineval == null || lineval.Length == 0) return false;
+            Regex regex = new Regex(@"^@[a-zA-Z0-9][^@]*@$");
+            return regex.IsMatch(lineval);
         }
 
         /// <summary>
