@@ -13,9 +13,9 @@ specification:
     The Gregorian calendar is the now-ubiquitous calendar introduced by Pope
     Gregory XIII in 1582 to correct the Julian calendar which was slowly drifting
     relative to the seasons.
-    
+
     Permitted months are
-    
+
     | Code  | Name      |
     | :---- | :-------- |
     | `JAN` | January   |
@@ -30,11 +30,11 @@ specification:
     | `OCT` | October   |
     | `NOV` | November  |
     | `DEC` | December  |
-    
+
     The epoch marker `BCE` is permitted in this calendar; year *y* BCE indicates a
     year *y* years before year 1. Thus, there is no year 0; year 1 BCE was followed
     by year 1.
-    
+
 label: 'Gregorian'
 
 months:

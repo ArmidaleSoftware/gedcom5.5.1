@@ -14,9 +14,9 @@ specification:
     given to the new calendar adopted in 1794 by the French National Convention.
     This calendar was adopted on Gregorian day 22 September 1792, which was 1
     Vendémiaire 1 in this calendar. It was abandoned 18 years later.
-    
+
     Permitted months are
-    
+
     | Code   | Name                 |
     | :----- | :------------------- |
     | `VEND` | Vendémiaire          |
@@ -32,7 +32,7 @@ specification:
     | `THER` | Thermidor            |
     | `FRUC` | Fructidor            |
     | `COMP` | Jour Complémentaires |
-    
+
 label: 'French Republican'
 
 months:
