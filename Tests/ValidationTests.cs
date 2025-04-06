@@ -667,8 +667,6 @@ namespace Tests
 ");
 
             // Try an invalid enum value.
-            // TODO: support SEX validation.
-#if false
             ValidateGedcomText(@"0 HEAD
 1 SOUR test
 1 SUBM @S1@
@@ -681,8 +679,22 @@ namespace Tests
 0 @I1@ INDI
 1 SEX UNKNOWN
 0 TRLR
-", new string[] { "Line 5: \"UNKNOWN\" is not a valid value for SEX" });
-#endif
+", new string[] { "Line 11: \"UNKNOWN\" is not a valid value for SEX" });
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
+0 @SO1@ SOUR
+0 @I1@ INDI
+1 SOUR @SO1@
+2 EVEN CENSUS
+0 TRLR
+");
 
             // Try a valid structure name as an enum value.
             ValidateGedcomText(@"0 HEAD

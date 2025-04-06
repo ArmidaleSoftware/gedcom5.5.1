@@ -778,6 +778,13 @@ namespace Gedcom551
                             GedcomStructureSchema.AddSchema(sourceProgram, tag, uri);
                             break;
                         }
+                        if (this.Schema.Uri == "https://gedcom.io/terms/v5.5.1/SEX")
+                        {
+                            if (this.LineVal != "M" && this.LineVal != "F" && this.LineVal != "U")
+                            {
+                                return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
+                            }
+                        }
                         // We currently don't do any further validation.
                         break;
                     case "https://gedcom.io/terms/v5.5.1/type-CHANGE_DATE": // TODO: should be DATE_EXACT
