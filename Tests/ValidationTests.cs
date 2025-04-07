@@ -1384,9 +1384,7 @@ namespace Tests
         {
             ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "atsign.ged"), new string[]
             {
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR",
-                "Line 25: CONC is not a valid substructure of NOTE" // TODO: CONC support
+                "Line 29: CONC is not a valid substructure of NOTE" // TODO: CONC support
             });
         }
 
@@ -1477,12 +1475,7 @@ namespace Tests
         [TestMethod]
         public void ValidateFileFilename1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "filename-1.ged"), new string[]
-            {
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
-            });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "filename-1.ged"));
         }
 
         [TestMethod]
@@ -1494,11 +1487,7 @@ namespace Tests
         [TestMethod]
         public void ValidateFileNotes1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"),
-                new string[]
-                {
-                    "Line 13: An empty payload is not valid after a space"
-                });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "notes-1.ged"));
         }
 
         [TestMethod]
@@ -1515,22 +1504,13 @@ namespace Tests
         [TestMethod]
         public void ValidateFileObsolete1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"), new string[]
-            {
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/CHAR",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
-            });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "obsolete-1.ged"));
         }
 
         [TestMethod]
         public void ValidateFilePedi1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "pedi-1.ged"), new string[]
-            {
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"
-            });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "pedi-1.ged"));
         }
 
         [TestMethod]
@@ -1542,9 +1522,7 @@ namespace Tests
         [TestMethod]
         public void ValidateFileSour1()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"),
-                new string[] { "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/SUBM",
-                "Line 1: HEAD is missing a substructure of type https://gedcom.io/terms/v5.5.1/HEAD-SOUR"});
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "sour-1.ged"));
         }
 
         [TestMethod]
