@@ -1403,9 +1403,7 @@ namespace Tests
         [TestMethod]
         public void ValidateFileAgeAll()
         {
-            // TODO: update based on answer to
-            // https://github.com/FamilySearch/GEDCOM/issues/618
-            // ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "age-all.ged"));
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "age-valid.ged"));
         }
 
         [TestMethod]
