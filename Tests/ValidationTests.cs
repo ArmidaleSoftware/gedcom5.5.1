@@ -645,6 +645,54 @@ namespace Tests
 ", new string[] { "Line 6: \"" + value + "\" is not a valid value for FORM" });
         }
 
+        private void ValidateValidSexPayload(string payload)
+        {
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
+0 @I1@ INDI
+1 SEX " + payload + @"
+0 TRLR
+");
+        }
+
+        private void ValidateInvalidSexPayload(string value)
+        {
+            ValidateGedcomText(@"0 HEAD
+1 SOUR test
+1 SUBM @S1@
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR ASCII
+0 @S1@ SUBM
+1 NAME Test
+0 @I1@ INDI
+1 SEX " + value + @"
+0 TRLR
+", new string[] { "Line 11: \"" + value + "\" is not a valid value for SEX" });
+        }
+
+        /// <summary>
+        /// Validate SEX payload type.
+        /// </summary>
+        [TestMethod]
+        public void ValidateSexPayloadType()
+        {
+            ValidateValidSexPayload("M");
+            ValidateValidSexPayload("F");
+            ValidateValidSexPayload("U");
+            ValidateValidSexPayload("UNKNOWN");
+            ValidateValidSexPayload("OTHER");
+            ValidateInvalidSexPayload("TOO LONG");
+        }
+
         /// <summary>
         /// Validate enum payload type.
         /// </summary>
@@ -661,8 +709,6 @@ namespace Tests
 1 CHAR ASCII
 0 @S1@ SUBM
 1 NAME Test
-0 @I1@ INDI
-1 SEX U
 0 TRLR
 ");
 
@@ -673,28 +719,11 @@ namespace Tests
 1 GEDC
 2 VERS 5.5.1
 2 FORM LINEAGE-LINKED
-1 CHAR ASCII
+1 CHAR text
 0 @S1@ SUBM
 1 NAME Test
-0 @I1@ INDI
-1 SEX UNKNOWN
 0 TRLR
-", new string[] { "Line 11: \"UNKNOWN\" is not a valid value for SEX" });
-            ValidateGedcomText(@"0 HEAD
-1 SOUR test
-1 SUBM @S1@
-1 GEDC
-2 VERS 5.5.1
-2 FORM LINEAGE-LINKED
-1 CHAR ASCII
-0 @S1@ SUBM
-1 NAME Test
-0 @SO1@ SOUR
-0 @I1@ INDI
-1 SOUR @SO1@
-2 EVEN CENSUS
-0 TRLR
-");
+", new string[] { "Line 7: \"text\" is not a valid value for CHAR" });
 
             // Try a valid structure name as an enum value.
             ValidateGedcomText(@"0 HEAD
@@ -776,7 +805,7 @@ namespace Tests
 0 TRLR
 ");
 
-            // TODO: test invalid values for REST
+            // TODO: test invalid values for RESN
 #if false
             ValidateGedcomText(@"0 HEAD
 1 SOUR test

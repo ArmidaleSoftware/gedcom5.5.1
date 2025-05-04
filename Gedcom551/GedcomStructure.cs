@@ -780,7 +780,7 @@ namespace Gedcom551
                         }
                         if (this.Schema.Uri == "https://gedcom.io/terms/v5.5.1/SEX")
                         {
-                            if (this.LineVal != "M" && this.LineVal != "F" && this.LineVal != "U")
+                            if (this.LineVal.Length > 7)
                             {
                                 return ErrorMessage("\"" + this.LineVal + "\" is not a valid value for " + this.Tag);
                             }
