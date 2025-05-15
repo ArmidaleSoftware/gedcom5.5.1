@@ -1050,16 +1050,21 @@ namespace Tests
             ValidateValidDateValuePayload("@#DGREGORIAN@ 20 B.C.");
             ValidateValidDateValuePayload("@#DHEBREW@ 1 TSH 1");
             ValidateValidDateValuePayload("@#DFRENCH R@ 1");
+            ValidateValidDateValuePayload("1699/00");
+            ValidateValidDateValuePayload("FEB 1699/00");
+            ValidateValidDateValuePayload("3 FEB 1699/00");
 
             // Try some valid date periods.
             ValidateValidDateValuePayload("TO 3 DEC 2023");
             ValidateValidDateValuePayload("TO DEC 2023");
             ValidateValidDateValuePayload("TO 2023");
+            ValidateValidDateValuePayload("TO 1699/00");
             ValidateValidDateValuePayload("TO @#DGREGORIAN@ 20 B.C.");
             ValidateValidDateValuePayload("FROM 03 DEC 2023");
             ValidateValidDateValuePayload("FROM 2000 TO 2020");
             ValidateValidDateValuePayload("FROM MAR 2000 TO JUN 2000");
             ValidateValidDateValuePayload("FROM 30 NOV 2000 TO 1 DEC 2000");
+            ValidateValidDateValuePayload("FROM 1 FEB 1699/00 TO 3 FEB 1699/00");
             ValidateValidDateValuePayload("FROM @#DHEBREW@ 1 TSH 1");
             ValidateValidDateValuePayload("FROM @#DGREGORIAN@ 20 B.C. TO @#DGREGORIAN@ 12 B.C.");
 
@@ -1079,6 +1084,7 @@ namespace Tests
             ValidateValidDateValuePayload("ABT 3 DEC 2023");
             ValidateValidDateValuePayload("CAL DEC 2023");
             ValidateValidDateValuePayload("EST @#DGREGORIAN@ 20 B.C.");
+            ValidateValidDateValuePayload("ABT 3 FEB 1699/00");
 
             // Try some invalid date values.
             ValidateInvalidDateValuePayload("TO 40 DEC 2023");
@@ -1090,6 +1096,10 @@ namespace Tests
             ValidateInvalidDateValuePayload("BEF 3 JUNE 2023");
             ValidateInvalidDateValuePayload("BEF ABC 2023");
             ValidateInvalidDateValuePayload("BET 2000");
+            ValidateInvalidDateValuePayload("1699/01");
+            ValidateInvalidDateValuePayload("1699/0");
+            ValidateInvalidDateValuePayload("1699/");
+            ValidateInvalidDateValuePayload("/00");
         }
 
         private void ValidateInvalidTimePayload(string value)
@@ -1473,8 +1483,7 @@ namespace Tests
         }
 
 #if false
-        // TODO: support dual dating
-
+        // TODO: test the date-all.ged file.
         [TestMethod]
         public void ValidateFileDateAll()
         {
@@ -1484,14 +1493,13 @@ namespace Tests
                 "Line 4877: Invalid character '_' in Xref \"@CLOSED_PERIOD@\""
             });
         }
+#endif
 
         [TestMethod]
-        public void ValidateFileDateDual()
+        public void ValidateFileDateDualValid()
         {
-            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-dual.ged"),
-                new string[] { "Line 261: No line text" });
+            ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "date-dual-valid.ged"));
         }
-#endif
 
         [TestMethod]
         public void ValidateFileEnumExt()

@@ -461,7 +461,9 @@ namespace Gedcom551
         private const string Calendar551Regex = @"(@#DGREGORIAN@|@#DJULIAN@|@#DFRENCH R@|@#DHEBREW@|@#DROMAN@|@#DUNKNOWN@)";
         private const string MonthRegex = @"(" + StdTagRegex + "|" + ExtTagRegex + ")";
         private const string Epoch551Regex = @"(B.C.|" + ExtTagRegex + ")";
-        private const string DateRegex = @"(" + Calendar551Regex + @" )?(((\d{1,2}) )?" + MonthRegex + @" )?(\d{1,4})( " + Epoch551Regex + @")?";
+        private const string DayRegex = @"((\d{1,2}) )?";
+        private const string YearRegex = @"(\d{1,4})(/(\d{2}))?";
+        private const string DateRegex = @"(" + Calendar551Regex + @" )?(" + DayRegex + MonthRegex + @" )?" + YearRegex + @"( " + Epoch551Regex + @")?";
 
         /// <summary>
         /// Test whether a given string is a valid date period.
@@ -474,16 +476,11 @@ namespace Gedcom551
             if (value == null || value.Length == 0) return true;
 
             // Next check for a "TO" period.
-            Regex regex = new Regex("^TO " + DateRegex + "$");
+            var regex = new Regex("^TO " + DateRegex + "$");
             Match match = regex.Match(value);
             if (match.Success)
             {
-                string calendar = match.Groups[2].Value;
-                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
-                string month = match.Groups[6].Value;
-                uint year = uint.Parse(match.Groups[9].Value);
-                string epoch = match.Groups[11].Value;
-                return IsValidDate(calendar, day, month, year, epoch);
+                return IsValidDateRegex(match.Groups, 2);
             }
 
             // Check for a "FROM" and "TO" period.
@@ -493,20 +490,15 @@ namespace Gedcom551
             match = regex.Match(value);
             if (match.Success)
             {
-                string calendar1 = match.Groups[2].Value;
-                uint day1 = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
-                string month1 = match.Groups[6].Value;
-                uint year1 = uint.Parse(match.Groups[9].Value);
-                string epoch1 = match.Groups[11].Value;
-
-                string calendar2 = match.Groups[14].Value;
-                uint day2 = match.Groups[17].Success ? uint.Parse(match.Groups[17].Value) : 0;
-                string month2 = match.Groups[18].Value;
-                uint year2 = match.Groups[21].Success ? uint.Parse(match.Groups[21].Value) : 0;
-                string epoch2 = match.Groups[23].Value;
-
-                return IsValidDate(calendar1, day1, month1, year1, epoch1) &&
-                       IsValidDate(calendar2, day2, month2, year2, epoch2);
+                if (!IsValidDateRegex(match.Groups, 2))
+                {
+                    return false;
+                }
+                if (!IsValidDateRegex(match.Groups, 16))
+                {
+                    return false;
+                }
+                return true;
             }
 
             // Now check for a "FROM"-only period.
@@ -514,15 +506,90 @@ namespace Gedcom551
             match = regex.Match(value);
             if (match.Success)
             {
-                string calendar = match.Groups[2].Value;
-                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
-                string month = match.Groups[6].Value;
-                uint year = uint.Parse(match.Groups[9].Value);
-                string epoch = match.Groups[11].Value;
-                return IsValidDate(calendar, day, month, year, epoch);
+                return IsValidDateRegex(match.Groups, 2);
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Test whether a given string is a valid date range.
+        /// </summary>
+        /// <param name="value">String to test</param>
+        /// <returns>true if valid, false if not</returns>
+        private static bool IsValidDateRange(string value)
+        {
+            // Check for a valid dateRange.
+            var regex = new Regex("^(AFT|BEF) " + DateRegex + "$");
+            Match match = regex.Match(value);
+            if (match.Success)
+            {
+                string modifier = match.Groups[1].Value;
+                return IsValidDateRegex(match.Groups, 3);
+            }
+            regex = new Regex("^BET " + DateRegex + " AND " + DateRegex + @"$");
+            match = regex.Match(value);
+            if (match.Success)
+            {
+                if (!IsValidDateRegex(match.Groups, 2))
+                {
+                    return false;
+                }
+                if (!IsValidDateRegex(match.Groups, 16))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Test whether a given string is a valid date approximated.
+        /// </summary>
+        /// <param name="value">String to test</param>
+        /// <returns>true if valid, false if not</returns>
+        private static bool IsValidDateApproximated(string value)
+        {
+            var regex = new Regex("^(ABT|CAL|EST) " + DateRegex + "$");
+            Match match = regex.Match(value);
+            if (match.Success)
+            {
+                string modifier = match.Groups[1].Value;
+                return IsValidDateRegex(match.Groups, 3);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Test whether a given set of DateRegex groups is a valid date value.
+        /// </summary>
+        /// <param name="groups">Group collection to test</param>
+        /// <param name="calendarIndex">Index of calendar in group collection</param>
+        /// <returns>true if valid, false if not</returns>
+        private static bool IsValidDateRegex(GroupCollection groups, int calendarIndex)
+        {
+            int offset = calendarIndex - 2;
+            string calendar = groups[offset + 2].Value;
+            uint day = groups[offset + 5].Success ? uint.Parse(groups[offset + 5].Value) : 0;
+            string month = groups[offset + 6].Value;
+            uint year = uint.Parse(groups[offset + 9].Value);
+            string epoch = groups[offset + 13].Value;
+            if (!IsValidDate(calendar, day, month, year, epoch))
+            {
+                return false;
+            }
+            if (!string.IsNullOrEmpty(groups[offset + 11].Value))
+            {
+                uint altyear = uint.Parse(groups[offset + 11].Value);
+                if ((year + 1) % 100 == altyear)
+                {
+                    return IsValidDate(calendar, day, month, year + 1, epoch);
+                }
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -539,65 +606,25 @@ namespace Gedcom551
             }
 
             // Check for a valid dateRange.
-            Regex regex = new Regex("^(AFT|BEF) " + DateRegex + "$");
-            Match match = regex.Match(value);
-            if (match.Success)
+            if (IsValidDateRange(value))
             {
-                string modifier = match.Groups[1].Value;
-                string calendar = match.Groups[3].Value;
-                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month = match.Groups[7].Value;
-                uint year = uint.Parse(match.Groups[10].Value);
-                string epoch = match.Groups[12].Value;
-                return IsValidDate(calendar, day, month, year, epoch);
-            }
-            regex = new Regex("^BET " + DateRegex + " AND " + DateRegex + @"$");
-            match = regex.Match(value);
-            if (match.Success)
-            {
-                string calendar1 = match.Groups[2].Value;
-                uint day1 = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
-                string month1 = match.Groups[6].Value;
-                uint year1 = uint.Parse(match.Groups[9].Value);
-                string epoch1 = match.Groups[11].Value;
-
-                string calendar2 = match.Groups[14].Value;
-                uint day2 = match.Groups[17].Success ? uint.Parse(match.Groups[17].Value) : 0;
-                string month2 = match.Groups[18].Value;
-                uint year2 = match.Groups[21].Success ? uint.Parse(match.Groups[21].Value) : 0;
-                string epoch2 = match.Groups[23].Value;
-
-                return IsValidDate(calendar1, day1, month1, year1, epoch1) &&
-                       IsValidDate(calendar2, day2, month2, year2, epoch2);
+                return true;
             }
 
             // Check for a valid dateApprox.
-            regex = new Regex("^(ABT|CAL|EST) " + DateRegex + "$");
-            match = regex.Match(value);
-            if (match.Success)
+            if (IsValidDateApproximated(value))
             {
-                string modifier = match.Groups[1].Value;
-                string calendar = match.Groups[3].Value;
-                uint day = match.Groups[6].Success ? uint.Parse(match.Groups[6].Value) : 0;
-                string month = match.Groups[7].Value;
-                uint year = uint.Parse(match.Groups[10].Value);
-                string epoch = match.Groups[12].Value;
-                return IsValidDate(calendar, day, month, year, epoch);
+                return true;
             }
 
             // Check for a valid date.
             // This must be done after the other checks so that we don't try to parse
             // a keyword like "BEF" or "FROM" as a month.
-            regex = new Regex("^" + DateRegex + "$");
-            match = regex.Match(value);
+            var regex = new Regex("^" + DateRegex + "$");
+            Match match = regex.Match(value);
             if (match.Success)
             {
-                string calendar = match.Groups[2].Value;
-                uint day = match.Groups[5].Success ? uint.Parse(match.Groups[5].Value) : 0;
-                string month = match.Groups[6].Value;
-                uint year = uint.Parse(match.Groups[9].Value);
-                string epoch = match.Groups[11].Value;
-                return IsValidDate(calendar, day, month, year, epoch);
+                return IsValidDateRegex(match.Groups, 2);
             }
 
             return false;
