@@ -1199,8 +1199,8 @@ namespace Tests
             ValidateValidAgePayload("79w");
             ValidateValidAgePayload("79w 1d");
             ValidateValidAgePayload("79d");
-            ValidateValidAgePayload("> 79y");
-            ValidateValidAgePayload("< 79y 1m 1w 1d");
+            ValidateValidAgePayload(">79y");
+            ValidateValidAgePayload("<79y 1m 1w 1d");
 
             // Try some invalid age values.
             ValidateInvalidAgePayload(" ");
@@ -1209,8 +1209,8 @@ namespace Tests
             ValidateInvalidAgePayload("79");
             ValidateInvalidAgePayload("1d 1m");
             ValidateInvalidAgePayload("<>1y");
-            ValidateInvalidAgePayload(">79y");
-            ValidateInvalidAgePayload("<79y 1m 1w 1d");
+            ValidateInvalidAgePayload("> 79y");
+            ValidateInvalidAgePayload("< 79y 1m 1w 1d");
         }
 
         private void ValidateInvalidLanguagePayload(string value)
