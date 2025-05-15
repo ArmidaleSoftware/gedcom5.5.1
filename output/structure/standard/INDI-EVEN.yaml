@@ -13,7 +13,7 @@ specification:
 
 label: 'Event'
 
-payload: null
+payload: https://gedcom.io/terms/v5.5.1/type-EVENT_DESCRIPTOR
 
 substructures:
   "https://gedcom.io/terms/v5.5.1/ADDR": "{0:1}"

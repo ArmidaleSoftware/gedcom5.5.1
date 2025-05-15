@@ -362,8 +362,25 @@ namespace Gedcom551
             {
                 return true;
             }
-            Regex regex = new Regex(@"^([<>] )?(\d+y( \d+m)?( \d+w)?( \d+d)?|\d+m( \d+w)?( \d+d)?|\d+w( \d+d)?|\d+d)$");
-            return regex.IsMatch(value);
+
+            // The GEDCOM 5.5.1 spec says:
+            // "All controlled line_value choices should be considered as case insensitive.
+            // This means that the values should be converted to all uppercase or all lowercase prior to comparing."
+            string lower = value.ToLower();
+
+            // GEDCOM 5.5.1 allows some specific words.
+            if (lower == "child" || lower == "infant" || lower == "stillborn")
+            {
+                return true;
+            }
+
+            Regex regex = new Regex(@"^([<>])?(\d+y( \d+m)?( \d+w)?( \d+d)?|\d+m( \d+w)?( \d+d)?|\d+w( \d+d)?|\d+d)$");
+            if (regex.IsMatch(lower))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -769,6 +786,7 @@ namespace Gedcom551
                     case "https://gedcom.io/terms/v5.5.1/type-EVENTS_RECORDED": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_PREFERENCE": // TODO complex validation
                     case "https://gedcom.io/terms/v5.5.1/type-LANGUAGE_OF_TEXT": // TODO complex validation
+                    case "https://gedcom.io/terms/v5.5.1/type-EVENT_DESCRIPTOR": // TODO complex validation
                     case "http://www.w3.org/2001/XMLSchema#string":
                         if ((this.Schema.Uri == "https://gedcom.io/terms/v7/TAG") && (tokens.Length > 3))
                         {
