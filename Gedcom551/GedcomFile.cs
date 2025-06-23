@@ -153,10 +153,45 @@ namespace Gedcom551
             {
                 return new List<string>() { "File not found: " + pathToFile };
             }
-            using (var reader = new StreamReader(pathToFile))
+
+            // Detect encoding by checking for UTF-16 BOM
+            var encoding = DetectFileEncoding(pathToFile);
+            using (var reader = new StreamReader(pathToFile, encoding))
             {
                 return LoadFromStreamReader(reader);
             }
+        }
+
+        /// <summary>
+        /// Detect the encoding of a file by checking for UTF-16 byte order marks.
+        /// </summary>
+        /// <param name="pathToFile">Path to file to check</param>
+        /// <returns>Detected encoding (UTF-16 BE, UTF-16 LE, or UTF-8)</returns>
+        private Encoding DetectFileEncoding(string pathToFile)
+        {
+            using (var fileStream = new FileStream(pathToFile, FileMode.Open, FileAccess.Read))
+            {
+                if (fileStream.Length >= 2)
+                {
+                    var bom = new byte[2];
+                    fileStream.Read(bom, 0, 2);
+                    
+                    // Check for UTF-16 BE BOM (FE FF)
+                    if (bom[0] == 0xFE && bom[1] == 0xFF)
+                    {
+                        return Encoding.BigEndianUnicode;
+                    }
+                    
+                    // Check for UTF-16 LE BOM (FF FE) 
+                    if (bom[0] == 0xFF && bom[1] == 0xFE)
+                    {
+                        return Encoding.Unicode;
+                    }
+                }
+            }
+            
+            // Default to UTF-8 if no UTF-16 BOM found
+            return Encoding.UTF8;
         }
 
         /// <summary>
