@@ -153,10 +153,64 @@ namespace Gedcom551
             {
                 return new List<string>() { "File not found: " + pathToFile };
             }
-            using (var reader = new StreamReader(pathToFile))
+
+            // Detect encoding by checking for UTF-16 BOM.
+            var encoding = DetectFileEncoding(pathToFile);
+            using (var reader = new StreamReader(pathToFile, encoding))
             {
                 return LoadFromStreamReader(reader);
             }
+        }
+
+        /// <summary>
+        /// Detect the encoding of a file by checking for UTF-16 byte order marks and UTF-16 patterns.
+        /// </summary>
+        /// <param name="pathToFile">Path to file to check</param>
+        /// <returns>Detected encoding (UTF-16 BE, UTF-16 LE, or UTF-8)</returns>
+        private Encoding DetectFileEncoding(string pathToFile)
+        {
+            using (var fileStream = new FileStream(pathToFile, FileMode.Open, FileAccess.Read))
+            {
+                if (fileStream.Length >= 2)
+                {
+                    var headerSize = (int)Math.Min(6, fileStream.Length);
+                    var header = new byte[headerSize];
+                    fileStream.Read(header, 0, headerSize);
+                    
+                    // Check for UTF-16 BE BOM (FE FF).
+                    if (headerSize >= 2 && header[0] == 0xFE && header[1] == 0xFF)
+                    {
+                        return Encoding.BigEndianUnicode;
+                    }
+                    
+                    // Check for UTF-16 LE BOM (FF FE).
+                    if (headerSize >= 2 && header[0] == 0xFF && header[1] == 0xFE)
+                    {
+                        return Encoding.Unicode;
+                    }
+                    
+                    // Check for UTF-16 BE without BOM by looking for "0 HEAD" pattern.
+                    // UTF-16 BE "0 HEAD" = 00 30 00 20 00 48 00 45 00 41 00 44.
+                    if (headerSize >= 6 && header[0] == 0x00 && header[1] == 0x30 && 
+                        header[2] == 0x00 && header[3] == 0x20 && 
+                        header[4] == 0x00 && header[5] == 0x48)
+                    {
+                        return Encoding.BigEndianUnicode;
+                    }
+                    
+                    // Check for UTF-16 LE without BOM by looking for "0 HEAD" pattern.
+                    // UTF-16 LE "0 HEAD" = 30 00 20 00 48 00 45 00 41 00 44 00.
+                    if (headerSize >= 6 && header[0] == 0x30 && header[1] == 0x00 && 
+                        header[2] == 0x20 && header[3] == 0x00 && 
+                        header[4] == 0x48 && header[5] == 0x00)
+                    {
+                        return Encoding.Unicode;
+                    }
+                }
+            }
+            
+            // Default to UTF-8 if no UTF-16 pattern found.
+            return Encoding.UTF8;
         }
 
         /// <summary>

@@ -1437,8 +1437,6 @@ namespace Tests
             ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_ascii_2.ged"), new string[] { "Line 7: \"LATIN1\" is not a valid value for CHAR" });
         }
 
-#if false
-        // TODO: support loading UTF-16
         [TestMethod]
         public void ValidateFileCharUtf16be1()
         {
@@ -1462,7 +1460,6 @@ namespace Tests
         {
             ValidateGedcomFile(Path.Combine(TEST_FILES_BASE_PATH, "char_utf16le-2.ged"));
         }
-#endif
 
         [TestMethod]
         public void ValidateFileCharUtf81()
