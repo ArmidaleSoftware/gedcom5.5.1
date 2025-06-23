@@ -154,7 +154,7 @@ namespace Gedcom551
                 return new List<string>() { "File not found: " + pathToFile };
             }
 
-            // Detect encoding by checking for UTF-16 BOM
+            // Detect encoding by checking for UTF-16 BOM.
             var encoding = DetectFileEncoding(pathToFile);
             using (var reader = new StreamReader(pathToFile, encoding))
             {
