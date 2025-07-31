@@ -737,7 +737,7 @@ namespace Gedcom551.Construct
                 TrimSpecification(schema.TagSpecification);
                 TrimSpecification(schema.TypeSpecification);
 
-                string filePath = Path.Combine(path, relativeUri + ".yaml");
+                string filePath = Path.Combine(path, relativeUri + "-v551.yaml");
                 try
                 {
                     // Create a StreamWriter object to open the file for writing.
