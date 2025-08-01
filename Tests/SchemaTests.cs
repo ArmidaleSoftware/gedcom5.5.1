@@ -79,7 +79,7 @@ namespace Tests
             VerifyRecord("SUBN");
         }
 
-        private GedcomStructureSchema VerifyUniqueTag(string tag, string? expectedPayload = null)
+        private GedcomStructureSchema VerifyUniqueTag(string tag, string? expectedPayload = null, bool? isEnumSet = false)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag);
             Debug.Assert(schema.StandardTag == tag);
@@ -87,6 +87,11 @@ namespace Tests
             if (expectedPayload != null)
             {
                 Debug.Assert(schema.ActualPayload == expectedPayload);
+            }
+            if (isEnumSet != null)
+            {
+                string expectedUri = "https://gedcom.io/terms/v7/enumset-" + expectedPayload;
+                Debug.Assert(schema.EnumerationSetUri == expectedUri);
             }
             return schema;
         }
@@ -140,6 +145,12 @@ namespace Tests
         public void TestChanDate()
         {
             VerifyQualifiedTag("CHAN", "DATE", "CHANGE_DATE");
+        }
+
+        [TestMethod]
+        public void TestHeadChar()
+        {
+            VerifyUniqueTag("CHAR", "CHARACTER_SET", true);
         }
 
         [TestMethod]
