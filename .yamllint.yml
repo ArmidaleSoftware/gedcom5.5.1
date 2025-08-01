@@ -11,3 +11,4 @@ rules:
   line-length: disable
   truthy:
     check-keys: false
+  trailing-spaces: disable

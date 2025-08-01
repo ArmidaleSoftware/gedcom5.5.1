@@ -42,13 +42,59 @@ namespace Gedcom551
 
         static Dictionary<string, CalendarSchema> s_CalendarsByTag = new Dictionary<string, CalendarSchema>();
 
+        private static void AddOldCalendar(string key, List<string> months)
+        {
+            var dictionary = new Dictionary<object, object>();
+            dictionary["label"] = key;
+            dictionary["uri"] = key;
+            dictionary["standard tag"] = key;
+            dictionary["epochs"] = new object[] { "B.C." };
+            var monthObjects = new object[months.Count];
+            for (int i = 0; i < months.Count; i++)
+            {
+                string month = months[i];
+                if (string.IsNullOrEmpty(month))
+                {
+                    throw new ArgumentException("Month cannot be null or empty", nameof(months));
+                }
+                monthObjects[i] = "https://gedcom.io/terms/v7/month-" + month;
+            }
+            dictionary["months"] = monthObjects;
+            var schema = new CalendarSchema(dictionary);
+            s_CalendarsByTag.Add(schema.StandardTag, schema);
+        }
         public static void LoadAll(string gedcomRegistriesPath)
         {
             if (s_CalendarsByTag.Count > 0)
             {
                 return;
             }
+
             MonthSchema.LoadAll(gedcomRegistriesPath);
+
+            // Manually construct 5.5.1 calendars.
+            AddOldCalendar("@#DFRENCH R@", new List<string>
+            {
+                "VEND", "BRUM", "FRIM", "NIVO", "PLUV", "VENT",
+                "GERM", "FLOR", "PRAI", "MESS", "THER", "FRUC",
+                "COMP"
+            });
+            AddOldCalendar("@#DGREGORIAN@", new List<string>
+            {
+                "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+            });
+            AddOldCalendar("@#DHEBREW@", new List<string>
+            {
+                "TSH", "CSH", "KSL", "TVT", "SHV", "ADR", "ADS",
+                "NSN", "IYR", "SVN", "TMZ", "AAV", "ELL"
+            });
+            AddOldCalendar("@#JULIAN@", new List<string>
+            {
+                "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+            });
+
             var path = Path.Combine(gedcomRegistriesPath, "calendar/standard");
             string[] files;
             try
