@@ -832,15 +832,13 @@ namespace Gedcom551
                         }
                         // We currently don't do any further validation.
                         break;
-                    case "https://gedcom.io/terms/v5.5.1/type-CHANGE_DATE": // TODO: should be DATE_EXACT
-                    case "https://gedcom.io/terms/v5.5.1/type-TRANSMISSION_DATE": // TODO: should be DATE_EXACT
+                    case "https://gedcom.io/terms/v5.5.1/type-DATE_EXACT":
                     case "https://gedcom.io/terms/v7/type-Date#exact":
                         if (!IsValidExactDate(this.LineVal))
                         {
                             return ErrorMessage("\"" + this.LineVal + "\" is not a valid exact date");
                         }
                         break;
-                    case "https://gedcom.io/terms/v5.5.1/type-ENTRY_RECORDING_DATE": // TODO: should be DATE_VALUE
                     case "https://gedcom.io/terms/v5.5.1/type-DATE_VALUE":
                     case "https://gedcom.io/terms/v7/type-Date":
                         if (!IsValidDateValue(this.LineVal))
