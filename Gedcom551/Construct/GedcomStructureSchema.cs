@@ -311,7 +311,7 @@ namespace Gedcom551.Construct
                 // lines until it ends with "]" or reaches the end of the array.
                 int count = 1;
                 string line = "";
-                for (; count < lines.Count(); count++)
+                for (; count <= lines.Count(); count++)
                 {
                     line = string.Join("", lines.Take(count));
                     if (!Regex.Match(line, enumStart).Success ||
