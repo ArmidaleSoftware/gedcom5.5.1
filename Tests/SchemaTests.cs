@@ -180,6 +180,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestStringEnums()
+        {
+            VerifyUniqueTag("ROLE", XsdString);
+            VerifyQualifiedTag("INDI-NAME", "TYPE", XsdString);
+            VerifyPayloadTag("TYPE", "PHONETIC_TYPE", XsdString);
+            VerifyPayloadTag("TYPE", "ROMANIZED_TYPE", XsdString);
+        }
+
+        [TestMethod]
         public void TestPlacFone()
         {
             VerifyQualifiedTag("PLAC-PLACE_NAME", "FONE");
@@ -202,7 +211,7 @@ namespace Tests
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + suffix);
             Debug.Assert(schema.StandardTag == tag);
             Debug.Assert(schema.Superstructures.Count > 1);
-            Debug.Assert(schema.OriginalPayload == payload);
+            Debug.Assert(schema.ActualPayload == payload);
             return schema;
         }
 
@@ -225,7 +234,7 @@ namespace Tests
         [TestMethod]
         public void TestFormPlaceHierarchy()
         {
-            VerifyPayloadTag("FORM", "PLACE_HIERARCHY", "PLACE_HIERARCHY");
+            VerifyPayloadTag("FORM", "PLACE_HIERARCHY", XsdString);
         }
     }
 }
