@@ -303,7 +303,6 @@ namespace Gedcom551.Construct
                     continue;
                 }
 
-                string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
                 string enumStart = @"^(?!.*<)\s*\[";
                 string enumEnd = @"\]\s*$";
 
@@ -321,6 +320,14 @@ namespace Gedcom551.Construct
                     }
                 }
 
+                string enumStringPattern = @"^\s*\[\s*[\w\s|(]*<[\w\s_]*>[\w\s|)]*\]\s*$";
+                if (Regex.Match(line, enumStringPattern).Success)
+                {
+                    schema.ActualPayload = "http://www.w3.org/2001/XMLSchema#string";
+                    continue;
+                }
+
+                string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
                 Match match = Regex.Match(line, enumPattern);
                 if (match.Success)
                 {
