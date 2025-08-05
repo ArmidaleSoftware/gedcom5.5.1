@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Yaml.Serialization;
 
 namespace Gedcom551.Construct
@@ -288,6 +289,43 @@ namespace Gedcom551.Construct
                 foreach (GedcomStructureSchema sub in schema.Substructures.Keys)
                 {
                     Debug.Assert(sub.Superstructures.Contains(schema));
+                }
+            }
+        }
+
+        public static void ProcessEnumerations()
+        {
+            foreach (GedcomStructureSchema schema in s_StructureSchemas)
+            {
+                string[] lines = schema.TypeSpecification.ToArray();
+                if (lines.Count() <= 0)
+                {
+                    continue;
+                }
+
+                string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
+                string enumStart = @"^(?!.*<)\s*\[";
+                string enumEnd = @"\]\s*$";
+
+                // If the first line starts with "[", concatenate
+                // lines until it ends with "]" or reaches the end of the array.
+                int count = 1;
+                string line = "";
+                for (; count <= lines.Count(); count++)
+                {
+                    line = string.Join("", lines.Take(count));
+                    if (!Regex.Match(line, enumStart).Success ||
+                        Regex.Match(line, enumEnd).Success)
+                    {
+                        break;
+                    }
+                }
+
+                Match match = Regex.Match(line, enumPattern);
+                if (match.Success)
+                {
+                    schema.EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + schema.ActualPayload;
+                    schema.ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
                 }
             }
         }
@@ -713,6 +751,51 @@ namespace Gedcom551.Construct
         }
 
         /// <summary>
+        /// Payload string as it appears in a YAML file.
+        /// </summary>
+        private string PayloadYamlValue
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ActualPayload))
+                {
+                    return "null";
+                }
+                else if (ActualPayload == "[Y|<NULL>]")
+                {
+                    return "Y|<NULL>";
+                }
+                else if (ActualPayload.StartsWith("@<XREF:"))
+                {
+                    string recordType = ActualPayload.Substring(7).Trim('@', '>');
+                    return "\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"";
+                }
+                else if (ActualPayload.StartsWith("[@<XREF:") && ActualPayload.EndsWith(">@|<NULL>]"))
+                {
+                    string recordType = ActualPayload.Substring(8, ActualPayload.Length - 18);
+                    return "\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@|<NULL>\"";
+                }
+                else if (ActualPayload.StartsWith("[<") && ActualPayload.EndsWith(">|<NULL>]"))
+                {
+                    string payloadType = ActualPayload.Substring(2, ActualPayload.Length - 11);
+                    return "https://gedcom.io/terms/v5.5.1/type-" + payloadType;
+                }
+                else if (ActualPayload.Contains('@') || ActualPayload.Contains('|'))
+                {
+                    throw new Exception("Bad payload");
+                }
+                else if (!ActualPayload.StartsWith("http"))
+                {
+                    return "https://gedcom.io/terms/v5.5.1/type-" + ActualPayload;
+                }
+                else
+                {
+                    return ActualPayload;
+                }
+            }
+        }
+
+        /// <summary>
         /// Save all structure schemas in YAML files under a given file path.
         /// </summary>
         /// <param name="gedcomRegistriesPath"></param>
@@ -781,42 +864,15 @@ namespace Gedcom551.Construct
 
                         // Payload.
                         writer.Write("payload: ");
-                        if (string.IsNullOrEmpty(schema.ActualPayload))
-                        {
-                            writer.WriteLine("null");
-                        }
-                        else if (schema.ActualPayload == "[Y|<NULL>]")
-                        {
-                            writer.WriteLine("Y|<NULL>");
-                        }
-                        else if (schema.ActualPayload.StartsWith("@<XREF:"))
-                        {
-                            string recordType = schema.ActualPayload.Substring(7).Trim('@', '>');
-                            writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@\"");
-                        }
-                        else if (schema.ActualPayload.StartsWith("[@<XREF:") && schema.ActualPayload.EndsWith(">@|<NULL>]"))
-                        {
-                            string recordType = schema.ActualPayload.Substring(8, schema.ActualPayload.Length - 18);
-                            writer.WriteLine("\"@<https://gedcom.io/terms/v5.5.1/record-" + recordType + ">@|<NULL>\"");
-                        }
-                        else if (schema.ActualPayload.StartsWith("[<") && schema.ActualPayload.EndsWith(">|<NULL>]"))
-                        {
-                            string payloadType = schema.ActualPayload.Substring(2, schema.ActualPayload.Length - 11);
-                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + payloadType);
-                        }
-                        else if (schema.ActualPayload.Contains('@') || schema.ActualPayload.Contains('|'))
-                        {
-                            throw new Exception("Bad payload");
-                        }
-                        else if (!schema.ActualPayload.StartsWith("http"))
-                        {
-                            writer.WriteLine("https://gedcom.io/terms/v5.5.1/type-" + schema.ActualPayload);
-                        }
-                        else
-                        {
-                            writer.WriteLine(schema.ActualPayload);
-                        }
+                        writer.WriteLine(schema.PayloadYamlValue);
                         writer.WriteLine();
+
+                        // Enumeration set.
+                        if (!string.IsNullOrEmpty(schema.EnumerationSetUri))
+                        {
+                            writer.WriteLine("enumeration set: '" + schema.EnumerationSetUri + "'");
+                            writer.WriteLine();
+                        }
 
                         // Substructures.
                         writer.Write("substructures:");

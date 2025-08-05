@@ -337,6 +337,8 @@ namespace Gedcom551.Construct
                     }
                 }
             }
+
+            GedcomStructureSchema.ProcessEnumerations();
         }
 
         public void GenerateOutput(string destinationDirectory)
