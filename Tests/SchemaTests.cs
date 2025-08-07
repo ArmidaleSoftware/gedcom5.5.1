@@ -145,7 +145,7 @@ namespace Tests
         [TestMethod]
         public void TestChanDate()
         {
-            VerifyQualifiedTag("CHAN", "DATE", "CHANGE_DATE");
+            VerifyQualifiedTag("CHAN", "DATE", "DATE_EXACT");
         }
 
         [TestMethod]
