@@ -103,6 +103,7 @@ namespace Tests
         [TestMethod]
         public void TestSomeUniqueTags()
         {
+            VerifyUniqueTag("TEXT", XsdString);
             VerifyUniqueTag("CITY", XsdString);
             VerifyUniqueTag("CORP", XsdString);
             VerifyUniqueTag("NPFX");

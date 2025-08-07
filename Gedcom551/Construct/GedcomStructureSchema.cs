@@ -295,6 +295,18 @@ namespace Gedcom551.Construct
 
         private void ProcessEnumerations()
         {
+            if (!string.IsNullOrEmpty(ActualPayload))
+            {
+                string pattern = @"^\s*\[\s*<(?<id>[\w_]+)>\s*\|\s*<NULL>\s*\]\s*$";
+                Match match2 = Regex.Match(ActualPayload, pattern);
+                if (match2.Success)
+                {
+                    string type = match2.Groups[1].Value;
+                    GedcomTypeSchema typeSchema = GedcomTypeSchema.GetTypeSchema(type);
+                    this.TypeSpecification.InsertRange(this.TypeSpecification.Count, typeSchema.Specification);
+                    this.ActualPayload = GedcomFileSchema.XsdString;
+                }
+            }
             string[] lines = TypeSpecification.ToArray();
             if (lines.Count() <= 0)
             {
@@ -311,6 +323,11 @@ namespace Gedcom551.Construct
 
                 // Remove the old text.
                 TypeSpecification.RemoveAt(0);
+
+                if (ActualPayload == "TEXT")
+                {
+                    ActualPayload = GedcomFileSchema.XsdString;
+                }
                 return;
             }
 
