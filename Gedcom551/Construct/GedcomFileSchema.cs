@@ -217,8 +217,8 @@ namespace Gedcom551.Construct
         {
             var schemas = GedcomStructureSchema.GetAllSchemasForPayload(payload);
 
-            // TODO: handle nested references to types.
-            // Debug.Assert(schemas.Count > 0);
+            GedcomTypeSchema typeSchema = GedcomTypeSchema.GetTypeSchema(payload);
+            typeSchema.Specification.Add(line);
 
             foreach (GedcomStructureSchema schema in schemas)
             {
@@ -338,7 +338,7 @@ namespace Gedcom551.Construct
                 }
             }
 
-            GedcomStructureSchema.ProcessEnumerations();
+            GedcomStructureSchema.ProcessAllEnumerations();
         }
 
         public void GenerateOutput(string destinationDirectory)

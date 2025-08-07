@@ -293,47 +293,80 @@ namespace Gedcom551.Construct
             }
         }
 
-        public static void ProcessEnumerations()
+        private void ProcessEnumerations()
+        {
+            string[] lines = TypeSpecification.ToArray();
+            if (lines.Count() <= 0)
+            {
+                return;
+            }
+
+            string inheritOverPattern = @"^\s*<(?<id>[\w_]+)>\s*$";
+            Match match = Regex.Match(lines[0], inheritOverPattern);
+            if (match.Success)
+            {
+                // If the first line is of the form "<PRODUCTION>", replace it with
+                // PRODUCTION.
+                ActualPayload = match.Groups[1].Value;
+
+                // Remove the old text.
+                TypeSpecification.RemoveAt(0);
+                return;
+            }
+
+            string enumStart = @"^(?!.*<)\s*\[";
+            string enumEnd = @"\]\s*$";
+
+            // If the first line starts with "[", concatenate
+            // lines until it ends with "]" or reaches the end of the array.
+            int count = 1;
+            string line = "";
+            for (; count <= lines.Count(); count++)
+            {
+                line = string.Join("", lines.Take(count));
+                if (!Regex.Match(line, enumStart).Success ||
+                    Regex.Match(line, enumEnd).Success)
+                {
+                    break;
+                }
+            }
+
+            string enumStringPattern = @"^\s*\[\s*[\w\s|(]*<[\w\s_]*>[\w\s|)]*\]\s*$";
+            match = Regex.Match(line, enumStringPattern);
+            if (match.Success)
+            {
+                if (line.Contains('|'))
+                {
+                    ActualPayload = "http://www.w3.org/2001/XMLSchema#string";
+                    return;
+                }
+                else
+                {
+                    // It should be of the form "[ <PRODUCTION> ]" and replace it with
+                    // PRODUCTION.
+                    string enumOverPattern = @"^\s*\[\s*<(?<id>[\w_]+)>\s*\]\s*$";
+                    match = Regex.Match(line, enumOverPattern);
+                    ActualPayload = match.Groups[1].Value;
+
+                    // Remove the old text (across 'count' lines).
+                    TypeSpecification.RemoveRange(0, count);
+                }
+            }
+
+            string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
+            match = Regex.Match(line, enumPattern);
+            if (match.Success)
+            {
+                EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + ActualPayload;
+                ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
+            }
+        }
+
+        public static void ProcessAllEnumerations()
         {
             foreach (GedcomStructureSchema schema in s_StructureSchemas)
             {
-                string[] lines = schema.TypeSpecification.ToArray();
-                if (lines.Count() <= 0)
-                {
-                    continue;
-                }
-
-                string enumStart = @"^(?!.*<)\s*\[";
-                string enumEnd = @"\]\s*$";
-
-                // If the first line starts with "[", concatenate
-                // lines until it ends with "]" or reaches the end of the array.
-                int count = 1;
-                string line = "";
-                for (; count <= lines.Count(); count++)
-                {
-                    line = string.Join("", lines.Take(count));
-                    if (!Regex.Match(line, enumStart).Success ||
-                        Regex.Match(line, enumEnd).Success)
-                    {
-                        break;
-                    }
-                }
-
-                string enumStringPattern = @"^\s*\[\s*[\w\s|(]*<[\w\s_]*>[\w\s|)]*\]\s*$";
-                if (Regex.Match(line, enumStringPattern).Success)
-                {
-                    schema.ActualPayload = "http://www.w3.org/2001/XMLSchema#string";
-                    continue;
-                }
-
-                string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
-                Match match = Regex.Match(line, enumPattern);
-                if (match.Success)
-                {
-                    schema.EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + schema.ActualPayload;
-                    schema.ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
-                }
+                schema.ProcessEnumerations();
             }
         }
 
@@ -697,6 +730,43 @@ namespace Gedcom551.Construct
             }
         }
 
+        private static List<string> NormalizeParagraph(List<string> paragraph, int maxLength = 75)
+        {
+            if (paragraph.Count > 1)
+            {
+                return paragraph;
+            }
+            var result = new List<string>();
+
+            // Combine all input lines into a single string, separating with spaces.
+            string combined = string.Join(" ", paragraph).Replace("\t", " ").Trim();
+
+            int start = 0;
+
+            while (start < combined.Length)
+            {
+                int end = Math.Min(start + maxLength, combined.Length);
+
+                // Try to break at the last space before 'end'
+                if (end < combined.Length)
+                {
+                    int lastSpace = combined.LastIndexOf(' ', end - 1, end - start);
+                    if (lastSpace > start)
+                    {
+                        result.Add(combined.Substring(start, lastSpace - start));
+                        start = lastSpace + 1; // Skip the space
+                        continue;
+                    }
+                }
+
+                // No space found or we're at the end — take the chunk
+                result.Add(combined.Substring(start, end - start));
+                start = end;
+            }
+
+            return result;
+        }
+
         public static void ShowSpecification(StreamWriter writer, List<string> specification)
         {
             var paragraphs = new List<List<string>>();
@@ -719,7 +789,7 @@ namespace Gedcom551.Construct
             }
             if (currentParagraph.Count > 0)
             {
-                paragraphs.Add(currentParagraph);
+                paragraphs.Add(NormalizeParagraph(currentParagraph));
                 currentParagraph = null;
             }
 
