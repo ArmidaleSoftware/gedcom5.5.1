@@ -113,7 +113,7 @@ namespace Tests
             VerifyUniqueTag("DESC", XsdNonNegativeInteger);
         }
 
-        private GedcomStructureSchema VerifyQualifiedTag(string super, string tag, string? expectedPayload = null)
+        private GedcomStructureSchema VerifyQualifiedTag(string super, string tag, string? expectedPayload = null, bool isEnumSet = false)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + super + "-" + tag);
             Debug.Assert(schema.StandardTag == tag);
@@ -123,7 +123,13 @@ namespace Tests
             Debug.Assert(superstructureUri == GedcomStructureSchema.UriPrefix + super ||
                          superstructureUri == GedcomStructureSchema.UriPrefix + "record-" + super);
 
-            if (expectedPayload != null)
+            if (isEnumSet)
+            {
+                Debug.Assert(schema.ActualPayload == "https://gedcom.io/terms/v7/type-Enum");
+                string expectedUri = "https://gedcom.io/terms/v5.5.1/enumset-" + expectedPayload;
+                Debug.Assert(schema.EnumerationSetUri == expectedUri);
+            }
+            else if (expectedPayload != null)
             {
                 Debug.Assert(schema.ActualPayload == expectedPayload);
             }
@@ -147,6 +153,12 @@ namespace Tests
         public void TestChanDate()
         {
             VerifyQualifiedTag("CHAN", "DATE", "DATE_EXACT");
+        }
+
+        [TestMethod]
+        public void TestSourXrefSourEven()
+        {
+            VerifyQualifiedTag("SOUR-XREF_SOUR", "EVEN", "XXX", true);
         }
 
         [TestMethod]
