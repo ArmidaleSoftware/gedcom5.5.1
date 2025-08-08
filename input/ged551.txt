@@ -1012,7 +1012,8 @@ This groups the fact into a generic skills attribute, and in particular this ent
 
 This classifies the entry as a common law marriage but the event is still a marriage event. Other descriptor values might include, for example,`stillborn' as a qualifier to BIRTh or `Tribal Custom' as a qualifier to MARRiage.
 
-EVENT_TYPE_CITED_FROM:=	{SIZE=1:15} [ <EVENT_ATTRIBUTE_TYPE> ]
+EVENT_TYPE_CITED_FROM:=	{Size=1:15}
+[ <EVENT_ATTRIBUTE_TYPE> ]
 A code that indicates the type of event which was responsible for the source entry being recorded. For example, if the entry was created to record a birth of a child, then the type would be BIRT regardless of the assertions made from that record, such as the mother's name or mother's birth date. This will allow a prioritized best view choice and a determination of the certainty associated with the source used in asserting the cited fact.
 
 EVENT_TYPE_FAMILY:=	{Size=3:4}
