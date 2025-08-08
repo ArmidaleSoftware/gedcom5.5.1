@@ -59,11 +59,11 @@ namespace Gedcom551.Construct
         {
             get
             {
-                if (!this.Superstructures.Where(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-INDI" || s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-FAM").Any())
+                if (!this.Superstructures.Any(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-INDI" || s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-FAM"))
                 {
                     return false;
                 }
-                if (!this.Substructures.Keys.Where(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/AGNC").Any())
+                if (!this.Substructures.Keys.Any(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/AGNC"))
                 {
                     return false;
                 }
@@ -127,7 +127,7 @@ namespace Gedcom551.Construct
                 }
 
                 // Anything else.  This should never happen.
-                Debug.Assert(false);
+                Debug.Assert(false, $"Unexpected StandardTag: {this.StandardTag}");
                 return false;
             }
         }

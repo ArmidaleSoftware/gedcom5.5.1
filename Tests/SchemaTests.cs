@@ -158,7 +158,7 @@ namespace Tests
         [TestMethod]
         public void TestSourXrefSourEven()
         {
-            VerifyQualifiedTag("SOUR-XREF_SOUR", "EVEN", "XXX", true);
+            VerifyQualifiedTag("SOUR-XREF_SOUR", "EVEN", "EVENT_ATTRIBUTE_TYPE", true);
         }
 
         [TestMethod]
