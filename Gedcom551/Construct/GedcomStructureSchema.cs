@@ -55,6 +55,83 @@ namespace Gedcom551.Construct
     {
         public static readonly string Wildcard = "*";
 
+        public bool NeedsValueOf
+        {
+            get
+            {
+                if (!this.Superstructures.Any(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-INDI" || s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/record-FAM"))
+                {
+                    return false;
+                }
+                if (!this.Substructures.Keys.Any(s => s.AbsoluteUri == "https://gedcom.io/terms/v5.5.1/AGNC"))
+                {
+                    return false;
+                }
+                switch (this.StandardTag)
+                {
+                    case "ADOP":
+                    case "BIRT":
+                    case "BAPM":
+                    case "BARM":
+                    case "BASM":
+                    case "BLES":
+                    case "BURI":
+                    case "CHR":
+                    case "CHRA":
+                    case "CONF":
+                    case "CREM":
+                    case "DEAT":
+                    case "EMIG":
+                    case "FCOM":
+                    case "GRAD":
+                    case "IMMI":
+                    case "NATU":
+                    case "ORDN":
+                    case "RETI":
+                    case "PROB":
+                    case "WILL":
+                    case "ANUL":
+                    case "DIV":
+                    case "DIVF":
+                    case "ENGA":
+                    case "MARR":
+                    case "MARB":
+                    case "MARC":
+                    case "MARL":
+                    case "MARS":
+                    case "CAST":
+                    case "EDUC":
+                    case "NATI":
+                    case "OCCU":
+                    case "PROP":
+                    case "RELI":
+                    case "TITL":
+                    case "FACT":
+                        return true;
+
+                    // The following family attributes cannot be used in the
+                    // EVENT_ATTRIBUTE_TYPE enum.
+                    case "NCHI":
+                    case "DSCR":
+                    case "IDNO":
+                    case "NMR":
+                    case "SSN":
+                        return false;
+
+                    // The following have two separate structures and so we use enum
+                    // values instead.
+                    case "CENS":
+                    case "RESI":
+                    case "EVEN":
+                        return false;
+                }
+
+                // Anything else.  This should never happen.
+                Debug.Assert(false, $"Unexpected StandardTag: {this.StandardTag}");
+                return false;
+            }
+        }
+
         public bool HasComplexPayloadType
         {
             get
@@ -367,6 +444,14 @@ namespace Gedcom551.Construct
 
                     // Remove the old text (across 'count' lines).
                     TypeSpecification.RemoveRange(0, count);
+
+                    // Special case an unusual payload type.
+                    if (ActualPayload == "EVENT_ATTRIBUTE_TYPE")
+                    {
+                        EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + ActualPayload;
+                        ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
+                        return;
+                    }
                 }
             }
 
@@ -1003,6 +1088,13 @@ namespace Gedcom551.Construct
                             }
                         }
                         writer.WriteLine();
+
+                        if (schema.NeedsValueOf)
+                        {
+                            writer.WriteLine("value of:");
+                            writer.WriteLine("  - \"https://gedcom.io/terms/v5.5.1/enumset-EVENT_ATTRIBUTE_TYPE\"");
+                            writer.WriteLine();
+                        }
 
                         writer.WriteLine("contact: https://gedcom.io/community/");
                     }
