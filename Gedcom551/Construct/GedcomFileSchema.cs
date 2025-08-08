@@ -210,8 +210,8 @@ namespace Gedcom551.Construct
             return structureCardinality;
         }
 
-        private const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
-        private const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
+        public const string XsdString = "http://www.w3.org/2001/XMLSchema#string";
+        public const string XsdNonNegativeInteger = "http://www.w3.org/2001/XMLSchema#nonNegativeInteger";
 
         private static void AddTypeSpecificationLine(string payload, string line)
         {
