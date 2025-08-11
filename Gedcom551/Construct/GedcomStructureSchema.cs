@@ -455,6 +455,9 @@ namespace Gedcom551.Construct
                 }
             }
 
+#if false
+            // Don't use a v7 URI for Enum.  There is no v5.5.1 type definition for
+            // enums, so just use v5.5.1 type URIs.
             string enumPattern = @"^(?!.*<)\s*\[.*\|.*\]\s*$";
             match = Regex.Match(line, enumPattern);
             if (match.Success)
@@ -462,6 +465,7 @@ namespace Gedcom551.Construct
                 EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + ActualPayload;
                 ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
             }
+#endif
         }
 
         public static void ProcessAllEnumerations()
