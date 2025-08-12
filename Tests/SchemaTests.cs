@@ -178,7 +178,7 @@ namespace Tests
                             string path = prefix + "type-" + payload + "-v551.yaml";
                             if (!File.Exists(path))
                             {
-                                Debug.Assert(false, path);
+                                Assert.Fail($"File does not exist: {path}");
                             }
                             break;
                         }
