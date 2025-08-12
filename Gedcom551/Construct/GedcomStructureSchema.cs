@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -841,38 +842,129 @@ namespace Gedcom551.Construct
             }
         }
 
+        private static bool IsMappingLine(string line)
+        {
+            return (line.Contains(" = ") || line.Contains("\t= "));
+        }
+
         private static List<string> NormalizeParagraph(List<string> paragraph, int maxLength = 75)
         {
-            if (paragraph.Count > 1)
-            {
-                return paragraph;
-            }
             var result = new List<string>();
 
-            // Combine all input lines into a single string, separating with spaces.
-            string combined = string.Join(" ", paragraph).Replace("\t", " ").Trim();
-
-            int start = 0;
-
-            while (start < combined.Length)
+            int nextIndex = 0;
+            while (nextIndex < paragraph.Count)
             {
-                int end = Math.Min(start + maxLength, combined.Length);
+                int startIndex = nextIndex;
 
-                // Try to break at the last space before 'end'
-                if (end < combined.Length)
+                // Figure out how many lines is actually one component.
+                // If it starts with a "[", the component lasts until the "]".
+                // If it starts with a "<", the component lasts until the ">".
+                // If it ends with ":", that's a whole component.
+                // If it contains "  =  ", the component lasts until the ".".
+                // If it starts with "!", the component lasts until the ".".
+                // Otherwise it lasts until a blank line or a "[" at the start of a line
+                string line = paragraph[nextIndex];
+                if (line.Trim().StartsWith("["))
                 {
-                    int lastSpace = combined.LastIndexOf(' ', end - 1, end - start);
-                    if (lastSpace > start)
+                    // Find ending "]".
+                    for (; !line.Trim().EndsWith("]") && nextIndex + 1 < paragraph.Count; nextIndex++)
                     {
-                        result.Add(combined.Substring(start, lastSpace - start));
-                        start = lastSpace + 1; // Skip the space
-                        continue;
+                        line = paragraph[nextIndex + 1];
                     }
+                    nextIndex++;
+                }
+                else if (line.Trim().EndsWith(":"))
+                {
+                    // This is the ending line.
+                    nextIndex++;
+                }
+                else if (IsMappingLine(line))
+                {
+                    // Find ending ".".
+                    for (; !line.Trim().EndsWith(".") && nextIndex + 1 < paragraph.Count && !IsMappingLine(paragraph[nextIndex + 1]); nextIndex++)
+                    {
+                        line = paragraph[nextIndex + 1];
+                    }
+                    nextIndex++;
+                }
+                else if (line.Trim().StartsWith("1 ") ||
+                         line.Trim().StartsWith("2 ") ||
+                         line.Trim().StartsWith("3 ") ||
+                         line.Trim().StartsWith("n ") ||
+                         line.Trim().StartsWith("+1 "))
+                {
+                    // This is a level and tag, so it gets its own line.
+                    nextIndex++;
+                }
+                else if (line.Trim().StartsWith("<"))
+                {
+                    // Find ending ">".
+                    for (; !line.Trim().EndsWith(">") && nextIndex + 1 < paragraph.Count; nextIndex++)
+                    {
+                        line = paragraph[nextIndex + 1];
+                    }
+                    nextIndex++;
+                }
+                else if (line.Trim().StartsWith("!"))
+                {
+                    // Find ending ".".
+                    for (; !line.Trim().EndsWith(".") && nextIndex + 1 < paragraph.Count; nextIndex++)
+                    {
+                        line = paragraph[nextIndex + 1];
+                    }
+                    nextIndex++;
+                }
+                else
+                {
+                    // Go until a blank line or "[" at the start of a line.
+                    for (; !string.IsNullOrWhiteSpace(line) && !line.Trim().StartsWith("[") && nextIndex + 1 < paragraph.Count; nextIndex++)
+                    {
+                        line = paragraph[nextIndex + 1];
+                    }
+                    nextIndex++;
                 }
 
-                // No space found or we're at the end — take the chunk
-                result.Add(combined.Substring(start, end - start));
-                start = end;
+                int lineCount = nextIndex - startIndex;
+
+                // Combine all input lines into a single string, separating with spaces.
+                string combined = string.Join(" ", paragraph.Skip(startIndex).Take(lineCount))
+                         .Replace("\t", " ")
+                         .Trim();
+
+                int start = 0;
+
+                if (combined.Trim().StartsWith("[") && combined.Trim().EndsWith("]"))
+                {
+                    // If the combined string starts with "[" and ends with "]", we can keep it as a single line.
+                    result.Add("```");
+                }
+
+                while (start < combined.Length)
+                {
+                    int end = Math.Min(start + maxLength, combined.Length);
+
+                    // Try to break at the last space before 'end'
+                    if (end < combined.Length)
+                    {
+                        int lastSpace = combined.LastIndexOf(' ', end - 1, end - start);
+                        if (lastSpace > start)
+                        {
+                            result.Add(combined.Substring(start, lastSpace - start));
+                            start = lastSpace + 1; // Skip the space
+                            continue;
+                        }
+                    }
+
+                    // No space found or we're at the end — take the chunk
+                    result.Add(combined.Substring(start, end - start));
+                    start = end;
+                }
+
+                if (combined.Trim().StartsWith("[") && combined.Trim().EndsWith("]"))
+                {
+                    // If the combined string starts with "[" and ends with "]", we can keep it as a single line.
+                    result.Add("```");
+                }
             }
 
             return result;
@@ -890,7 +982,7 @@ namespace Gedcom551.Construct
                     // End this paragraph and start a new one.
                     if (currentParagraph.Count > 0)
                     {
-                        paragraphs.Add(currentParagraph);
+                        paragraphs.Add(NormalizeParagraph(currentParagraph));
                         currentParagraph = new List<string>();
                     }
                     continue;
@@ -983,6 +1075,52 @@ namespace Gedcom551.Construct
             }
         }
 
+        private void EnsureTypeFile()
+        {
+            Debug.Assert(HasComplexPayloadType);
+
+            string prefix = "..\\..\\..\\..\\external\\GEDCOM-registries\\data-type\\standard\\";
+            string filePath = prefix + "type-" + ActualPayload + "-v551.yaml";
+
+            // Type file doesn't exist yet, so create one.
+            try
+            {
+                // Create a StreamWriter object to open the file for writing.
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    // Write lines to the file.
+                    writer.WriteLine("%YAML 1.2");
+                    writer.WriteLine("---");
+                    writer.WriteLine("lang: en-US");
+                    writer.WriteLine();
+                    writer.WriteLine("type: data type");
+                    writer.WriteLine();
+                    writer.WriteLine("uri: https://gedcom.io/terms/v5.5.1/type-" + ActualPayload);
+                    writer.WriteLine();
+
+                    writer.Write("specification:");
+                    int count = TypeSpecification.Count;
+                    if (count == 0)
+                    {
+                        writer.WriteLine(" {}");
+                    }
+                    else
+                    {
+                        writer.WriteLine();
+                        ShowSpecification(writer, TypeSpecification);
+                    }
+                    writer.WriteLine();
+
+                    writer.WriteLine("contact: \"https://gedcom.io/community/\"");
+                    writer.WriteLine("...");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+            }
+        }
+
         /// <summary>
         /// Save all structure schemas in YAML files under a given file path.
         /// </summary>
@@ -1041,6 +1179,10 @@ namespace Gedcom551.Construct
                         if (!schema.HasComplexPayloadType)
                         {
                             ShowSpecification(writer, schema.TypeSpecification);
+                        }
+                        else
+                        {
+                            schema.EnsureTypeFile();
                         }
                         writer.WriteLine();
 
@@ -1105,7 +1247,8 @@ namespace Gedcom551.Construct
                             writer.WriteLine();
                         }
 
-                        writer.WriteLine("contact: https://gedcom.io/community/");
+                        writer.WriteLine("contact: \"https://gedcom.io/community/\"");
+                        writer.WriteLine("...");
                     }
                 }
                 catch (Exception e)
