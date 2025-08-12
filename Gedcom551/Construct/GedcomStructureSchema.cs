@@ -344,6 +344,11 @@ namespace Gedcom551.Construct
             }
         }
 
+        public static List<GedcomStructureSchema> GetAllSchemas()
+        {
+            return s_StructureSchemas;
+        }
+
         public static void PinFinalUris()
         {
             foreach (GedcomStructureSchema schema in s_StructureSchemas)

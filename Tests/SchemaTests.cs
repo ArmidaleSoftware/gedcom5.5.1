@@ -150,6 +150,43 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestTypeFiles()
+        {
+            // Set current directory.
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string exeDirectory = AppContext.BaseDirectory;
+            Console.WriteLine($"Current directory: {currentDirectory}");
+            Console.WriteLine($"Exe directory: {exeDirectory}");
+
+            foreach (var schema in GedcomStructureSchema.GetAllSchemas())
+            {
+                string payload = schema.ActualPayload;
+                switch (payload)
+                {
+                    case null:
+                    case XsdString:
+                        break;
+                    default:
+                        {
+                            if (payload.StartsWith('@'))
+                            {
+                                continue;
+                            }
+                            // C:\Users\dthal\git\ArmidaleSoftware\Gedcom551\Tests\bin\Debug\net6.0\
+                            // C:\Users\dthal\git\ArmidaleSoftware\Gedcom551\external\GEDCOM-registries\data-type\standard
+                            string prefix = "..\\..\\..\\..\\external\\GEDCOM-registries\\data-type\\standard\\";
+                            string path = prefix + "type-" + payload + "-v551.yaml";
+                            if (!File.Exists(path))
+                            {
+                                Debug.Assert(false, path);
+                            }
+                            break;
+                        }
+                }
+            }
+        }
+
+        [TestMethod]
         public void TestChanDate()
         {
             VerifyQualifiedTag("CHAN", "DATE", "DATE_EXACT");

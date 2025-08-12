@@ -73,6 +73,11 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Analysis='True' ${{env.SOLUTION_FILE_PATH}}
 
+      - name: Construct updated YAML files
+        if: steps.skip_check.outputs.should_skip != 'true'
+        working-directory: ${{github.workspace}}/Gedcom551Construct/bin/${{env.BUILD_CONFIGURATION}}/net6.0/
+        run: .\Gedcom551Construct.exe ${{github.workspace}}\input ${{github.workspace}}\external\GEDCOM-registries
+
       - name: Run Basic Unit Tests
         if: steps.skip_check.outputs.should_skip != 'true'
         working-directory: ./Tests/bin/${{env.BUILD_CONFIGURATION}}/net6.0
