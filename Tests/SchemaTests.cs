@@ -164,7 +164,7 @@ namespace Tests
         [TestMethod]
         public void TestHeadChar()
         {
-            VerifyUniqueTag("CHAR", "CHARACTER_SET", true);
+            VerifyUniqueTag("CHAR", "CHARACTER_SET");
         }
 
         [TestMethod]
