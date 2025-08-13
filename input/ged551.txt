@@ -933,12 +933,9 @@ Where:
 FROM	= Indicates the beginning of a happening or state. TO	= Indicates the ending of a happening or state.
 
 Examples:
-FROM 1904 to 1915
-= The state of some attribute existed from 1904 to 1915 inclusive.
-FROM 1904
-= The state of the attribute began in 1904 but the end date is unknown.
-TO 1915
-= The state ended in 1915 but the begin date is unknown.
+FROM 1904 to 1915 = The state of some attribute existed from 1904 to 1915 inclusive.
+FROM 1904 = The state of the attribute began in 1904 but the end date is unknown.
+TO 1915 = The state ended in 1915 but the begin date is unknown.
 
 DATE_PHRASE:=	{Size=1:35}
 <TEXT>
@@ -1213,7 +1210,8 @@ manner- capitalize the first letter of each part and lowercase the other letters
 Examples:
 William Lee (given name only or surname not known)
 /Parry/ (surname only) William Lee /Parry/
-William Lee /Mac Parry/ (both parts (Mac and Parry) are surname parts William /Lee/ Parry (surname imbedded in the name string)
+William Lee /Mac Parry/ (both parts (Mac and Parry) are surname parts
+William /Lee/ Parry (surname imbedded in the name string)
 William Lee /Pa.../
 
 NAME_PHONETIC_VARIATION:=	{Size=1:120}
@@ -1235,6 +1233,7 @@ NAME_PIECE_PREFIX:=	{Size=1:30}
 Non indexing name piece that appears preceding the given name and surname parts. Different name prefix parts are separated by a comma.
 For example:
 Lt. Cmndr. Joseph /Allen/ jr.
+
 In this example Lt. Cmndr. is considered as the name prefix portion.
 
 NAME_PIECE_SUFFIX:=	{Size=1:30}
@@ -1242,10 +1241,10 @@ NAME_PIECE_SUFFIX:=	{Size=1:30}
 Non-indexing name piece that appears after the given name and surname parts. Different name suffix parts are separated by a comma.
 For example:
 Lt. Cmndr. Joseph /Allen/ jr.
+
 In this example jr. is considered as the name suffix portion.
 
 NAME_PIECE_SURNAME:=	{Size=1:120}
-
 [ <NAME_PIECE> | <NAME_PIECE_SURNAME>, <NAME_PIECE> ]
 Surname or family name. Different surnames are separated by a comma.
 
@@ -1397,7 +1396,6 @@ confidential = This data was marked as confidential by the user. In some systems
 locked	= Some records in Ancestral File have been satisfactorily proven by evidence, but because of source conflicts or incorrect traditions, there are repeated attempts to change this record. By arrangement, the Ancestral File Custodian can lock a record so that it cannot be changed without an agreement from the person assigned as the steward of such a record. The assigned steward is either the submitter listed for the record or Family History Support when no submitter is listed.
 
 privacy	= Indicate that information concerning this record is not present due to rights of or an approved request for privacy. For example, data from requested downloads of the
-
 Ancestral File may have individuals marked with 'privacy' if they are assumed living, that is they were born within the last 110 years and there isn't a death date. In certain cases family records may also be marked with the RESN tag of privacy if either individual acting in the role of HUSB or WIFE is assumed living.
 
 ROLE_DESCRIPTOR:=	{Size=1:25}

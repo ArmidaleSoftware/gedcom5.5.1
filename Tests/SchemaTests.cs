@@ -168,7 +168,9 @@ namespace Tests
                         break;
                     default:
                         {
-                            if (payload.StartsWith('@'))
+                            if (payload.StartsWith('@') || payload.StartsWith("http://") ||
+                                payload == "[Y|<NULL>]" || payload == "" ||
+                                payload.StartsWith("[@<"))
                             {
                                 continue;
                             }

@@ -56,7 +56,8 @@ namespace Gedcom551.Construct
     {
         public static readonly string Wildcard = "*";
 
-        public bool NeedsValueOf
+        public bool NeedsValueOf => false;
+        #if false
         {
             get
             {
@@ -132,6 +133,7 @@ namespace Gedcom551.Construct
                 return false;
             }
         }
+#endif
 
         public bool HasComplexPayloadType
         {
@@ -139,12 +141,12 @@ namespace Gedcom551.Construct
             {
                 foreach (string line in TypeSpecification)
                 {
-                    if (line.Contains('['))
+                    if (line.Contains('[') || line.StartsWith('<'))
                     {
-                        return true;
-                    }
-                    if (line.StartsWith('<'))
-                    {
+                        if (ActualPayload == GedcomFileSchema.XsdString)
+                        {
+                            return false;
+                        }
                         return true;
                     }
                 }
@@ -454,8 +456,13 @@ namespace Gedcom551.Construct
                     // Special case an unusual payload type.
                     if (ActualPayload == "EVENT_ATTRIBUTE_TYPE")
                     {
-                        EnumerationSetUri = "https://gedcom.io/terms/v5.5.1/enumset-" + ActualPayload;
-                        ActualPayload = "https://gedcom.io/terms/v7/type-Enum";
+                        // While the controlled line values don't include <user defined>,
+                        // the text description does permit user defined values.
+                        // Set it to a string but include the type spec.
+                        var typeSchema = GedcomTypeSchema.GetTypeSchema(ActualPayload);
+                        TypeSpecification.AddRange(typeSchema.Specification);
+
+                        ActualPayload = GedcomFileSchema.XsdString;
                         return;
                     }
                 }
@@ -844,7 +851,8 @@ namespace Gedcom551.Construct
 
         private static bool IsMappingLine(string line)
         {
-            return (line.Contains(" = ") || line.Contains("\t= "));
+            return (line.Contains(" = ") || line.Contains("\t= ") ||
+                line.Contains("\t=\t") || line.Contains(" =\t"));
         }
 
         private static List<string> NormalizeParagraph(List<string> paragraph, int maxLength = 75)
@@ -859,7 +867,7 @@ namespace Gedcom551.Construct
                 // Figure out how many lines is actually one component.
                 // If it starts with a "[", the component lasts until the "]".
                 // If it starts with a "<", the component lasts until the ">".
-                // If it ends with ":", that's a whole component.
+                // If it ends with ":" or ":=", that's a whole component.
                 // If it contains "  =  ", the component lasts until the ".".
                 // If it starts with "!", the component lasts until the ".".
                 // Otherwise it lasts until a blank line or a "[" at the start of a line
@@ -873,7 +881,7 @@ namespace Gedcom551.Construct
                     }
                     nextIndex++;
                 }
-                else if (line.Trim().EndsWith(":"))
+                else if (line.Trim().EndsWith(":") || line.Trim().EndsWith(":="))
                 {
                     // This is the ending line.
                     nextIndex++;
@@ -933,10 +941,21 @@ namespace Gedcom551.Construct
 
                 int start = 0;
 
-                if (combined.Trim().StartsWith("[") && combined.Trim().EndsWith("]"))
+                if (combined.EndsWith(":=") ||
+                    (combined.StartsWith("[") && combined.EndsWith("]")) ||
+                    (combined.StartsWith("<") && combined.EndsWith(">")))
                 {
                     // If the combined string starts with "[" and ends with "]", we can keep it as a single line.
-                    result.Add("```");
+                    // Surround it in ``` but if we just finished one block, undo the ending so we can continue
+                    // the same block.  Also do this if it is surrounded in "<...>".
+                    if (result.Count > 0 && result.Last() == "```")
+                    {
+                        result.RemoveAt(result.Count - 1);
+                    }
+                    else
+                    {
+                        result.Add("```");
+                    }
                 }
 
                 while (start < combined.Length)
@@ -960,7 +979,9 @@ namespace Gedcom551.Construct
                     start = end;
                 }
 
-                if (combined.Trim().StartsWith("[") && combined.Trim().EndsWith("]"))
+                if (combined.EndsWith(":=") ||
+                    (combined.Trim().StartsWith("[") && combined.Trim().EndsWith("]")) ||
+                    (combined.Trim().StartsWith("<") && combined.Trim().EndsWith(">")))
                 {
                     // If the combined string starts with "[" and ends with "]", we can keep it as a single line.
                     result.Add("```");
@@ -970,14 +991,82 @@ namespace Gedcom551.Construct
             return result;
         }
 
-        public static void ShowSpecification(StreamWriter writer, List<string> specification)
+        private static bool IsTagLine(string? line)
+        {
+            if (line == null)
+            {
+                return false;
+            }
+            string trimmed = line.Trim();
+            if (trimmed.StartsWith("1 ") || trimmed.StartsWith("2 ") ||
+                trimmed.StartsWith("3 ") || trimmed.StartsWith("n ") ||
+                trimmed.StartsWith("+1 "))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private static bool IsHeaderLine(string? line)
+        {
+            if (line == null)
+            {
+                return false;
+            }
+            string trimmed = line.Trim();
+            if (trimmed.StartsWith("where:", StringComparison.OrdinalIgnoreCase) ||
+                trimmed.StartsWith("i.e. ", StringComparison.OrdinalIgnoreCase) ||
+                trimmed.StartsWith("example:", StringComparison.OrdinalIgnoreCase) ||
+                trimmed.StartsWith("examples:", StringComparison.OrdinalIgnoreCase) ||
+                trimmed.StartsWith("for example:", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Return true if the next line should not be combined with the previous one.
+        /// </summary>
+        /// <param name="previousLine"></param>
+        /// <param name="nextLine"></param>
+        /// <returns></returns>
+        private static bool BreakParagraphBetween(string previousLine, string nextLine)
+        {
+            if (string.IsNullOrEmpty(nextLine))
+            {
+                return true;
+            }
+            if (IsMappingLine(nextLine))
+            {
+                return true;
+            }
+            if (IsHeaderLine(nextLine) || IsHeaderLine(previousLine))
+            {
+                return true;
+            }
+            if (IsTagLine(nextLine) || IsTagLine(previousLine))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static void ShowSpecification(StreamWriter writer, List<string> specification, string? typeName = null)
         {
             var paragraphs = new List<List<string>>();
             var currentParagraph = new List<string>();
 
+            string? previousLine = null;
+            bool examples = false;
+            if (typeName != null)
+            {
+                previousLine = typeName + ":=";
+                currentParagraph.Add(previousLine);
+            }
             foreach (string line in specification)
             {
-                if (string.IsNullOrEmpty(line))
+                if (examples || BreakParagraphBetween(previousLine, line))
                 {
                     // End this paragraph and start a new one.
                     if (currentParagraph.Count > 0)
@@ -985,10 +1074,16 @@ namespace Gedcom551.Construct
                         paragraphs.Add(NormalizeParagraph(currentParagraph));
                         currentParagraph = new List<string>();
                     }
-                    continue;
                 }
 
                 currentParagraph.Add(line);
+                previousLine = line;
+
+                if (line.Trim().StartsWith("examples:", StringComparison.OrdinalIgnoreCase))
+                {
+                    // All remaining lines are separate paragraphs.
+                    examples = true;
+                }
             }
             if (currentParagraph.Count > 0)
             {
@@ -998,7 +1093,12 @@ namespace Gedcom551.Construct
 
             foreach (List<string> paragraph in paragraphs)
             {
-                if (paragraph.Count <= 1)
+                if (paragraph.Count == 0)
+                {
+                    writer.WriteLine();
+                    continue;
+                }
+                if (paragraph.Count == 1)
                 {
                     string line = paragraph.First();
                     writer.Write("  - ");
@@ -1107,8 +1207,12 @@ namespace Gedcom551.Construct
                     else
                     {
                         writer.WriteLine();
-                        ShowSpecification(writer, TypeSpecification);
+                        ShowSpecification(writer, TypeSpecification, ActualPayload);
                     }
+                    writer.WriteLine();
+
+                    writer.WriteLine("documentation:");
+                    writer.WriteLine("  - https://gedcom.io/specifications/ged551.pdf");
                     writer.WriteLine();
 
                     writer.WriteLine("contact: \"https://gedcom.io/community/\"");
@@ -1180,7 +1284,7 @@ namespace Gedcom551.Construct
                         {
                             ShowSpecification(writer, schema.TypeSpecification);
                         }
-                        else
+                        else if (!schema.ActualPayload.StartsWith("http"))
                         {
                             schema.EnsureTypeFile();
                         }
@@ -1191,6 +1295,10 @@ namespace Gedcom551.Construct
                             writer.WriteLine("label: '" + schema.Label + "'");
                             writer.WriteLine();
                         }
+
+                        writer.WriteLine("documentation:");
+                        writer.WriteLine("  - https://gedcom.io/specifications/ged551.pdf");
+                        writer.WriteLine();
 
                         // Payload.
                         writer.Write("payload: ");

@@ -238,7 +238,7 @@ namespace Gedcom551.Construct
         {
             SpecSection currentSection = SpecSection.None;
             string tagPattern = @"(\w+)\s+\{([\w-]+)\}:=";
-            string typePattern = @"(\w+):=\s*{Size=(\d+):(\d+)}";
+            string typePattern = @"(\w+):=\s*{Size=(\d+)(?::(\d+))?}";
             using (StreamReader sr = new StreamReader(specFilename))
             {
                 string line;
@@ -281,7 +281,10 @@ namespace Gedcom551.Construct
                             string min = match.Groups[2].Value;
                             string max = match.Groups[3].Value;
                             lastMin = int.Parse(min);
-                            lastMax = int.Parse(max);
+                            if (!int.TryParse(max, out lastMax))
+                            {
+                                lastMax = lastMin;
+                            }
                             lastPayload = payload;
 
                             int i = line.IndexOf('[');
