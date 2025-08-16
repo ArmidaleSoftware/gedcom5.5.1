@@ -774,7 +774,6 @@ The third line of the address used for indexing. This is the value of the second
 
 ADDRESS_POSTAL_CODE:=	{Size=1:10}
 The ZIP or postal code used by the various localities in handling of mail. Isolated for sorting or
-
 indexing.
 
 ADDRESS_STATE:=	{Size=1:60}
@@ -784,16 +783,28 @@ ADDRESS_WEB_PAGE:=	{Size=5:120}
 The world wide web page address.
 
 ADOPTED_BY_WHICH_PARENT:=	{Size=1:4} [ HUSB | WIFE | BOTH ]
-A code which shows which parent in the associated family record adopted this person. Where:
-HUSB		= The HUSBand in the associated family adopted this person. WIFE	= The WIFE in the associated family adopted this person.
+A code which shows which parent in the associated family record adopted this person.
+Where:
+HUSB		= The HUSBand in the associated family adopted this person.
+WIFE	= The WIFE in the associated family adopted this person.
 BOTH	= Both HUSBand and WIFE adopted this person.
 
 AGE_AT_EVENT:=	{Size=1:12}
 [ < | > | <NULL>]
 [ YYy MMm DDDd | YYy | MMm | DDDd | YYy MMm | YYy DDDd | MMm DDDd | CHILD | INFANT | STILLBORN ]
-]
+
 Where:
->=greater than indicated age<=less than indicated agey=a label indicating yearsm=a label indicating monthsd=a label indicating daysYY=number of full yearsMM=number of monthsDDD=number of daysCHILD=age < 8 yearsINFANT=age < 1 yearSTILLBORN=died just prior, at, or near birth, 0 years
+>  =  greater than indicated age
+<  =  less than indicated age
+y  =  a label indicating years
+m  =  a label indicating months
+d  =  a label indicating days
+YY  =  number of full years
+MM  =  number of months
+DDD  =  number of days
+CHILD  =  age < 8 years
+INFANT  =  age < 1 year
+STILLBORN  =  died just prior, at, or near birth, 0 years
 A number that indicates the age in years, months, and days that the principal was at the time of the associated event. Any labels must come after their corresponding number, for example; 4y 8m 10d.
 
 ANCESTRAL_FILE_NUMBER:=	{Size=1:12}
@@ -838,12 +849,12 @@ CHARACTER_SET:=	{Size=1:8}
 [ ANSEL |UTF-8 | UNICODE | ASCII ]
 A code value that represents the character set to be used to interpret this data. Currently, the preferred character set is ANSEL, which includes ASCII as a subset. UNICODE is not widely supported by most operating systems; therefore, GEDCOM produced using the UNICODE character set will be limited in its interchangeability for a while but should eventually provide the international flexibility that is desired. See Chapter 3, starting on page 77.
 
-Note:The IBMPC character set is not allowed. This character set cannot be interpreted properly without knowing which code page the sender was using.
+Note: The IBMPC character set is not allowed. This character set cannot be interpreted properly without knowing which code page the sender was using.
 
 CHILD_LINKAGE_STATUS:=	{Size=1:15}
 [challenged | disproven | proven]
-A status code that allows passing on the users opinion of the status of a child to family link. challenged = Linking this child to this family is suspect, but the linkage has been neither proven nor
-disproven.
+A status code that allows passing on the users opinion of the status of a child to family link.
+challenged = Linking this child to this family is suspect, but the linkage has been neither proven nor disproven.
 disproven	= There has been a claim by some that this child belongs to this family, but the linkage has been disproven.
 proven	= There has been a claim by some that this child does not belongs to this family, but the linkage has been proven.
 
@@ -922,12 +933,9 @@ Where:
 FROM	= Indicates the beginning of a happening or state. TO	= Indicates the ending of a happening or state.
 
 Examples:
-FROM 1904 to 1915
-= The state of some attribute existed from 1904 to 1915 inclusive.
-FROM 1904
-= The state of the attribute began in 1904 but the end date is unknown.
-TO 1915
-= The state ended in 1915 but the begin date is unknown.
+FROM 1904 to 1915 = The state of some attribute existed from 1904 to 1915 inclusive.
+FROM 1904 = The state of the attribute began in 1904 but the end date is unknown.
+TO 1915 = The state ended in 1915 but the begin date is unknown.
 
 DATE_PHRASE:=	{Size=1:35}
 <TEXT>
@@ -1065,50 +1073,107 @@ LANGUAGE_PREFERENCE:=	{Size=1:90}
 
 The language in which a person prefers to communicate. Multiple language preference is shown by using multiple occurrences in order of priority.
 
-LDS_BAPTISM_DATE_STATUS:=	{Size=5:10} [ CHILD | COMPLETED | EXCLUDED | PRE-1970 |
-STILLBORN | SUBMITTED | UNCLEARED ]
+LDS_BAPTISM_DATE_STATUS:=	{Size=5:10}
+[ CHILD | COMPLETED | EXCLUDED | PRE-1970 | STILLBORN | SUBMITTED | UNCLEARED ]
 
 A code indicating the status of an LDS baptism and confirmation date where:
 
-CHILD=Died before becoming eight years old, baptism not required.COMPLETED=Completed but the date is not known.EXCLUDED=Patron excluded this ordinance from being cleared in this submission.PRE-1970=Ordinance is likely completed, another ordinance for this person was convertedfrom temple records of work completed before 1970, therefore this ordinance isassumed to be complete until all records are converted.STILLBORN=Stillborn, baptism not required.SUBMITTED=Ordinance was previously submitted.UNCLEARED=Data for clearing ordinance request was insufficient.
-LDS_CHILD_SEALING_DATE_STATUS:=	{Size=5:10} [ BIC | COMPLETED | EXCLUDED | DNS | PRE-1970 |
-STILLBORN | SUBMITTED | UNCLEARED ]
+CHILD = Died before becoming eight years old, baptism not required.
+COMPLETED = Completed but the date is not known.
+EXCLUDED = Patron excluded this ordinance from being cleared in this submission.
+PRE-1970 = Ordinance is likely completed, another ordinance for this person was converted from temple records of work completed before 1970, therefore this ordinance is assumed to be complete until all records are converted.
+STILLBORN = Stillborn, baptism not required.
+SUBMITTED = Ordinance was previously submitted.
+UNCLEARED = Data for clearing ordinance request was insufficient.
 
-BIC
-EXCLUDED=
-=Born in the covenant receiving blessing of child to parent sealing.
-Patron excluded this ordinance from being cleared in this submission.PRE-1970=(See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.)STILLBORN=Stillborn, not required.
-SUBMITTED	= Ordinance was previously submitted. UNCLEARED =	Data for clearing ordinance request was insufficient.
+LDS_CHILD_SEALING_DATE_STATUS:=	{Size=5:10}
+[ BIC | COMPLETED | EXCLUDED | DNS | PRE-1970 | STILLBORN | SUBMITTED | UNCLEARED ]
 
-LDS_ENDOWMENT_DATE_STATUS:=	{Size=5:10} [ CHILD | COMPLETED | EXCLUDED | PRE-1970 |
-STILLBORN | SUBMITTED | UNCLEARED ]
-A code indicating the status of an LDS endowment ordinance where: CHILD	= Died before eight years old.
+BIC = Born in the covenant receiving blessing of child to parent sealing.
+EXCLUDED = Patron excluded this ordinance from being cleared in this submission.
+PRE-1970 = (See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.)
+STILLBORN = Stillborn, not required.
+SUBMITTED	= Ordinance was previously submitted.
+UNCLEARED =	Data for clearing ordinance request was insufficient.
+
+LDS_ENDOWMENT_DATE_STATUS:=	{Size=5:10}
+[ CHILD | COMPLETED | EXCLUDED | PRE-1970 | STILLBORN | SUBMITTED | UNCLEARED ]
+A code indicating the status of an LDS endowment ordinance where:
+CHILD	= Died before eight years old.
 COMPLETED =	Completed but the date is not known.
-EXCLUDED		= Patron excluded this ordinance from being cleared in this submission. INFANT	=	Died before less than one year old, baptism or endowment not required. PRE-1970		= (See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.) STILLBORN		= Stillborn, ordinance not required.
-SUBMITTED	= Ordinance was previously submitted. UNCLEARED =	Data for clearing ordinance request was insufficient.
+EXCLUDED		= Patron excluded this ordinance from being cleared in this submission.
+INFANT	=	Died before less than one year old, baptism or endowment not required.
+PRE-1970		= (See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.)
+STILLBORN		= Stillborn, ordinance not required.
+SUBMITTED	= Ordinance was previously submitted.
+UNCLEARED =	Data for clearing ordinance request was insufficient.
 
-LDS_SPOUSE_SEALING_DATE_STATUS:=	{Size=3:10} [ CANCELED | COMPLETED | DNS | EXCLUDED |
-DNS/CAN | PRE-1970 | SUBMITTED | UNCLEARED ]
+LDS_SPOUSE_SEALING_DATE_STATUS:=	{Size=3:10}
+[ CANCELED | COMPLETED | DNS | EXCLUDED | DNS/CAN | PRE-1970 | SUBMITTED | UNCLEARED ]
 
-CANCELED	= Canceled and considered invalid. COMPLETED =	Completed but the date is not known.
-EXCLUDED	= Patron excluded this ordinance from being cleared in this submission. DNS	= This ordinance is not authorized.
+CANCELED	= Canceled and considered invalid.
+COMPLETED =	Completed but the date is not known.
+EXCLUDED	= Patron excluded this ordinance from being cleared in this submission.
+DNS	= This ordinance is not authorized.
 DNS/CAN	= This ordinance is not authorized, previous sealing cancelled.
-PRE-1970	= (See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.) SUBMITTED	= Ordinance was previously submitted.
+PRE-1970	= (See pre-1970 under LDS_BAPTISM_DATE_STATUS on page 51.)
+SUBMITTED	= Ordinance was previously submitted.
 UNCLEARED =	Data for clearing ordinance request was insufficient.
 
 MONTH:=	{Size=3}
 [ JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC ]
 Where:
-JAN=JanuaryFEB=FebruaryMAR=MarchAPR=AprilMAY=MayJUN=JuneJUL=JulyAUG=August
-SEP=SeptemberOCT=OctoberNOV=NovemberDEC=December
+JAN = January
+FEB = February
+MAR = March
+APR = April
+MAY = May
+JUN = June
+JUL = July
+AUG = August
+SEP = September
+OCT = October
+NOV = November
+DEC = December
+
 MONTH_FREN:=	{Size=4}
 [ VEND | BRUM | FRIM | NIVO | PLUV | VENT | GERM | FLOR | PRAI | MESS | THER | FRUC | COMP ]
 
-Where:VEND=VENDEMIAIREBRUM=BRUMAIREFRIM=FRIMAIRENIVO=NIVOSEPLUV=PLUVIOSEVENT=VENTOSEGERM=GERMINALFLOR=FLOREALPRAI=PRAIRIALMESS=MESSIDORTHER=THERMIDORFRUC=FRUCTIDORCOMP=JOUR_COMPLEMENTAIRS
+Where:
+
+VEND = VENDEMIAIRE
+BRUM = BRUMAIRE
+FRIM = FRIMAIRE
+NIVO = NIVOSE
+PLUV = PLUVIOSE
+VENT = VENTOSE
+GERM = GERMINAL
+FLOR = FLOREAL
+PRAI = PRAIRIAL
+MESS = MESSIDOR
+THER = THERMIDOR
+FRUC = FRUCTIDOR
+COMP = JOUR_COMPLEMENTAIRS
+
 MONTH_HEBR:=	{Size=3}
 [ TSH | CSH | KSL | TVT | SHV | ADR | ADS | NSN | IYR | SVN | TMZ | AAV | ELL ]
 
-Where:TSH=TishriCSH=CheshvanKSL=KislevTVT=TevetSHV=ShevatADR=AdarADS=Adar SheniNSN=NisanIYR=IyarSVN=SivanTMZ=TammuzAAV=AvELL=Elul
+Where:
+
+TSH = Tishri
+CSH = Cheshvan
+KSL = Kislev
+TVT = Tevet
+SHV = Shevat
+ADR = Adar
+ADS = Adar Sheni
+NSN = Nisan
+IYR = Iyar
+SVN = Sivan
+TMZ = Tammuz
+AAV = Av
+ELL = Elul
+
 MULTIMEDIA_FILE_REFERENCE:=	{Size=1:30}
 A complete local or remote file reference to the auxiliary data to be linked to the GEDCOM context. Remote reference would include a network address where the multimedia data may be obtained.
 
@@ -1145,7 +1210,8 @@ manner- capitalize the first letter of each part and lowercase the other letters
 Examples:
 William Lee (given name only or surname not known)
 /Parry/ (surname only) William Lee /Parry/
-William Lee /Mac Parry/ (both parts (Mac and Parry) are surname parts William /Lee/ Parry (surname imbedded in the name string)
+William Lee /Mac Parry/ (both parts (Mac and Parry) are surname parts
+William /Lee/ Parry (surname imbedded in the name string)
 William Lee /Pa.../
 
 NAME_PHONETIC_VARIATION:=	{Size=1:120}
@@ -1167,6 +1233,7 @@ NAME_PIECE_PREFIX:=	{Size=1:30}
 Non indexing name piece that appears preceding the given name and surname parts. Different name prefix parts are separated by a comma.
 For example:
 Lt. Cmndr. Joseph /Allen/ jr.
+
 In this example Lt. Cmndr. is considered as the name prefix portion.
 
 NAME_PIECE_SUFFIX:=	{Size=1:30}
@@ -1174,10 +1241,10 @@ NAME_PIECE_SUFFIX:=	{Size=1:30}
 Non-indexing name piece that appears after the given name and surname parts. Different name suffix parts are separated by a comma.
 For example:
 Lt. Cmndr. Joseph /Allen/ jr.
+
 In this example jr. is considered as the name suffix portion.
 
 NAME_PIECE_SURNAME:=	{Size=1:120}
-
 [ <NAME_PIECE> | <NAME_PIECE_SURNAME>, <NAME_PIECE> ]
 Surname or family name. Different surnames are separated by a comma.
 
@@ -1230,8 +1297,10 @@ PEDIGREE_LINKAGE_TYPE:=	{Size=5:7}
 [ adopted | birth | foster | sealing ]
 A code used to indicate the child to family relationship for pedigree navigation purposes.
 Where:
-adopted = indicates adoptive parents. birth	= indicates birth parents.
-foster = indicates child was included in a foster or guardian family. sealing	= indicates child was sealed to parents other than birth parents.
+adopted = indicates adoptive parents.
+birth	= indicates birth parents.
+foster = indicates child was included in a foster or guardian family.
+sealing	= indicates child was sealed to parents other than birth parents.
 
 PERMANENT_RECORD_FILE_NUMBER:=	{Size=1:90}
 <REGISTERED_RESOURCE_IDENTIFIER>:<RECORD_IDENTIFIER>
@@ -1268,7 +1337,6 @@ The value specifying the longitudinal coordinate of the place name. The longitud
 
 PLACE_NAME:=	{Size=1:120}
 [
-
 <PLACE_TEXT> |
 <PLACE_TEXT>, <PLACE_NAME>
 ]
@@ -1328,7 +1396,6 @@ confidential = This data was marked as confidential by the user. In some systems
 locked	= Some records in Ancestral File have been satisfactorily proven by evidence, but because of source conflicts or incorrect traditions, there are repeated attempts to change this record. By arrangement, the Ancestral File Custodian can lock a record so that it cannot be changed without an agreement from the person assigned as the steward of such a record. The assigned steward is either the submitter listed for the record or Family History Support when no submitter is listed.
 
 privacy	= Indicate that information concerning this record is not present due to rights of or an approved request for privacy. For example, data from requested downloads of the
-
 Ancestral File may have individuals marked with 'privacy' if they are assumed living, that is they were born within the last 110 years and there isn't a death date. In certain cases family records may also be marked with the RESN tag of privacy if either individual acting in the role of HUSB or WIFE is assumed living.
 
 ROLE_DESCRIPTOR:=	{Size=1:25}
@@ -1391,7 +1458,6 @@ SOURCE_PUBLICATION_FACTS:=	{Size=1:248}
 When and where the record was created. For published works, this includes information such as the city of publication, name of the publisher, and year of publication.
 
 For an unpublished work, it includes the date the record was created and the place where it was
-
 created. For example, the county and state of residence of a person making a declaration for a pension or the city and state of residence of the writer of a letter.
 
 SUBMITTER_NAME:=	{Size=1:60}
@@ -1416,7 +1482,8 @@ A verbatim copy of any description contained within the source. This indicates n
 TIME_VALUE:=	{Size=1:12}
 [ hh:mm:ss.fs ]
 The time of a specific event, usually a computer-timed event, where:
-hh = hours on a 24-hour clock mm	= minutes
+hh = hours on a 24-hour clock
+mm	= minutes
 ss	= seconds (optional)
 fs	= decimal fraction of a second (optional)
 

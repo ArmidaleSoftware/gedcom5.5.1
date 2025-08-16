@@ -4,3 +4,4 @@
 [submodule "external/GEDCOM-registries"]
 	path = external/GEDCOM-registries
 	url = https://github.com/FamilySearch/GEDCOM-registries.git
+	branch = gedcom551
