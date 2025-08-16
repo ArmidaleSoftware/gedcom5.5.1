@@ -42,8 +42,8 @@ namespace Tests
         private GedcomStructureSchema VerifyPseudoStructure(string tag)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag);
-            Debug.Assert(schema.StandardTag == tag);
-            Debug.Assert(schema.Superstructures.Count == 0);
+            Assert.AreEqual(schema.StandardTag, tag);
+            Assert.AreEqual(schema.Superstructures.Count, 0);
             return schema;
         }
 
@@ -61,8 +61,8 @@ namespace Tests
         private GedcomStructureSchema VerifyRecord(string tag)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + "record-" + tag);
-            Debug.Assert(schema.StandardTag == tag);
-            Debug.Assert(schema.Superstructures.Count == 0);
+            Assert.AreEqual(schema.StandardTag, tag);
+            Assert.AreEqual(schema.Superstructures.Count, 0);
             return schema;
         }
 
@@ -82,17 +82,17 @@ namespace Tests
         private GedcomStructureSchema VerifyUniqueTag(string tag, string? expectedPayload = null, bool isEnumSet = false)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag);
-            Debug.Assert(schema.StandardTag == tag);
-            Debug.Assert(schema.Superstructures.Count > 0);
+            Assert.AreEqual(schema.StandardTag, tag);
+            Assert.IsTrue(schema.Superstructures.Count > 0);
             if (isEnumSet)
             {
-                Debug.Assert(schema.ActualPayload == "https://gedcom.io/terms/v7/type-Enum");
+                Assert.AreEqual(schema.ActualPayload, "https://gedcom.io/terms/v7/type-Enum");
                 string expectedUri = "https://gedcom.io/terms/v5.5.1/enumset-" + expectedPayload;
-                Debug.Assert(schema.EnumerationSetUri == expectedUri);
+                Assert.AreEqual(schema.EnumerationSetUri, expectedUri);
             }
             else if (expectedPayload != null)
             {
-                Debug.Assert(schema.ActualPayload == expectedPayload);
+                Assert.AreEqual(schema.ActualPayload, expectedPayload);
             }
             return schema;
         }
@@ -116,22 +116,22 @@ namespace Tests
         private GedcomStructureSchema VerifyQualifiedTag(string super, string tag, string? expectedPayload = null, bool isEnumSet = false)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + super + "-" + tag);
-            Debug.Assert(schema.StandardTag == tag);
-            Debug.Assert(schema.Superstructures.Count == 1);
+            Assert.AreEqual(schema.StandardTag, tag);
+            Assert.AreEqual(schema.Superstructures.Count, 1);
 
             string superstructureUri = schema.Superstructures.First().AbsoluteUri;
-            Debug.Assert(superstructureUri == GedcomStructureSchema.UriPrefix + super ||
+            Assert.IsTrue(superstructureUri == GedcomStructureSchema.UriPrefix + super ||
                          superstructureUri == GedcomStructureSchema.UriPrefix + "record-" + super);
 
             if (isEnumSet)
             {
-                Debug.Assert(schema.ActualPayload == "https://gedcom.io/terms/v7/type-Enum");
+                Assert.AreEqual(schema.ActualPayload, "https://gedcom.io/terms/v7/type-Enum");
                 string expectedUri = "https://gedcom.io/terms/v5.5.1/enumset-" + expectedPayload;
-                Debug.Assert(schema.EnumerationSetUri == expectedUri);
+                Assert.AreEqual(schema.EnumerationSetUri, expectedUri);
             }
             else if (expectedPayload != null)
             {
-                Debug.Assert(schema.ActualPayload == expectedPayload);
+                Assert.AreEqual(schema.ActualPayload, expectedPayload);
             }
 
             return schema;
@@ -174,8 +174,6 @@ namespace Tests
                             {
                                 continue;
                             }
-                            // C:\Users\dthal\git\ArmidaleSoftware\Gedcom551\Tests\bin\Debug\net6.0\
-                            // C:\Users\dthal\git\ArmidaleSoftware\Gedcom551\external\GEDCOM-registries\data-type\standard
                             string prefix = "..\\..\\..\\..\\external\\GEDCOM-registries\\data-type\\standard\\";
                             string path = prefix + "type-" + payload + "-v551.yaml";
                             if (!File.Exists(path))
@@ -197,7 +195,7 @@ namespace Tests
         [TestMethod]
         public void TestSourXrefSourEven()
         {
-            VerifyQualifiedTag("SOUR-XREF_SOUR", "EVEN", "EVENT_ATTRIBUTE_TYPE", true);
+            VerifyQualifiedTag("SOUR-XREF_SOUR", "EVEN", XsdString);
         }
 
         [TestMethod]
@@ -261,9 +259,9 @@ namespace Tests
         private GedcomStructureSchema VerifyPayloadTag(string tag, string suffix, string? payload)
         {
             GedcomStructureSchema schema = GedcomStructureSchema.GetFinalSchemaByUri(GedcomStructureSchema.UriPrefix + tag + "-" + suffix);
-            Debug.Assert(schema.StandardTag == tag);
-            Debug.Assert(schema.Superstructures.Count > 1);
-            Debug.Assert(schema.ActualPayload == payload);
+            Assert.AreEqual(schema.StandardTag, tag);
+            Assert.IsTrue(schema.Superstructures.Count > 1);
+            Assert.AreEqual(schema.ActualPayload, payload);
             return schema;
         }
 
