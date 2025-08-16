@@ -1102,7 +1102,7 @@ namespace Gedcom551.Construct
                 {
                     string line = paragraph.First();
                     writer.Write("  - ");
-                    if (line.EndsWith(':') || line.Contains(": ") || line.Contains('"'))
+                    if (line.EndsWith(':') || line.Contains(": ") || line.Contains('"') || line.StartsWith('>'))
                     {
                         string line2 = line.Replace("\"", "\\\"");
                         writer.WriteLine("\"" + line2 + "\"");
